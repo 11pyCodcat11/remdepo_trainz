@@ -1,0 +1,245 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>РемДепо Trainz</title>
+   <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <header>
+        <div class="header-img-wrapper">
+            <img class="header-img" src="{% static 'images/oblojka.jpg' %}" alt="Фото вокзал-Москва2">
+        </div>
+        <div class="header_menu">
+          <div class="menu-line">
+            <nav class="menu">
+              <a href="https://vk.com/club229761384" class="vk-btn">
+                  <img src="{% static 'images/vk_ikon.png' %}" alt="ВК">
+                  <span>ДЕПО</span>
+              </a>
+          
+              <div class="menu-links">
+                  <a href="#popular">Популярное</a>
+                  <a href="#rolling_stock">Подвижной состав</a>
+                  <a href="#maps">Карты</a>
+                  <a href="#scenarios">Сценарии</a>
+                  <a href="#useful_links">Полезные ссылки</a>
+              </div>
+          
+                {% if user %}
+                    <a href="{% url 'profile' %}" class="profile-btn">
+                        <img src="{% static 'images/profile_icon.png' %}" alt="Профиль">
+                        <span class="profile-text">Профиль</span>
+                    </a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="profile-btn">
+                        <img src="{% static 'images/profile_icon.png' %}" alt="Профиль">
+                        <span class="profile-text">Войти</span>
+                    </a>
+                {% endif %}
+                                
+            </nav>
+          </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="popular">
+            <h2 class="popular-title">Популярное</h2>
+            <div class="cards">
+                {% for product in products_popular %}
+                <div class="card">
+                    <!-- Верхний контент -->
+                    <div class="card-content">
+                        {% with main_photo=product.photos|dictsort:"order"|first %}
+                            {% if main_photo %}
+                                <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                            {% endif %}
+                        {% endwith %}
+                
+                        <h3 class="card-title">{{ product.title }}</h3>        
+                        {% if product.is_free %}
+                            <p class="pricec">Бесплатно</p>
+                        {% else %}
+                            <p class="pricec">{{ product.price_rub }} ₽</p>
+                        {% endif %}
+                    </div>
+                
+                    <!-- Кнопки в отдельном блоке -->
+                    <div class="card-buttons">
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn">Получить</button>
+                            {% else %}
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                            {% endif %}
+                            <button class="garbej-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>                
+                {% endfor %}
+            </div>                
+        </section>
+        
+        
+
+        <section id="rolling_stock">
+            <h2 class="popular-title">Подвижной состав</h2>
+          
+            <div class="cards">
+              {% for product in products_rolling %}
+              <div class="card-rolling_stock">
+                <!-- Верхний контент -->
+                <div class="card-content">
+                  {% with main_photo=product.photos|dictsort:"order"|first %}
+                    {% if main_photo %}
+                      <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                    {% else %}
+                      <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                    {% endif %}
+                  {% endwith %}
+          
+                  <h3 class="card-title">{{ product.title }}</h3>        
+                  {% if product.is_free %}
+                    <p class="pricec">Бесплатно</p>
+                  {% else %}
+                    <p class="pricec">{{ product.price_rub }} ₽</p>
+                  {% endif %}
+                </div>
+          
+                <!-- Кнопки в отдельном блоке -->
+                <div class="card-buttons">
+                  <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                  <div class="btn-row">
+                    {% if product.is_free %}
+                      <button class="get-btn">Получить</button>
+                    {% else %}
+                      <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                    {% endif %}
+                    <button class="garbej-btn">В корзину</button>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+
+
+          <section id="maps">
+            <h2 class="popular-title">Карты</h2>
+            <div class="cards">
+                {% for product in products_maps %}
+                <div class="card">
+                    <!-- Верхний контент -->
+                    <div class="card-content">
+                        {% with main_photo=product.photos|dictsort:"order"|first %}
+                            {% if main_photo %}
+                                <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <h3 class="card-title">{{ product.title }}</h3>
+                        {% if product.is_free %}
+                            <p class="pricec">Бесплатно</p>
+                        {% else %}
+                            <p class="pricec">{{ product.price_rub }} ₽</p>
+                        {% endif %}
+                    </div>
+        
+                    <!-- Кнопки -->
+                    <div class="card-buttons">
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn">Получить</button>
+                            {% else %}
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                            {% endif %}
+                            <button class="garbej-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+
+        <section id="scenarios">
+            <h2 class="popular-title">Сценарии</h2>
+        
+            <div class="cards">
+                {% for product in products_scenarios %}
+                <div class="card-rolling_stock">
+                    <!-- Верхний контент -->
+                    <div class="card-content">
+                        {% with main_photo=product.photos|dictsort:"order"|first %}
+                            {% if main_photo %}
+                                <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                            {% endif %}
+                        {% endwith %}
+        
+                        <h3 class="card-title">{{ product.title }}</h3>
+                        {% if product.is_free %}
+                            <p class="pricec">Бесплатно</p>
+                        {% else %}
+                            <p class="pricec">{{ product.price_rub }} ₽</p>
+                        {% endif %}
+                    </div>
+        
+                    <!-- Кнопки в отдельном блоке -->
+                    <div class="card-buttons">
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn">Получить</button>
+                            {% else %}
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                            {% endif %}
+                            <button class="garbej-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="useful_links">
+            <h2 class="popular-title">Полезные ссылки</h2>
+        
+            <div class="useful-container">
+                <img src="{% static 'images/zaglushka.png' %}" alt="Полезные ссылки">
+                <p class="useful-text">Раздел находится в разработке</p>
+            </div>
+        </section>
+        
+        
+          
+      
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>©2025 - РемДепо Trainz</p>
+            <p>Все 3D-модели предназначены для использования в Trainz Railroad Simulator 2022</p>
+            <p>Мы не связаны с официальными разработчиками игры</p>
+            <nav class="footer-links">
+                <a href="/privacy-policy">Политика конфиденциальности</a> | 
+                <a href="/terms-of-service">Пользовательское соглашение</a>
+            </nav>
+            <p class="footer-credits">
+                Дизайн — Rin | Разработка — PyCodCat | Владелец - 
+                <a href="mailto:olegovstanislaw@yandex.ru">olegovstanislaw@yandex.ru</a>
+            </p>
+        </div>
+    </footer>
+</body>
+</html>

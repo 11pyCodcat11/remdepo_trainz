@@ -1,0 +1,158 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+<body>
+    <!-- Кнопка Назад -->
+    <a href="{% url 'home' %}" class="back-button"><span>Назад</span></a>    
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h1 class="login-title">Вход</h1>
+            
+            <form class="login-form" method="POST" id="loginForm">
+                {% csrf_token %}
+                
+                <!-- Сообщения об ошибках от Django -->
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="global-error">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            
+                
+                <!-- Поля ввода по центру -->
+                <div class="form-fields">
+                    <!-- Поле логина -->
+                    <input type="text" name="username" id="username" class="input-field" placeholder="Логин" required>
+                    <div class="error-message" id="usernameError"></div>
+                    
+                    <!-- Поле пароля с глазком -->
+                    <div class="password-container">
+                        <input type="password" name="password" id="password" class="input-field" placeholder="Пароль" required>
+                        <button type="button" class="eye-toggle" id="eyeToggle1">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M12 7c2.76 0 5 2.24 ..."/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="error-message" id="passwordError"></div>
+                    
+                    <!-- Чекбокс -->
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeCheckbox" required>
+                        Я согласен на обработку персональных данных
+                    </label>
+                    <div class="error-message" id="checkboxError"></div>
+                </div>
+                
+                <!-- Кнопка входа -->
+                <div class="login-btn-container">
+                    <button type="submit" class="login-btn">Вход</button>
+                </div>
+            </form>
+            
+            <!-- Ссылка на регистрацию -->
+            <div class="register-link">
+                Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passwordInput = document.getElementById('password');
+            const eyeToggle = document.getElementById('eyeToggle');
+            const eyeIcon = eyeToggle.querySelector('svg');
+            const form = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const checkbox = document.getElementById('agreeCheckbox');
+        
+            // -----------------------------
+            // Функционал глазка
+            // -----------------------------
+            eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+        
+            eyeToggle.addEventListener('click', function() {
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    eyeIcon.innerHTML = '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>';
+                } else {
+                    passwordInput.type = 'password';
+                    eyeIcon.innerHTML = '<path d="M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z"/>';
+                }
+            });
+        
+            // -----------------------------
+            // Валидация формы
+            // -----------------------------
+            form.addEventListener('submit', function(e) {
+                let isValid = true;
+        
+                // Очистка ошибок
+                document.getElementById('usernameError').textContent = '';
+                document.getElementById('passwordError').textContent = '';
+                document.getElementById('checkboxError').textContent = '';
+                usernameInput.classList.remove('error');
+                passwordInput.classList.remove('error');
+        
+                if (!usernameInput.value.trim()) {
+                    document.getElementById('usernameError').textContent = 'Заполните поле логина';
+                    usernameInput.classList.add('error');
+                    isValid = false;
+                }
+                if (!passwordInput.value) {
+                    document.getElementById('passwordError').textContent = 'Заполните поле пароля';
+                    passwordInput.classList.add('error');
+                    isValid = false;
+                }
+                if (!checkbox.checked) {
+                    document.getElementById('checkboxError').textContent = 'Необходимо согласие на обработку данных';
+                    isValid = false;
+                }
+        
+                if (!isValid) e.preventDefault();
+            });
+        
+            // -----------------------------
+            // Валидация в реальном времени
+            // -----------------------------
+            usernameInput.addEventListener('input', function() {
+                if (usernameInput.value.trim()) {
+                    usernameInput.classList.remove('error');
+                    document.getElementById('usernameError').textContent = '';
+                }
+            });
+            passwordInput.addEventListener('input', function() {
+                if (passwordInput.value) {
+                    passwordInput.classList.remove('error');
+                    document.getElementById('passwordError').textContent = '';
+                }
+            });
+            checkbox.addEventListener('change', function() {
+                if (checkbox.checked) {
+                    document.getElementById('checkboxError').textContent = '';
+                }
+            });
+        
+            // -----------------------------
+            // Автоскрытие глобальных сообщений
+            // -----------------------------
+            const globalErrors = document.querySelectorAll('.global-error');
+            globalErrors.forEach(msg => {
+                setTimeout(() => {
+                    msg.style.transition = 'opacity 0.15s';
+                    msg.style.opacity = '0';
+                    setTimeout(() => msg.remove(), 500); // удаляем из DOM
+                }, 1500); // через 5 секунд
+            });
+        });
+        </script>
+        
+</body>
+</html>

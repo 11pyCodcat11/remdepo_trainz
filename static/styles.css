@@ -1,0 +1,438 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FEF6DF;
+    margin: 0;
+}
+
+header {
+    background-color: #FFE1A8;
+    color: white;
+    padding: 0; /* убираем отступы */}
+
+nav a {
+    color: lightblue;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+
+/* Стили для footer */
+footer {
+    background-color: #3B3B3B;
+    padding: 30px 20px;
+    text-align: left; /* Выравнивание по левому краю */
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: #FFFFFF;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left; /* Выравнивание содержимого по левому краю */
+}
+
+footer p {
+    margin: 10px 0;
+    text-align: left; /* Выравнивание параграфов по левому краю */
+}
+
+.footer-links {
+    margin: 15px 0;
+    text-align: left; /* Выравнивание ссылок по левому краю */
+}
+
+footer a {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.footer-credits {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: left; /* Выравнивание credits по левому краю */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    footer {
+        font-size: 18px;
+        padding: 20px 15px;
+        text-align: center; /* На мобильных центрируем */
+    }
+    
+    .footer-content,
+    footer p,
+    .footer-links,
+    .footer-credits {
+        text-align: center; /* На мобильных центрируем */
+    }
+    
+    .footer-credits {
+        font-size: 16px;
+    }
+    
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .footer-links a:not(:last-child)::after {
+        content: "|";
+        margin: 0 10px;
+    }
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ДЕПО слева, профиль справа */
+    width: 100%; /* <-- важно */
+}
+
+/* Для группы центральных ссылок можно создать отдельный контейнер */
+.menu-links {
+    display: flex;
+    gap: 70px;  /* расстояние между ссылками */
+}
+
+
+.menu a {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(20px, 4vw, 30px); /* адаптивный размер шрифта */
+    font-weight: 700;
+    color: #5C3A00;
+    text-decoration: none;
+    white-space: nowrap; /* предотвращаем перенос текста */
+}
+
+.menu a:hover {
+    color: #8B5A00; /* темнее при наведении */
+    text-decoration: underline; /* подчеркивание */
+    text-decoration-thickness: 2px; /* толщина подчеркивания */
+    text-underline-offset: 5px; /* расстояние от текста */
+}
+
+.popular-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 58px;
+    color: #5C3A00;
+    text-align: center;
+    text-decoration: none !important;
+    font-weight: 400; /* вот сюда добавляем */
+}
+
+
+.card {
+    width: 400px;
+    height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FFE1A8;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;              /* включаем flex */
+    flex-direction: column;     /* вертикальная компоновка */
+    justify-content: space-between; /* растягиваем: контент сверху, кнопки внизу */
+}
+
+
+.card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.card-buttons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.card .btn-row {
+    display: flex;    
+    justify-content: center;     /* кнопки в одну линию */
+    gap: 10px;             /* расстояние между ними */
+}
+
+.btn-row{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;           /* не переносить */
+    width: 100%;
+}
+/* --- Верхняя кнопка "О товаре" --- */
+.about-btn {
+    position: relative;
+    width: 390px;
+    height: 80px;
+    background-color: #E9A82D;   /* Светлая кнопка сверху */
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 1;
+    transition: transform 0.2s;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* расстояние вниз */
+    margin-left: 10px;
+}
+
+/* Нижние кнопки */
+.get-btn,
+.garbej-btn {
+    position: relative;
+    width: 180px;
+    height: 80px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 1;
+    transition: transform 0.2s;
+    box-sizing: border-box;
+    margin-left: 13px;
+}
+
+/* Тень всегда видна */
+.about-btn::after,
+.get-btn::after,
+.garbej-btn::after {
+    content: '';
+    position: absolute;
+    top: -10px;     /* тень смещаем ниже */
+    left: -10px;    /* тень смещаем вправо */
+    width: calc(100% + 4px);   /* делаем шире кнопки */
+    height: calc(100% + 4px);  /* делаем выше кнопки */
+    background-color: #FFC75D;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+/* Hover — лёгкое увеличение */
+.about-btn:hover,
+.get-btn:hover,
+.garbej-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Active — кнопка уходит в тень */
+.about-btn:active,
+.get-btn:active,
+.garbej-btn:active {
+    transform: translate(5px, 5px);
+}
+
+.about-btn,
+.get-btn,
+.garbej-btn {
+    display: flex;
+    line-height: 1;
+    padding-top: 25px;  
+    justify-content: center      /* двигаем текст чуть выше */
+}
+    
+.card img {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+.card-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 10px 0;
+    color: #3B3B3B;
+    text-align: center;
+
+    width: 100%;             /* ограничение ширины внутри карточки */
+    white-space: nowrap;     /* запрет переноса */
+    overflow: hidden;        /* скрыть лишнее */
+    text-overflow: ellipsis; /* троеточие */
+    box-sizing: border-box;  /* чтобы учитывались паддинги */
+}
+
+
+.cards{
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.header-img {
+    width: 100%;
+    border: none;
+}
+
+.header-img-wrapper {
+    width: 100%;
+    height: 850px;       /* оставляем только верхние 325px */
+    overflow: hidden;    /* всё что ниже — скрывается */
+    margin-top: -200px;
+  
+}
+
+.header_menu {
+    width: 100%;
+    height: 150px;
+    background-color: #FFE1A8; /* чтобы меню не сливалось */
+    display: flex;
+    align-items: center; /* выравнивание по вертикали */
+    justify-content: center; /* выравнивание по горизонтали */
+}
+
+.menu-line {
+    width: 90%;
+    height: 100px;
+    border-radius: 20px;
+    background-color: #FFC75D;
+    display: flex;
+    align-items: center;
+    /* убираем justify-content здесь */
+    padding: 0 20px;
+}
+
+
+.vk-btn, .profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border: 5px solid #3B3B3B;
+    border-radius: 16px;
+    background: #FFC75D;
+    cursor: pointer;
+    font-size: clamp(20px, 4vw, 30px); /* адаптивный размер */
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+    font-weight: 700;
+    text-decoration: none !important;
+    color: inherit;
+    white-space: nowrap;
+}
+
+
+.vk-btn img, .profile-btn img {
+    width: clamp(40px, 8vw, 50px); /* адаптивный размер иконки */
+    height: clamp(40px, 8vw, 50px);
+    object-fit: contain;
+}
+
+
+.vk-btn span, .profile-btn span {
+    color: #3B3B3B;
+}
+
+.vk-btn:hover, .profile-btn:hover {
+    background: #FEF6DF; /* подсветка при наведении */
+    text-decoration: none !important;
+    color: inherit; /* сохраняем цвет текста */
+
+}
+
+
+.pricec {
+    font-family: 'Rubik', sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+}
+
+#rolling_stock,
+#scenarios {
+    position: relative;             /* нужно для left/right работать корректно */
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;             /* сдвигаем влево на половину viewport */
+    margin-right: -50vw;            /* сдвигаем вправо на половину viewport */
+    width: 100vw;                   /* растягиваем по ширине viewport */
+    box-sizing: border-box;
+    background-color: #FFE1A8;      /* нужный фон */
+    padding: 40px 0;                /* вертикальные отступы сверху/снизу */
+}
+
+#popular,
+#maps {
+    padding: 40px 0;  
+}
+
+
+.card-rolling_stock {
+    width: 400px;
+    height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FEF6DF; /* фон карточки */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    display: flex;                  /* flex для выравнивания */
+    flex-direction: column;         /* вертикальная компоновка */
+    justify-content: space-between; /* контент сверху, кнопки внизу */
+}
+
+
+
+.card-rolling_stock img {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+#useful_links {
+    background-color: #FEF6DF;   /* фон секции */
+    padding: 40px 0;
+    text-align: center;
+}
+
+.useful-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.useful-container img {
+    max-width: 600px;   /* увеличенное изображение */
+    border-radius: 0;   /* убрали скругление */
+    margin-bottom: 30px;
+    box-shadow: none;   /* убрали обводку/тень */
+}
+
+.useful-text {
+    font-family: 'Rubik', sans-serif;
+    font-size: 45px;
+    font-weight: 500; /* medium */
+    color: #394850;
+    margin: 0;
+}
