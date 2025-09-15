@@ -1,0 +1,647 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FEF6DF;
+    font-family: 'Rubik', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Кнопка назад */
+.back-button {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 260px;
+    height: 80px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    box-sizing: border-box;
+}
+
+.back-button::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-color: #FFC75D;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+.back-button:hover {
+    transform: scale(1.03);
+}
+
+.back-button:active {
+    transform: translate(5px, 5px);
+}
+
+.back-button span {
+    /* Убираем дополнительный transform */
+}
+
+/* Основной контейнер */
+.product-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.product-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 78px;
+    background: #FFE1A8;
+    border-radius: 33px;
+    padding: 52px;
+    box-shadow: 0 10px 39px rgba(92, 58, 0, 0.15);
+}
+
+/* Галерея изображений */
+.product-gallery {
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+}
+
+.main-image-container {
+    width: 100%;
+    height: 520px;
+    border-radius: 26px;
+    overflow: hidden;
+    background: #f5f5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 26px;
+    transition: transform 0.3s ease;
+}
+
+.main-image:hover {
+    transform: scale(1.02);
+}
+
+.thumbnails-container {
+    display: flex;
+    gap: 13px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 104px;
+    height: 104px;
+    border-radius: 13px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
+.thumbnail:hover {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.thumbnail.active {
+    border-color: #E9A82D;
+    opacity: 1;
+    box-shadow: 0 4px 15px rgba(233, 168, 45, 0.3);
+}
+
+/* Информация о товаре */
+.product-info {
+    display: flex;
+    flex-direction: column;
+    gap: 39px;
+}
+
+.product-header {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.product-badge {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    padding: 7px 20px;
+    border-radius: 26px;
+    font-size: 18px;
+    font-weight: 700;
+    width: fit-content;
+}
+
+.product-title {
+    font-size: 47px;
+    font-weight: 700;
+    color: #5C3A00;
+    line-height: 1.2;
+}
+
+.product-subtitle {
+    font-size: 23px;
+    color: #8B6914;
+    margin: 0;
+}
+
+.product-category {
+    font-size: 21px;
+    color: #B8860B;
+    font-weight: 500;
+    margin: 0;
+}
+
+/* Цена */
+.product-price {
+    padding: 26px 0;
+    border-top: 3px solid #E8B74B;
+    border-bottom: 3px solid #E8B74B;
+}
+
+.price-free {
+    font-size: 42px;
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+.price-paid {
+    font-size: 42px;
+    font-weight: 700;
+    color: #5C3A00;
+}
+
+/* Описание */
+.product-description {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-description h3 {
+    font-size: 31px;
+    font-weight: 700;
+    color: #5C3A00;
+}
+
+.product-description p {
+    font-size: 26px;
+    color: #5C3A00;
+    line-height: 1.6;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Кнопки действий */
+.product-actions {
+    margin-top: auto;
+}
+
+.main-actions {
+    display: flex;
+    gap: 26px;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+    position: relative;
+    border: none;
+    border-radius: 13px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 29px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1;
+    box-sizing: border-box;
+    height: 104px;
+    flex: 1;
+    min-width: 234px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3B3B3B;
+    background-color: #E9A82D;
+}
+
+/* Тень для кнопок */
+.btn-primary::after,
+.btn-secondary::after {
+    content: '';
+    position: absolute;
+    top: -13px;
+    left: -13px;
+    width: calc(100% + 5px);
+    height: calc(100% + 5px);
+    background-color: #FFC75D;
+    border-radius: 13px;
+    z-index: -1;
+}
+
+/* Hover эффект */
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: scale(1.03);
+}
+
+/* Active эффект - кнопка уходит в тень */
+.btn-primary:active,
+.btn-secondary:active {
+    transform: translate(7px, 7px);
+}
+
+/* Уведомления */
+.notification {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    z-index: 1000;
+    transform: translateX(100%);
+    animation: slideIn 0.3s ease forwards;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.notification.info {
+    background-color: #2196F3;
+    color: white;
+}
+
+@keyframes slideIn {
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+.notification.hiding {
+    animation: slideOut 0.3s ease forwards;
+}
+
+/* Полноэкранный просмотрщик изображений */
+.image-viewer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.image-viewer.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.image-viewer-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-viewer-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+}
+
+/* Кнопки навигации */
+.image-nav-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 60px;
+    height: 60px;
+    background: #E9A82D;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #3B3B3B;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    z-index: 1001;
+    box-shadow: 0 4px 15px rgba(233, 168, 45, 0.4);
+}
+
+.image-nav-button::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background-color: #FFC75D;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.image-nav-button:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(233, 168, 45, 0.6);
+}
+
+.image-nav-button:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+.image-nav-prev {
+    left: -80px;
+}
+
+.image-nav-next {
+    right: -80px;
+}
+
+/* Кнопка закрытия */
+.image-viewer-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #E9A82D;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: #3B3B3B;
+    font-weight: 700;
+    transition: all 0.2s ease;
+    z-index: 1001;
+    box-shadow: 0 4px 15px rgba(233, 168, 45, 0.4);
+}
+
+.image-viewer-close::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background-color: #FFC75D;
+    border-radius: 50%;
+    z-index: -1;
+}
+
+.image-viewer-close:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(233, 168, 45, 0.6);
+}
+
+.image-viewer-close:active {
+    transform: scale(0.95);
+}
+
+/* Индикатор изображения */
+.image-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(233, 168, 45, 0.9);
+    color: #3B3B3B;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    backdrop-filter: blur(10px);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    body {
+        align-items: flex-start;
+        padding-top: 120px;
+    }
+    
+    .product-container {
+        padding-top: 20px;
+    }
+    
+    .product-wrapper {
+        grid-template-columns: 1fr;
+        gap: 52px;
+        padding: 39px;
+    }
+    
+    .product-title {
+        font-size: 36px;
+    }
+    
+    .product-description p {
+        font-size: 23px;
+    }
+    
+    .main-image-container {
+        height: 390px;
+    }
+    
+    .back-button {
+        width: 195px;
+        height: 65px;
+        font-size: 20px;
+    }
+    
+    /* Полноэкранный просмотрщик для планшетов */
+    .image-nav-button {
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+    }
+    
+    .image-nav-prev {
+        left: -65px;
+    }
+    
+    .image-nav-next {
+        right: -65px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 100px;
+    }
+    
+    .product-container {
+        padding-top: 20px;
+    }
+    
+    .product-wrapper {
+        padding: 26px;
+        gap: 39px;
+        border-radius: 20px;
+    }
+    
+    .product-title {
+        font-size: 31px;
+    }
+    
+    .product-description p {
+        font-size: 21px;
+    }
+    
+    .main-image-container {
+        height: 325px;
+    }
+    
+    .main-actions {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        font-size: 26px;
+        height: 91px;
+        min-width: unset;
+    }
+    
+    .back-button {
+        width: 156px;
+        height: 58px;
+        font-size: 18px;
+        top: 10px;
+        left: 10px;
+    }
+    
+    /* Полноэкранный просмотрщик для мобильных */
+    .image-nav-button {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .image-nav-prev {
+        left: -55px;
+    }
+    
+    .image-nav-next {
+        right: -55px;
+    }
+    
+    .image-viewer-close {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        top: 15px;
+        right: 15px;
+    }
+    
+    .image-counter {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+    
+    .thumbnail {
+        width: 78px;
+        height: 78px;
+    }
+    
+    .price-free,
+    .price-paid {
+        font-size: 31px;
+    }
+}
+
+@media (max-width: 480px) {
+    .thumbnails-container {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+    
+    .thumbnail {
+        flex-shrink: 0;
+    }
+    
+    .product-description h3 {
+        font-size: 26px;
+    }
+    
+    .product-description p {
+        font-size: 18px;
+    }
+    
+    .btn-primary,
+    .btn-secondary {
+        font-size: 23px;
+        height: 85px;
+    }
+}

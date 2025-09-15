@@ -50,7 +50,7 @@
             <h2 class="popular-title">Популярное</h2>
             <div class="cards">
                 {% for product in products_popular %}
-                <div class="card">
+                <div class="card" data-product-id="{{ product.id }}">
                     <!-- Верхний контент -->
                     <div class="card-content">
                         {% with main_photo=product.photos|dictsort:"order"|first %}
@@ -69,8 +69,14 @@
                         {% endif %}
                     </div>
                 
-                    <!-- Кнопки в отдельном блоке -->
-                    <div class="card-buttons">
+                <!-- Кнопки в отдельном блоке -->
+                <div class="card-buttons">
+                    {% if product.id in purchased_product_ids %}
+                        <div class="purchased-status">
+                            <span class="purchased-label">✓ Приобретен</span>
+                            <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
+                        </div>
+                    {% else %}
                         <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
                         <div class="btn-row">
                             {% if product.is_free %}
@@ -80,7 +86,8 @@
                             {% endif %}
                             <button class="garbej-btn">В корзину</button>
                         </div>
-                    </div>
+                    {% endif %}
+                </div>
                 </div>                
                 {% endfor %}
             </div>                
@@ -93,7 +100,7 @@
           
             <div class="cards">
               {% for product in products_rolling %}
-              <div class="card-rolling_stock">
+              <div class="card-rolling_stock" data-product-id="{{ product.id }}">
                 <!-- Верхний контент -->
                 <div class="card-content">
                   {% with main_photo=product.photos|dictsort:"order"|first %}
@@ -114,15 +121,22 @@
           
                 <!-- Кнопки в отдельном блоке -->
                 <div class="card-buttons">
-                  <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
-                  <div class="btn-row">
-                    {% if product.is_free %}
-                      <button class="get-btn">Получить</button>
+                    {% if product.id in purchased_product_ids %}
+                        <div class="purchased-status">
+                            <span class="purchased-label">✓ Приобретен</span>
+                            <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
+                        </div>
                     {% else %}
-                      <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn">Получить</button>
+                            {% else %}
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                            {% endif %}
+                            <button class="garbej-btn">В корзину</button>
+                        </div>
                     {% endif %}
-                    <button class="garbej-btn">В корзину</button>
-                  </div>
                 </div>
               </div>
               {% endfor %}
@@ -134,7 +148,7 @@
             <h2 class="popular-title">Карты</h2>
             <div class="cards">
                 {% for product in products_maps %}
-                <div class="card">
+                <div class="card" data-product-id="{{ product.id }}">
                     <!-- Верхний контент -->
                     <div class="card-content">
                         {% with main_photo=product.photos|dictsort:"order"|first %}
@@ -176,7 +190,7 @@
         
             <div class="cards">
                 {% for product in products_scenarios %}
-                <div class="card-rolling_stock">
+                <div class="card-rolling_stock" data-product-id="{{ product.id }}">
                     <!-- Верхний контент -->
                     <div class="card-content">
                         {% with main_photo=product.photos|dictsort:"order"|first %}
@@ -195,8 +209,14 @@
                         {% endif %}
                     </div>
         
-                    <!-- Кнопки в отдельном блоке -->
-                    <div class="card-buttons">
+                <!-- Кнопки в отдельном блоке -->
+                <div class="card-buttons">
+                    {% if product.id in purchased_product_ids %}
+                        <div class="purchased-status">
+                            <span class="purchased-label">✓ Приобретен</span>
+                            <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
+                        </div>
+                    {% else %}
                         <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
                         <div class="btn-row">
                             {% if product.is_free %}
@@ -206,7 +226,8 @@
                             {% endif %}
                             <button class="garbej-btn">В корзину</button>
                         </div>
-                    </div>
+                    {% endif %}
+                </div>
                 </div>
                 {% endfor %}
             </div>
@@ -241,5 +262,7 @@
             </p>
         </div>
     </footer>
+    
+    <script src="{% static 'main.js' %}"></script>
 </body>
 </html>

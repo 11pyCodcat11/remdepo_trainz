@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Скачать {{ product.title }}</title>
+    <link rel="stylesheet" href="{% static 'download.css' %}">
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <a href="{% url 'home' %}" class="back-button">
+        <span>Вернуться к каталогу</span>
+    </a>
+
+    <div class="download-container">
+        <div class="download-card">
+            <!-- Иконка успеха -->
+            <div class="success-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                </svg>
+            </div>
+
+            <h1 class="download-title">Товар получен!</h1>
+            
+            <!-- Информация о товаре -->
+            <div class="product-info">
+                {% if product.photos %}
+                    <img src="{{ product.photos.0.file_path }}" alt="{{ product.title }}" class="product-image">
+                {% endif %}
+                <div class="product-details">
+                    <h2>{{ product.title }}</h2>
+                    {% if product.subtitle %}
+                        <p class="subtitle">{{ product.subtitle }}</p>
+                    {% endif %}
+                    <p class="category">{{ product.category }}</p>
+                </div>
+            </div>
+
+            <!-- Описание -->
+            {% if product.blurb %}
+                <div class="product-description">
+                    <h3>О товаре:</h3>
+                    <p>{{ product.blurb }}</p>
+                </div>
+            {% endif %}
+
+            <!-- Кнопки скачивания -->
+            <div class="download-actions">
+                <button class="download-btn primary" onclick="downloadFile('{{ product.slug }}')">
+                    <svg viewBox="0 0 24 24" class="download-icon">
+                        <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                    </svg>
+                    Скачать файл
+                </button>
+                
+                <button class="download-btn secondary" onclick="copyDownloadLink('{{ product.slug }}')">
+                    <svg viewBox="0 0 24 24" class="copy-icon">
+                        <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                    </svg>
+                    Копировать ссылку
+                </button>
+            </div>
+
+            <!-- Дополнительная информация -->
+            <div class="download-info">
+                <div class="info-item">
+                    <strong>Формат файла:</strong> cdp
+                </div>
+                <div class="info-item">
+                    <strong>Версия игры:</strong> Trainz 19+
+                </div>
+                <div class="info-item">
+                    <strong>Размер:</strong> ~{{ product.file_size|default:"25" }} МБ
+                </div>
+            </div>
+
+            <!-- Инструкция по установке -->
+            <div class="installation-guide">
+                <h3>Инструкция:</h3>
+                <ol>
+                    <li>Скачать файлы по ссылке</li>
+                    <li>Переместить все в контент менеджер</li>
+                    <li>Докачать недостающие с длс</li>
+                    <li>Куиды, открытые для редактирования, подтвердить</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification-container"></div>
+
+    <script>
+        // Функция для показа уведомлений (копируем из product.js)
+        function showNotification(message, type = 'success', duration = 3000) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('hiding');
+                setTimeout(() => {
+                    if (container.contains(notification)) {
+                        container.removeChild(notification);
+                    }
+                }, 300);
+            }, duration);
+        }
+
+        // Скачать файл
+        function downloadFile(productSlug) {
+            // Имитируем скачивание
+            showNotification('Скачивание начато!', 'success', 3000);
+            
+            // Здесь должна быть реальная ссылка на файл
+            const downloadUrl = `/download/${productSlug}/file/`;
+            
+            // Создаем невидимую ссылку для скачивания
+            const link = document.createElement('a');
+            link.href = downloadUrl;
+            link.download = `${productSlug}.trainz-package`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Копировать ссылку на скачивание
+        function copyDownloadLink(productSlug) {
+            const downloadUrl = `${window.location.origin}/download/${productSlug}/file/`;
+            
+            navigator.clipboard.writeText(downloadUrl).then(() => {
+                showNotification('Ссылка скопирована в буфер обмена!', 'success', 3000);
+            }).catch(() => {
+                // Fallback для старых браузеров
+                const textArea = document.createElement('textarea');
+                textArea.value = downloadUrl;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showNotification('Ссылка скопирована!', 'success', 3000);
+            });
+        }
+    </script>
+</body>
+</html>

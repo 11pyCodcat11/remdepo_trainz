@@ -1,5 +1,6 @@
 import enum
-from sqlalchemy import ForeignKey, Integer, String, Boolean, Enum, Text
+from datetime import datetime
+from sqlalchemy import ForeignKey, Integer, String, Boolean, Enum, Text, DateTime, Float
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from .sqlalchemy_base import Base
 
@@ -63,6 +64,7 @@ class User(Base):
 
     profile: Mapped["Profile"] = relationship(back_populates="user", uselist=False)
     cart: Mapped["Cart"] = relationship(back_populates="user", uselist=False)
+    purchases: Mapped[list["Purchase"]] = relationship(back_populates="user", cascade="all, delete-orphan")
 
 
 class Profile(Base):
@@ -99,3 +101,18 @@ class CartItem(Base):
 
     cart: Mapped["Cart"] = relationship(back_populates="items")
     product: Mapped["Product"] = relationship(back_populates="cart_items")
+
+
+class Purchase(Base):
+    __tablename__ = "purchases"
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    product_id: Mapped[int] = mapped_column(ForeignKey("products.id", ondelete="CASCADE"))
+    price_paid: Mapped[float] = mapped_column(Float, nullable=False)  # цена на момент покупки
+    purchase_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    payment_id: Mapped[str] = mapped_column(String(128), default="")  # ID платежа из ЮKassa
+    is_completed: Mapped[bool] = mapped_column(Boolean, default=True)  # завершена ли покупка
+
+    user: Mapped["User"] = relationship(back_populates="purchases")
+    product: Mapped["Product"] = relationship()

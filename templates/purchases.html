@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История покупок</title>
+    <link rel="stylesheet" href="{% static 'purchases.css' %}">
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <a href="{% url 'profile' %}" class="back-button-test">
+        <span>Назад в профиль</span>
+    </a>
+
+    <div class="page-container">
+        <h1 class="page-title">История покупок</h1>
+        
+        <div class="purchases-container">
+            {% if purchases %}
+                {% for purchase in purchases %}
+                <div class="purchase-item-card">
+                    <div class="item-image">
+                        {% if purchase.product.photos %}
+                            <img src="{{ purchase.product.photos.0.file_path }}" alt="{{ purchase.product.title }}">
+                        {% else %}
+                            <img src="{% static 'images/zaglushka.png' %}" alt="{{ purchase.product.title }}">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="item-info">
+                        <div class="item-content">
+                            <h3 class="item-title">{{ purchase.product.title }}</h3>
+                        </div>
+                        <div class="item-details">
+                            <div class="item-price">
+                                {% if purchase.price_paid == 0 %}
+                                    <span class="price-free">Бесплатно</span>
+                                {% else %}
+                                    <span class="price-paid">{{ purchase.price_paid|floatformat:0 }}₽</span>
+                                {% endif %}
+                            </div>
+                            <div class="purchase-date">{{ purchase.purchase_date|date:"d.m.y" }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-purchases">
+                    <p>История покупок пуста</p>
+                    <a href="{% url 'home' %}" class="browse-products-btn">Перейти к товарам</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <script>
+        // Передаем данные в JavaScript
+        window.purchasesData = {{ purchases_json|safe }};
+        
+        function downloadProduct(slug) {
+            window.location.href = `/download/${slug}/`;
+        }
+        
+        function viewProduct(slug) {
+            window.location.href = `/p/${slug}/`;
+        }
+    </script>
+</body>
+</html>

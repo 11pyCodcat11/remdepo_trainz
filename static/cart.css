@@ -1,0 +1,454 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FEF6DF;
+    font-family: 'Rubik', sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Кнопка назад */
+.back-button {
+    position: absolute;
+    top: 27px;    /* 20px + 7px смещение тени */
+    left: 27px;   /* 20px + 7px смещение тени */
+    width: 280px;  /* 200px * 1.4 = 280px */
+    height: 84px;  /* 60px * 1.4 = 84px */
+    background-color: #E9A82D; /* Цвет кнопки */
+    color: #3B3B3B;
+    border: none;
+    border-radius: 21px;  /* 15px * 1.4 = 21px */
+    font-size: 22px;  /* 16px * 1.4 = 22.4px ≈ 22px */
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    z-index: 100;
+}
+
+.back-button::after {
+    content: '';
+    position: absolute;
+    top: -7px;  /* -5px * 1.4 = -7px */
+    left: -7px; /* -5px * 1.4 = -7px */
+    width: calc(100% + 14px);  /* 10px * 1.4 = 14px */
+    height: calc(100% + 14px); /* 10px * 1.4 = 14px */
+    background-color: #FFC75D; /* Цвет тени */
+    border-radius: 21px;  /* 15px * 1.4 = 21px */
+    z-index: -1;
+}
+
+.back-button span {
+    display: block;  /* Делаем span блочным для корректного позиционирования */
+}
+
+.back-button:hover {
+    transform: scale(1.05);
+}
+
+.back-button:active {
+    transform: translate(3px, 3px);
+}
+
+/* Основной контейнер страницы */
+.page-container {
+    max-width: 1200px;  /* Увеличиваем ещё больше для лучшей видимости */
+    margin: 112px auto 28px;  /* 80px * 1.4 = 112px, 20px * 1.4 = 28px */
+    padding: 0 28px;  /* 20px * 1.4 = 28px */
+}
+
+/* Заголовок страницы */
+.page-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 67px;  /* 48px * 1.4 = 67.2px ≈ 67px */
+    font-weight: 700;
+    color: #5C3A00;
+    text-align: center;
+    margin-bottom: 56px;  /* 40px * 1.4 = 56px */
+}
+
+/* Контейнер товаров корзины */
+.cart-items-container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;  /* 20px * 1.4 = 28px */
+    margin-bottom: 42px;  /* 30px * 1.4 = 42px */
+}
+
+/* Карточка товара в корзине */
+.cart-item-card {
+    background-color: #FFE1A8;
+    border-radius: 35px; /* Увеличиваем скругление */
+    padding: 40px 30px; /* Увеличиваем padding */
+    display: flex;
+    align-items: center;
+    gap: 25px; /* Увеличиваем gap */
+    box-shadow: 0 6px 20px rgba(92, 58, 0, 0.15); /* Увеличиваем тень */
+    transition: transform 0.2s ease;
+    position: relative;
+    min-height: 200px; /* Увеличиваем минимальную высоту */
+}
+
+.cart-item-card::after {
+    content: '';
+    position: absolute;
+    top: 7px; /* Уменьшаем смещение */
+    left: -7px; /* Уменьшаем смещение слева */
+    width: calc(100% + 14px); /* Уменьшаем общую ширину тени */
+    height: calc(100% + 7px); /* Уменьшаем высоту тени */
+    background-color: #FFC75D;
+    border-radius: 35px; /* Такое же скругление, как у основного элемента */
+    z-index: -1;
+}
+
+/* Убираем эффект при наведении - элементы корзины статичные */
+/* .cart-item-card:hover {
+    transform: translateY(-2px);
+} */
+
+/* Чекбокс товара */
+.item-checkbox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    user-select: none;
+    position: absolute;
+    left: 20px;
+    top: 50%; /* Центрируем по вертикали */
+    transform: translateY(-50%); /* Точное центрирование */
+    z-index: 10; /* Увеличиваем z-index, чтобы чекбокс точно был поверх тени */
+}
+
+.checkbox-input {
+    display: none;
+}
+
+.checkmark {
+    width: 35px;
+    height: 35px;
+    border: 3px solid #5C3A00;
+    border-radius: 8px;
+    position: relative;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox-input:checked + .checkmark {
+    background-color: #8B4513;
+    border-color: #8B4513;
+}
+
+.checkmark::after {
+    content: '';
+    position: absolute;
+    display: none;
+    left: 9px;
+    top: 4px;
+    width: 8px;
+    height: 16px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-input:checked + .checkmark::after {
+    display: block;
+}
+
+/* Изображение товара */
+.item-image {
+    flex-shrink: 0;
+    width: 240px; /* Увеличиваем ширину фото */
+    height: 160px; /* Увеличиваем высоту фото */
+    border-radius: 20px; /* Увеличиваем скругление */
+    overflow: hidden;
+    margin-left: 60px; /* Увеличиваем отступ (сдвигаем правее) */
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Информация о товаре */
+.item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 30px; /* Увеличиваем padding на 50% */
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Выравниваем по левому краю для единообразия */
+    text-align: left; /* Единообразное выравнивание текста */
+    margin-left: 50px; /* Сдвигаем название правее */
+}
+
+.item-title {
+    font-size: 30px; /* 20px * 1.5 = 30px */
+    font-weight: 700;
+    color: #5C3A00;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.item-price {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price-free {
+    font-size: 27px; /* 18px * 1.5 = 27px */
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+.price-paid {
+    font-size: 27px; /* 18px * 1.5 = 27px */
+    font-weight: 700;
+    color: #5C3A00;
+}
+
+/* Пустая корзина */
+.empty-cart {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #FFE1A8;
+    border-radius: 20px;
+}
+
+.empty-cart p {
+    font-size: 24px;
+    color: #5C3A00;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.browse-products-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    text-decoration: none;
+    border-radius: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.browse-products-btn::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background-color: #FFC75D;
+    border-radius: 15px;
+    z-index: -1;
+}
+
+.browse-products-btn:hover {
+    transform: scale(1.03);
+}
+
+.browse-products-btn:active {
+    transform: translate(3px, 3px);
+}
+
+/* Итоговая панель */
+.cart-summary {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #FFE1A8;
+    padding: 35px 28px;  /* Увеличиваем вертикальный padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 -5.6px 21px rgba(92, 58, 0, 0.1);  /* 4px * 1.4 = 5.6px, 15px * 1.4 = 21px */
+    min-height: 120px;  /* Увеличиваем минимальную высоту */
+}
+
+.summary-left {
+    display: flex;
+    align-items: center;
+    gap: 21px;  /* 15px * 1.4 = 21px */
+}
+
+.summary-text {
+    font-size: 28px;  /* 20px * 1.4 = 28px */
+    font-weight: 500;
+    color: #5C3A00;
+}
+
+.total-price {
+    font-size: 39px;  /* 28px * 1.4 = 39.2px ≈ 39px */
+    font-weight: 700;
+    color: #5C3A00;
+    text-decoration: underline;  /* Добавляем подчеркивание */
+}
+
+/* Кнопка оплаты с теми же стилями что и back-button */
+.checkout-btn {
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 21px;
+    font-size: 22px;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    position: relative;
+    min-width: 200px;
+    height: 60px;
+    padding: 0 30px;
+}
+
+.checkout-btn::after {
+    content: '';
+    position: absolute;
+    top: -7px;
+    left: -7px;
+    width: calc(100% + 14px);
+    height: calc(100% + 14px);
+    background-color: #FFC75D;
+    border-radius: 21px;
+    z-index: -1;
+}
+
+.checkout-btn span {
+    display: block;
+}
+
+.checkout-btn:hover {
+    transform: scale(1.05);
+}
+
+.checkout-btn:active {
+    transform: translate(3px, 3px);
+}
+
+.checkout-btn:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.checkout-btn:disabled::after {
+    background-color: #ddd;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .page-container {
+        margin: 70px auto 100px;
+        padding: 0 10px;
+    }
+    
+    .page-title {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    
+    .cart-item-card {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .item-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .item-title {
+        font-size: 20px;
+    }
+    
+    .price-paid {
+        font-size: 20px;
+    }
+    
+    .cart-summary {
+        flex-direction: column;
+        gap: 15px;
+        padding: 15px;
+    }
+    
+    .checkout-btn {
+        width: 100%;
+    }
+    
+    .back-button {
+        width: 280px;  /* 200px * 1.4 = 280px */
+        height: 84px;  /* 60px * 1.4 = 84px */
+        font-size: 22px;  /* 16px * 1.4 = 22.4px ≈ 22px */
+        top: 27px;    /* 20px + 7px смещение тени */
+        left: 27px;   /* 20px + 7px смещение тени */
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 32px;
+    }
+    
+    .cart-item-card {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .item-image {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .item-title {
+        font-size: 18px;
+    }
+    
+    .price-paid {
+        font-size: 18px;
+    }
+    
+    .summary-text {
+        font-size: 18px;
+    }
+    
+    .total-price {
+        font-size: 24px;
+    }
+}

@@ -169,6 +169,11 @@ footer a:hover {
     gap: 15px;
 }
 
+/* Специальный стиль для карточек с купленными товарами */
+.card-buttons:has(.purchased-status) {
+    margin-top: auto; /* Синхронизируем с translateY(0px) - возвращаем к обычному положению */
+}
+
 .card .btn-row {
     display: flex;    
     justify-content: center;     /* кнопки в одну линию */
@@ -249,6 +254,79 @@ footer a:hover {
 .get-btn:active,
 .garbej-btn:active {
     transform: translate(5px, 5px);
+}
+
+/* Статус приобретенного товара */
+.purchased-status {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Уменьшаем расстояние между элементами */
+    align-items: center;
+    width: 100%; /* Для полного выравнивания */
+    position: relative;
+    transform: translateY(0px); /* Опускаем кнопку еще на 20px: -20px + 20px = 0px */
+}
+
+.purchased-label {
+    color: #2E7D32; /* Более насыщенный зеленый */
+    font-weight: 800; /* Делаем текст жирнее */
+    font-size: 30px; /* Немного уменьшаем: 36px -> 30px */
+    font-family: 'Rubik', sans-serif; /* Единый шрифт сайта */
+    text-align: center;
+    background-color: transparent; /* Убираем фон */
+    padding: 0; /* Убираем отступы */
+    border-radius: 0; /* Убираем скругление */
+    border: none; /* Убираем обводку */
+    box-shadow: none; /* Убираем тень */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 390px; /* Та же ширина, что у кнопки 'О товаре' */
+    height: 70px; /* Немного уменьшаем высоту */
+    margin: 0;
+    position: relative;
+    transform: translateY(-50px); /* Поднимаем только текст "✓ Приобретен" на 50px */
+}
+
+.download-btn {
+    width: 320px; /* Уменьшаем ширину */
+    height: 75px; /* Увеличиваем высоту на 10px: 65px + 10px = 75px */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px; /* Такое же скругление, как у других кнопок */
+    font-family: 'Rubik', sans-serif; /* Единый шрифт сайта */
+    font-weight: 700;
+    font-size: 22px; /* Немного уменьшаем размер шрифта */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 5px 0; /* Поднимаем текст на 5px выше с помощью padding-bottom */
+    line-height: 1;
+}
+
+.download-btn::after {
+    content: '';
+    position: absolute;
+    top: -8px; /* Немного меньшее смещение для меньшей кнопки */
+    left: -8px;
+    width: calc(100% + 4px); /* Такой же размер тени, как у других кнопок */
+    height: calc(100% + 4px);
+    background-color: #81C784; /* Светло-зеленый для тени */
+    border-radius: 10px; /* Соответствует основному элементу */
+    z-index: -1;
+}
+
+.download-btn:hover {
+    transform: scale(1.03);
+}
+
+.download-btn:active {
+    transform: translate(5px, 5px); /* Такое же смещение, как у других кнопок */
 }
 
 .about-btn,

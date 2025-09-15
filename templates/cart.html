@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Корзина</title>
+    <link rel="stylesheet" href="{% static 'cart.css' %}">
+    {% csrf_token %}
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <a href="{% url 'profile' %}" class="back-button">
+        <span>Назад в профиль</span>
+    </a>
+
+    <div class="page-container">
+        <h1 class="page-title">Корзина</h1>
+        
+        <div class="cart-items-container">
+            {% if cart_items %}
+                {% for item in cart_items %}
+                <div class="cart-item-card" data-product-id="{{ item.product.id }}">
+                    <label class="item-checkbox">
+                        <input type="checkbox" class="checkbox-input" data-product-id="{{ item.product.id }}" data-price="{{ item.product.price_rub }}">
+                        <span class="checkmark"></span>
+                    </label>
+                    
+                    <div class="item-image">
+                        {% if item.product.photos %}
+                            <img src="{{ item.product.photos.0.file_path }}" alt="{{ item.product.title }}">
+                        {% else %}
+                            <img src="{% static 'images/zaglushka.png' %}" alt="{{ item.product.title }}">
+                        {% endif %}
+                    </div>
+                    
+                    <div class="item-info">
+                        <div class="item-content">
+                            <h3 class="item-title">{{ item.product.title }}</h3>
+                        </div>
+                        <div class="item-price">
+                            {% if item.product.is_free %}
+                                <span class="price-free">Бесплатно</span>
+                            {% else %}
+                                <span class="price-paid">{{ item.product.price_rub }}₽</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <div class="empty-cart">
+                    <p>Корзина пуста</p>
+                    <a href="{% url 'home' %}" class="browse-products-btn">Перейти к товарам</a>
+                </div>
+            {% endif %}
+        </div>
+
+        <!-- Итоговая панель -->
+        {% if cart_items %}
+        <div class="cart-summary">
+            <div class="summary-left">
+                <span class="summary-text">К оплате:</span>
+                <span class="total-price" id="totalPrice">0₽</span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()">
+                <span>Перейти к оплате</span>
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        // Передаем данные в JavaScript
+        window.cartData = {{ cart_items_json|safe }};
+        
+        // Функции для работы с корзиной
+        {% include "cart_script.html" %}
+    </script>
+</body>
+</html>

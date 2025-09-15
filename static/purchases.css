@@ -1,0 +1,343 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FEF6DF;
+    font-family: 'Rubik', sans-serif;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Кнопка назад */
+.back-button {
+    position: absolute;
+    top: 27px;    /* 20px + 7px смещение тени */
+    left: 27px;   /* 20px + 7px смещение тени */
+    width: 280px;  /* 200px * 1.4 = 280px */
+    height: 84px;  /* 60px * 1.4 = 84px */
+    background-color: #E9A82D; /* Цвет кнопки */
+    color: #3B3B3B;
+    border: none;
+    border-radius: 21px;  /* 15px * 1.4 = 21px */
+    font-size: 22px;  /* 16px * 1.4 = 22.4px ≈ 22px */
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    z-index: 100;
+}
+
+.back-button::after {
+    content: '';
+    position: absolute;
+    top: -7px;  /* -5px * 1.4 = -7px */
+    left: -7px; /* -5px * 1.4 = -7px */
+    width: calc(100% + 14px);  /* 10px * 1.4 = 14px */
+    height: calc(100% + 14px); /* 10px * 1.4 = 14px */
+    background-color: #FFC75D; /* Цвет тени */
+    border-radius: 21px;  /* 15px * 1.4 = 21px */
+    z-index: -1;
+}
+
+.back-button span {
+    display: block;  /* Делаем span блочным для корректного позиционирования */
+}
+
+.back-button:hover {
+    transform: scale(1.05);
+}
+
+.back-button:active {
+    transform: translate(3px, 3px);
+}
+
+/* Экспериментальная кнопка назад */
+.back-button-test {
+    position: absolute;
+    top: 27px;
+    left: 27px;
+    width: 280px;
+    height: 84px;
+    background-color: #E9A82D; /* Темно-желтая кнопка */
+    color: #3B3B3B;
+    border: none;
+    border-radius: 21px;
+    font-size: 22px;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s ease;
+    z-index: 10; /* Высокий z-index для кнопки */
+}
+
+.back-button-test::after {
+    content: '';
+    position: absolute;
+    top: 7px;  /* Положительное значение - тень внизу */
+    left: 7px; /* Положительное значение - тень справа */
+    width: 100%;
+    height: 100%;
+    background-color: #FFC75D; /* Светло-желтая тень */
+    border-radius: 21px;
+    z-index: -1; /* Тень позади кнопки */
+}
+
+.back-button-test span {
+    position: relative;
+    z-index: 2; /* Текст поверх всего */
+}
+
+.back-button-test:hover {
+    transform: scale(1.05);
+}
+
+.back-button-test:active {
+    transform: translate(3px, 3px);
+}
+
+/* Основной контейнер страницы */
+.page-container {
+    max-width: 1200px;  /* Увеличиваем для лучшей видимости */
+    margin: 112px auto 28px;  /* 80px * 1.4 = 112px, 20px * 1.4 = 28px */
+    padding: 0 28px;  /* 20px * 1.4 = 28px */
+}
+
+/* Заголовок страницы */
+.page-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 67px;  /* 48px * 1.4 = 67.2px ≈ 67px */
+    font-weight: 700;
+    color: #5C3A00;
+    text-align: center;
+    margin-bottom: 56px;  /* 40px * 1.4 = 56px */
+}
+
+/* Контейнер покупок */
+.purchases-container {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;  /* 20px * 1.4 = 28px */
+}
+
+/* Карточка покупки */
+.purchase-item-card {
+    background-color: #FFE1A8;
+    border-radius: 28px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 4px 15px rgba(92, 58, 0, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.purchase-item-card:hover {
+    transform: translateY(-2px);
+}
+
+/* Изображение товара */
+.item-image {
+    flex-shrink: 0;
+    width: 120px;
+    height: 80px;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Информация о товаре */
+.item-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.item-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.item-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #5C3A00;
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.item-details {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.item-price .price-free {
+    font-size: 18px;
+    font-weight: 700;
+    color: #4CAF50;
+}
+
+.item-price .price-paid {
+    font-size: 18px;
+    font-weight: 700;
+    color: #5C3A00;
+}
+
+.purchase-date {
+    font-size: 14px;
+    font-weight: 500;
+    color: #8B6914;
+}
+
+/* Пустая история покупок */
+.empty-purchases {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #FFE1A8;
+    border-radius: 20px;
+}
+
+.empty-purchases p {
+    font-size: 24px;
+    color: #5C3A00;
+    margin-bottom: 30px;
+    font-weight: 500;
+}
+
+.browse-products-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    text-decoration: none;
+    border-radius: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.browse-products-btn::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background-color: #FFC75D;
+    border-radius: 15px;
+    z-index: -1;
+}
+
+.browse-products-btn:hover {
+    transform: scale(1.03);
+}
+
+.browse-products-btn:active {
+    transform: translate(3px, 3px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .page-container {
+        margin: 70px auto 20px;
+        padding: 0 10px;
+    }
+    
+    .page-title {
+        font-size: 36px;
+        margin-bottom: 30px;
+    }
+    
+    .purchase-item-card {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .item-image {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .item-title {
+        font-size: 18px;
+    }
+    
+    .item-price .price-paid {
+        font-size: 18px;
+    }
+    
+    .purchase-date {
+        font-size: 14px;
+    }
+    
+    .back-button {
+        width: 280px;  /* 200px * 1.4 = 280px */
+        height: 84px;  /* 60px * 1.4 = 84px */
+        font-size: 22px;  /* 16px * 1.4 = 22.4px ≈ 22px */
+        top: 27px;    /* 20px + 7px смещение тени */
+        left: 27px;   /* 20px + 7px смещение тени */
+    }
+}
+
+@media (max-width: 480px) {
+    .page-title {
+        font-size: 32px;
+    }
+    
+    .purchase-item-card {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .item-details {
+        flex-direction: column;
+        gap: 8px;
+        align-items: center;
+    }
+    
+    .item-image {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .item-title {
+        font-size: 16px;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    .item-price .price-paid {
+        font-size: 16px;
+    }
+}

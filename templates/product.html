@@ -1,0 +1,147 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title }} - Каталог 3D моделей</title>
+    <link rel="stylesheet" href="{% static 'product.css' %}">
+    {% csrf_token %}
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <a href="{% url 'home' %}" class="back-button">
+        <span>Назад к каталогу</span>
+    </a>
+
+    <div class="product-container">
+        <div class="product-wrapper">
+            <!-- Галерея изображений -->
+            <div class="product-gallery">
+                {% if product.photos %}
+                    <!-- Основное изображение -->
+                    <div class="main-image-container">
+                        <img id="mainImage" src="{{ product.photos.0.file_path }}" alt="{{ product.title }}" class="main-image" onclick="openImageViewer(0)">
+                    </div>
+                    
+                    <!-- Миниатюры (если больше одного фото) -->
+                    {% if product.photos|length > 1 %}
+                        <div class="thumbnails-container">
+                            {% for photo in product.photos %}
+                                <img src="{{ photo.file_path }}" 
+                                     alt="{{ product.title }}" 
+                                     class="thumbnail {% if forloop.first %}active{% endif %}"
+                                     data-index="{{ forloop.counter0 }}"
+                                     onclick="changeMainImage('{{ photo.file_path }}', {{ forloop.counter0 }})"
+                                     ondblclick="openImageViewer({{ forloop.counter0 }})">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <!-- Заглушка если нет фото -->
+                    <div class="main-image-container">
+                        <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото" class="main-image">
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Информация о товаре -->
+            <div class="product-info">
+                <!-- Заголовок и категория -->
+                <div class="product-header">
+                    {% if product.badge %}
+                        <span class="product-badge">{{ product.badge }}</span>
+                    {% endif %}
+                    <h1 class="product-title">{{ product.title }}</h1>
+                    {% if product.subtitle %}
+                        <p class="product-subtitle">{{ product.subtitle }}</p>
+                    {% endif %}
+                    <p class="product-category">{{ product.category }}</p>
+                </div>
+
+                <!-- Цена -->
+                <div class="product-price">
+                    {% if product.is_free %}
+                        <span class="price-free">Бесплатно</span>
+                    {% else %}
+                        <span class="price-paid">{{ product.price_rub }} ₽</span>
+                    {% endif %}
+                </div>
+
+                <!-- Описание -->
+                {% if product.blurb %}
+                    <div class="product-description">
+                        <h3>Описание</h3>
+                        <p>{{ product.blurb|linebreaks }}</p>
+                    </div>
+                {% endif %}
+
+                <!-- Кнопки действий -->
+                <div class="product-actions">
+                    <div class="main-actions">
+                        {% if product.is_free %}
+                            <button class="btn-primary btn-get" onclick="handleGetProduct({{ product.id }})">
+                                Получить
+                            </button>
+                        {% else %}
+                            <button class="btn-primary btn-buy" onclick="handleBuyProduct({{ product.id }})">
+                                Приобрести
+                            </button>
+                        {% endif %}
+                        
+                        {% if user %}
+                            <button class="btn-secondary btn-cart" onclick="handleAddToCart({{ product.id }})">
+                                В корзину
+                            </button>
+                        {% else %}
+                            <button class="btn-secondary btn-cart" onclick="showLoginRequired()">
+                                В корзину
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification-container"></div>
+
+    <!-- Полноэкранный просмотрщик изображений -->
+    <div id="imageViewer" class="image-viewer">
+        <div class="image-viewer-content">
+            <img id="viewerImage" src="" alt="" class="image-viewer-image">
+            <button class="image-nav-button image-nav-prev" onclick="previousImage()">‹</button>
+            <button class="image-nav-button image-nav-next" onclick="nextImage()">›</button>
+        </div>
+        <button class="image-viewer-close" onclick="closeImageViewer()">×</button>
+        <div id="imageCounter" class="image-counter">1 / 1</div>
+    </div>
+
+    <!-- Передаем данные в JavaScript -->
+    <script>
+        window.productData = {
+            id: {{ product.id }},
+            title: '{{ product.title|escapejs }}',
+            slug: '{{ product.slug }}',
+            price: {{ product.price_rub }},
+            is_free: {{ product.is_free|yesno:"true,false" }},
+            photos: [
+                {% for photo in product.photos %}
+                    '{{ photo.file_path }}'{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]
+        };
+        
+        window.userData = {
+            isAuthenticated: {{ user|yesno:"true,false" }},
+            {% if user %}
+                id: {{ user.id }},
+                username: '{{ user.username|escapejs }}'
+            {% endif %}
+        };
+    </script>
+    
+    <script src="{% static 'product.js' %}"></script>
+</body>
+</html>
