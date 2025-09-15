@@ -1,0 +1,77 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="{% static 'login.css' %}">
+</head>
+<body>
+    <!-- Кнопка Назад -->
+    <a href="{% url 'home' %}" class="back-button"><span>Назад</span></a>    
+
+    <div class="login-wrapper">
+        <div class="login-card">
+            <h1 class="login-title">Регистрация</h1>
+            
+            <form class="login-form" method="POST" id="registerForm">
+                {% csrf_token %}
+                
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="global-error">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+                
+                <div class="form-fields">
+                    <!-- Логин -->
+                    <input type="text" name="username" id="username" class="input-field" placeholder="Логин" required>
+                    <div class="error-message" id="usernameError"></div>
+
+                    <input type="email" name="email" id="email" class="input-field" placeholder="Email" required>
+                    <div class="error-message" id="emailError"></div>
+        
+                    
+                    <!-- Пароль -->
+                    <div class="password-container">
+                        <input type="password" name="password" id="password" class="input-field" placeholder="Пароль" required>
+                        <button type="button" class="eye-toggle" id="eyeToggle1">
+                            <svg viewBox="0 0 24 24"></svg>
+                        </button>
+                    </div>
+                    <div class="error-message" id="passwordError"></div>
+
+                    <!-- Повтор пароля -->
+                    <div class="password-container">
+                        <input type="password" name="password2" id="password2" class="input-field" placeholder="Повторите пароль" required>
+                        <button type="button" class="eye-toggle" id="eyeToggle2">
+                            <svg viewBox="0 0 24 24"></svg>
+                        </button>
+                    </div>
+                    <div class="error-message" id="password2Error"></div>
+                    
+                    <!-- Чекбокс -->
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="agreeCheckbox" required>
+                        Я согласен на обработку персональных данных
+                    </label>
+                    <div class="error-message" id="checkboxError"></div>
+                </div>
+                
+                <!-- Кнопка -->
+                <div class="login-btn-container">
+                    <button type="submit" class="login-btn">Зарегистрироваться</button>
+                </div>
+            </form>
+            
+            <!-- Ссылка -->
+            <div class="register-link">
+                Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{% static 'register.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
+body {
+    background-color: #FEF6DF;
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Карточка формы */
+.form-wrapper {
+    background-color: #FFE1A8;
+    padding: 40px 60px;
+    border-radius: 25px;
+    width: 900px;
+    height: 1100px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    align-items: center;
+}
+
+/* Заголовок */
+.form-wrapper h1 {
+    font-size: 100px;
+    color: #5C3A00;
+    font-weight: 400;
+    margin-bottom: 50px;
+    text-align: center;
+    margin-top: 0;
+    padding-top: 20px;
+}
+
+/* Все инпуты внутри формы регистрации */
+.login-form input[type="text"],
+.login-form input[type="email"],
+.login-form input[type="password"] {
+    width: 100%;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 20px;
+    background-color: #FFFAEB;
+    font-size: 28px;
+    line-height: 1.5;
+    font-family: 'Rubik', sans-serif;
+    color: #3B3B3B;
+    outline: none;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+
+/* Кнопки (универсальные — как "Назад") */
+button,
+.form-wrapper .form-btn {
+    position: relative;
+    width: 100%;
+    height: 130px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 44px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 1;
+    transition: transform 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+button::after,
+.form-wrapper .form-btn::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    background-color: #FFC75D;
+    border-radius: 20px;
+    z-index: -1;
+}
+
+/* Анимации */
+button:hover,
+.form-wrapper .form-btn:hover {
+    transform: scale(1.03);
+}
+
+button:active,
+.form-wrapper .form-btn:active {
+    transform: translate(10px, 10px);
+}
+
+/* Ссылка под формой */
+.register-link {
+    font-size: 32px;
+    font-weight: 400;
+    color: #3B3B3B;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.register-link a {
+    color: #3B3B3B;
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 1500px) {
+    .form-wrapper {
+        width: calc(100% - 80px);
+        height: auto;
+        padding: 40px 50px;
+        min-height: 500px;
+    }
+
+    .form-wrapper h1 {
+        font-size: 48px;
+        margin-bottom: 30px;
+    }
+
+    .login-card input[type="text"],
+    .login-card input[type="email"],
+    .login-card input[type="password"] {
+        width: 100%;
+        padding: 30px;
+        margin-bottom: 30px;
+        border: none;
+        border-radius: 20px;
+        background-color: #FFFAEB;
+        font-size: 28px;
+        line-height: 1.5;
+        font-family: 'Rubik', sans-serif;
+        color: #3B3B3B;
+        outline: none;
+        box-sizing: border-box;
+        text-align: left;
+    }
+    
+
+    button,
+    .form-wrapper .form-btn {
+        height: 65px;
+        font-size: 22px;
+        border-radius: 10px;
+    }
+
+    button::after,
+    .form-wrapper .form-btn::after {
+        top: -10px;
+        left: -10px;
+        border-radius: 10px;
+    }
+
+    .register-link {
+        font-size: 16px;
+        margin-top: 15px;
+    }
+}
+
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 180px;
+    height: 80px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+    cursor: pointer;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.back-button::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-color: #FFC75D;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+.back-button span {
+    transform: translateY(-5px);
+}
+
+/* Анимации */
+.back-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+}
+
+.back-button:active {
+    transform: translate(5px, 5px);
+    box-shadow: none;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .back-button {
+        top: 10px;
+        left: 10px;
+        width: 120px;
+        height: 55px;
+        font-size: 20px;
+    }
+}

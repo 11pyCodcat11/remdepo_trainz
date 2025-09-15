@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль</title>
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+</head>
+<body>
+
+    <a href="{% url 'home' %}" class="back-button">
+        <span>Назад</span>
+    </a>
+
+    <div class="profile-wrapper">
+        <div class="profile-card">
+            <h1 class="profile-title">Профиль</h1>
+
+            <div class="avatar">
+                &#128100;
+            </div>
+
+            <div class="profile-info">
+                <div class="info-item">
+                    <span>Логин:</span>
+                    <span>{{ user.username }}</span>
+                </div>
+                <div class="info-item password-item">
+                    <span>Пароль:</span>
+                    <span id="passwordText">********</span>
+                    <input type="password" name="password_look" id="togglePassword" class="password_look" required>
+                    <button type="button" class="eye-toggle" id="eyeToggle2">
+                        <svg viewBox="0 0 24 24"></svg>
+                    </button>
+                </div>
+            </div>
+            <div class="button-container">
+                <button type="button" class="change-btns"><span>Сменить Пароль</span></button>
+                <button type="button" class="change-btns"><span>Сменить Логин</span></button>
+                <button type="button" class="change-btns"><span>Корзина</span></button>
+                <button type="button" class="change-btns"><span>История покупок</span></button>
+            </div>            
+        </div>
+    </div>
+
+    <script src="{% static 'js/profile.js' %}"></script>
+</body>
+</html>
