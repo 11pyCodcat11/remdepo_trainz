@@ -1,10 +1,12 @@
 {% load static %}
+<!-- eslint-disable -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.title }} - Каталог 3D моделей</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="{% static 'product.css' %}">
     {% csrf_token %}
 </head>
@@ -32,8 +34,7 @@
                                      alt="{{ product.title }}" 
                                      class="thumbnail {% if forloop.first %}active{% endif %}"
                                      data-index="{{ forloop.counter0 }}"
-                                     onclick="changeMainImage('{{ photo.file_path }}', {{ forloop.counter0 }})"
-                                     ondblclick="openImageViewer({{ forloop.counter0 }})">
+                                     data-src="{{ photo.file_path }}">
                             {% endfor %}
                         </div>
                     {% endif %}
@@ -80,23 +81,15 @@
                 <div class="product-actions">
                     <div class="main-actions">
                         {% if product.is_free %}
-                            <button class="btn-primary btn-get" onclick="handleGetProduct({{ product.id }})">
-                                Получить
-                            </button>
+                            <button class="btn-primary btn-get" data-action="get" data-product-id="{{ product.id }}">Получить</button>
                         {% else %}
-                            <button class="btn-primary btn-buy" onclick="handleBuyProduct({{ product.id }})">
-                                Приобрести
-                            </button>
+                            <button class="btn-primary btn-buy" data-action="buy" data-product-id="{{ product.id }}">Приобрести</button>
                         {% endif %}
                         
                         {% if user %}
-                            <button class="btn-secondary btn-cart" onclick="handleAddToCart({{ product.id }})">
-                                В корзину
-                            </button>
+                            <button class="btn-secondary btn-cart" data-action="cart" data-product-id="{{ product.id }}">В корзину</button>
                         {% else %}
-                            <button class="btn-secondary btn-cart" onclick="showLoginRequired()">
-                                В корзину
-                            </button>
+                            <button class="btn-secondary btn-cart" data-action="login-required">В корзину</button>
                         {% endif %}
                     </div>
                 </div>
@@ -118,30 +111,61 @@
         <div id="imageCounter" class="image-counter">1 / 1</div>
     </div>
 
-    <!-- Передаем данные в JavaScript -->
+    <!-- Передаем данные в JavaScript безопасно для линтера -->
+    <script type="application/json" id="product-data">
+        {
+            "id": {{ product.id }},
+            "title": "{{ product.title|escapejs }}",
+            "slug": "{{ product.slug }}",
+            "price": {{ product.price_rub }},
+            "is_free": {{ product.is_free|yesno:"true,false" }},
+            "photos": [{% for photo in product.photos %}{"file_path": "{{ photo.file_path }}"}{% if not forloop.last %},{% endif %}{% endfor %}]
+        }
+    </script>
+    <script type="application/json" id="user-data">
+        {
+            "isAuthenticated": {{ user|yesno:"true,false" }}{% if user %},
+            "id": {{ user.id }},
+            "username": "{{ user.username|escapejs }}"{% endif %}
+        }
+    </script>
     <script>
-        window.productData = {
-            id: {{ product.id }},
-            title: '{{ product.title|escapejs }}',
-            slug: '{{ product.slug }}',
-            price: {{ product.price_rub }},
-            is_free: {{ product.is_free|yesno:"true,false" }},
-            photos: [
-                {% for photo in product.photos %}
-                    '{{ photo.file_path }}'{% if not forloop.last %},{% endif %}
-                {% endfor %}
-            ]
-        };
-        
-        window.userData = {
-            isAuthenticated: {{ user|yesno:"true,false" }},
-            {% if user %}
-                id: {{ user.id }},
-                username: '{{ user.username|escapejs }}'
-            {% endif %}
-        };
+        (function(){
+            try {
+                const pd = document.getElementById('product-data');
+                const ud = document.getElementById('user-data');
+                window.productData = JSON.parse(pd.textContent);
+                window.productData.photos = (window.productData.photos || []).map(p => p.file_path);
+                window.userData = JSON.parse(ud.textContent);
+            } catch(e) { console.warn('Failed to parse embedded data', e); }
+            // Навешиваем обработчики на миниатюры без inline JS
+            document.querySelectorAll('.thumbnail').forEach(function(thumb){
+                thumb.addEventListener('click', function(){
+                    const src = this.dataset.src;
+                    const idx = parseInt(this.dataset.index, 10) || 0;
+                    changeMainImage(src, idx);
+                });
+                thumb.addEventListener('dblclick', function(){
+                    const idx = parseInt(this.dataset.index, 10) || 0;
+                    openImageViewer(idx);
+                });
+            });
+            // Кнопки действий
+            document.querySelectorAll('[data-action][data-product-id]').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    const id = parseInt(this.dataset.productId, 10);
+                    if (this.dataset.action === 'get') return handleGetProduct(id);
+                    if (this.dataset.action === 'buy') return handleBuyProduct(id);
+                    if (this.dataset.action === 'cart') return handleAddToCart(id);
+                });
+            });
+            document.querySelectorAll('[data-action="login-required"]').forEach(function(btn){
+                btn.addEventListener('click', showLoginRequired);
+            });
+        })();
     </script>
     
     <script src="{% static 'product.js' %}"></script>
 </body>
 </html>
+<!-- eslint-enable -->

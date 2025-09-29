@@ -1,4 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import url('/static/common.css');
+@import url('/static/styles.css');
 
 body {
     background-color: #FEF6DF;
@@ -11,53 +14,8 @@ body {
     position: relative;
 }
 
-.back-button {
-    position: absolute; /* чтобы привязать к углу */
-    top: 20px;
-    left: 20px;
-    width: 180px;
-    height: 80px;
-    background-color: #E9A82D;
-    color: #3B3B3B;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Rubik', sans-serif;
-    font-weight: 700;
-    font-size: 25px;
-    cursor: pointer;
-    z-index: 10; /* поверх всего */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    transition: transform 0.2s;
-         }
-
-.back-button::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    background-color: #FFC75D;
-    border-radius: 10px;
-    z-index: -1;
-}
-
-
-.back-button span {
-    transform: translateY(-5px);
-}
-
-/* Ховер и нажатие как у кнопки Войти */
-.back-button:hover {
-    transform: scale(1.03);
-}
-
-.back-button:active {
-    transform: translate(5px, 5px);
-}
+/* back-button base styles are in styles.css; only page-specific positioning below */
+.back-button { position: absolute; top: 20px; left: 20px; z-index: 10; }
 
 
 
@@ -68,7 +26,8 @@ body {
         padding: 15px 20px;
         font-size: 22px;
         height: 55px;
-        width: 120px;
+        min-width: 120px;
+        max-width: 200px;
     }
 }
 

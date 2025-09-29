@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import url('/static/common.css');
+@import url('/static/styles.css');
 
 * {
     margin: 0;
@@ -18,53 +20,11 @@ body {
     justify-content: center;
 }
 
-/* Кнопка назад */
-.back-button {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 260px;
-    height: 80px;
-    background-color: #E9A82D;
-    color: #3B3B3B;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 22px;
-    cursor: pointer;
-    z-index: 100;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    transition: transform 0.2s ease;
-    box-sizing: border-box;
-}
+/* Кнопка назад — базовые стили в styles.css; оставляем только позиционирование */
+.back-button { position: fixed; top: 20px; left: 20px; z-index: 100; }
 
-.back-button::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    background-color: #FFC75D;
-    border-radius: 10px;
-    z-index: -1;
-}
-
-.back-button:hover {
-    transform: scale(1.03);
-}
-
-.back-button:active {
-    transform: translate(5px, 5px);
-}
-
-.back-button span {
-    /* Убираем дополнительный transform */
-}
+/* Только на странице товара поднимаем текст "Назад к каталогу" на 3px */
+.back-button > span { transform: translate(-8px, -6px); }
 
 /* Основной контейнер */
 .product-container {
@@ -287,50 +247,7 @@ body {
 }
 
 /* Уведомления */
-.notification {
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    padding: 15px 25px;
-    border-radius: 10px;
-    font-family: 'Rubik', sans-serif;
-    font-weight: 500;
-    z-index: 1000;
-    transform: translateX(100%);
-    animation: slideIn 0.3s ease forwards;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.notification.success {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.notification.error {
-    background-color: #f44336;
-    color: white;
-}
-
-.notification.info {
-    background-color: #2196F3;
-    color: white;
-}
-
-@keyframes slideIn {
-    to {
-        transform: translateX(0);
-    }
-}
-
-@keyframes slideOut {
-    to {
-        transform: translateX(100%);
-    }
-}
-
-.notification.hiding {
-    animation: slideOut 0.3s ease forwards;
-}
+/* notification base styles are in common.css */
 
 /* Полноэкранный просмотрщик изображений */
 .image-viewer {
@@ -510,11 +427,7 @@ body {
         height: 390px;
     }
     
-    .back-button {
-        width: 195px;
-        height: 65px;
-        font-size: 20px;
-    }
+    .back-button { width: 195px; height: 65px; font-size: 20px; }
     
     /* Полноэкранный просмотрщик для планшетов */
     .image-nav-button {
@@ -573,13 +486,7 @@ body {
         min-width: unset;
     }
     
-    .back-button {
-        width: 156px;
-        height: 58px;
-        font-size: 18px;
-        top: 10px;
-        left: 10px;
-    }
+    .back-button { width: 156px; height: 58px; font-size: 18px; top: 10px; left: 10px; }
     
     /* Полноэкранный просмотрщик для мобильных */
     .image-nav-button {

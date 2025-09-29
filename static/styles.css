@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import url('/static/common.css');
 body {
     font-family: Arial, sans-serif;
     background-color: #FEF6DF;
@@ -187,74 +188,77 @@ footer a:hover {
     flex-wrap: nowrap;           /* не переносить */
     width: 100%;
 }
-/* --- Верхняя кнопка "О товаре" --- */
-.about-btn {
-    position: relative;
-    width: 390px;
-    height: 80px;
-    background-color: #E9A82D;   /* Светлая кнопка сверху */
-    color: #3B3B3B;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Nunito', sans-serif;
-    font-weight: 700;
-    font-size: 25px;
-    cursor: pointer;
-    z-index: 1;
-    transition: transform 0.2s;
-    box-sizing: border-box;
-    margin-bottom: 20px; /* расстояние вниз */
-    margin-left: 10px;
-}
-
-/* Нижние кнопки */
+/* --- Базовый стиль для кнопок --- */
+.about-btn,
 .get-btn,
 .garbej-btn {
     position: relative;
-    width: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
     height: 80px;
+
     background-color: #E9A82D;
     color: #3B3B3B;
     border: none;
     border-radius: 10px;
+
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
     font-size: 25px;
+
     cursor: pointer;
     z-index: 1;
-    transition: transform 0.2s;
     box-sizing: border-box;
-    margin-left: 13px;
+
+    /* фикс против «дрожания» */
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
 }
 
-/* Тень всегда видна */
+/* Индивидуальные размеры */
+.about-btn { width: 390px; margin: 0 0 20px 10px; }
+.get-btn,
+.garbej-btn { width: 180px; margin-left: 13px; }
+
+/* Смещение текста (декор) */
+.about-btn > span { position: relative; left: -7px; top: -6px; }
+.get-btn > span   { position: relative; left: -6px; top: -6px; }
+.garbej-btn > span{ position: relative; left: -7px; top: -4px; }
+
+/* Тень */
 .about-btn::after,
 .get-btn::after,
 .garbej-btn::after {
     content: '';
     position: absolute;
-    top: -10px;     /* тень смещаем ниже */
-    left: -10px;    /* тень смещаем вправо */
-    width: calc(100% + 4px);   /* делаем шире кнопки */
-    height: calc(100% + 4px);  /* делаем выше кнопки */
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
     background-color: #FFC75D;
     border-radius: 10px;
     z-index: -1;
 }
 
-/* Hover — лёгкое увеличение */
+/* Hover — пропорциональное увеличение */
 .about-btn:hover,
 .get-btn:hover,
 .garbej-btn:hover {
-    transform: scale(1.03);
+    transform: scale(1.1); /* +10% */
 }
 
-/* Active — кнопка уходит в тень */
+/* Active — «проваливание» */
 .about-btn:active,
 .get-btn:active,
 .garbej-btn:active {
     transform: translate(5px, 5px);
 }
+
 
 /* Статус приобретенного товара */
 .purchased-status {
@@ -333,9 +337,11 @@ footer a:hover {
 .get-btn,
 .garbej-btn {
     display: flex;
+    align-items: center;        /* по центру по вертикали */
+    justify-content: center;    /* по центру по горизонтали */
     line-height: 1;
-    padding-top: 25px;  
-    justify-content: center      /* двигаем текст чуть выше */
+    padding-top: 0;             /* без смещения */
+    padding-left: 0;            /* без смещения */
 }
     
 .card img {
@@ -462,6 +468,39 @@ footer a:hover {
 #maps {
     padding: 40px 0;  
 }
+
+.back-button {
+    position: relative;
+    min-width: 200px;
+    max-width: 500px;
+    width: auto;
+    height: 80px;
+    padding: 0 30px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Nunito', 'Arial', sans-serif;
+    font-weight: 1000 !important;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: transform 0.15s ease; /* для увеличения самой кнопки */
+    transform-origin: center center;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    transform: translateZ(0);
+}
+
+
+
+
 
 
 .card-rolling_stock {

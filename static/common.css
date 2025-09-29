@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+
+/* Centralized shared styles moved to styles.css */
+
+/* Shared notifications */
+.notification {
+    position: fixed;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-family: 'Rubik', sans-serif;
+    font-weight: 500;
+    z-index: 1000;
+    transform: translateX(100%);
+    animation: slideIn 0.3s ease forwards;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.notification.success { background-color: #4CAF50; color: white; }
+.notification.error { background-color: #f44336; color: white; }
+.notification.info { background-color: #2196F3; color: white; }
+
+@keyframes slideIn { to { transform: translateX(0); } }
+@keyframes slideOut { to { transform: translateX(100%); } }
+
+.notification.hiding { animation: slideOut 0.3s ease forwards; }
+
+/* Shared browse products button */
+.browse-products-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    text-decoration: none;
+    border-radius: 15px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    transition: transform 0.2s ease;
+    position: relative;
+}
+
+.browse-products-btn::after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    width: calc(100% + 10px);
+    height: calc(100% + 10px);
+    background-color: #FFC75D;
+    border-radius: 15px;
+    z-index: -1;
+}
+
+.browse-products-btn:hover { transform: scale(1.03); }
+.browse-products-btn:active { transform: translate(3px, 3px); }

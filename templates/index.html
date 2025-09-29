@@ -77,14 +77,14 @@
                             <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
                         </div>
                     {% else %}
-                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn">Получить</button>
+                                <button class="get-btn"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                            <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span class="btn-inner">Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn">В корзину</button>
+                            <button class="garbej-btn"><span>В корзину</span></button>
                         </div>
                     {% endif %}
                 </div>
@@ -127,14 +127,14 @@
                             <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
                         </div>
                     {% else %}
-                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn">Получить</button>
+                                <button class="get-btn"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span>Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn">В корзину</button>
+                            <button class="garbej-btn"><span>В корзину</span></button>
                         </div>
                     {% endif %}
                 </div>
@@ -169,14 +169,14 @@
         
                     <!-- Кнопки -->
                     <div class="card-buttons">
-                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn">Получить</button>
+                                <button class="get-btn"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span class="btn-inner">Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn">В корзину</button>
+                            <button class="garbej-btn"><span>В корзину</span></button>
                         </div>
                     </div>
                 </div>
@@ -217,14 +217,14 @@
                             <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
                         </div>
                     {% else %}
-                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'">О товаре</button>
+                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn">Получить</button>
+                                <button class="get-btn"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'">Приобрести</button>
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span class="btn-inner">Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn">В корзину</button>
+                            <button class="garbej-btn"><span>В корзину</span></button>
                         </div>
                     {% endif %}
                 </div>

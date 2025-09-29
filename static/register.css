@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('/static/common.css');
 
 body {
     background-color: #FEF6DF;
@@ -55,51 +56,7 @@ body {
 }
 
 
-/* Кнопки (универсальные — как "Назад") */
-button,
-.form-wrapper .form-btn {
-    position: relative;
-    width: 100%;
-    height: 130px;
-    background-color: #E9A82D;
-    color: #3B3B3B;
-    border: none;
-    border-radius: 20px;
-    font-family: 'Rubik', sans-serif;
-    font-size: 44px;
-    font-weight: 700;
-    cursor: pointer;
-    z-index: 1;
-    transition: transform 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
-
-button::after,
-.form-wrapper .form-btn::after {
-    content: '';
-    position: absolute;
-    top: -20px;
-    left: -20px;
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
-    background-color: #FFC75D;
-    border-radius: 20px;
-    z-index: -1;
-}
-
-/* Анимации */
-button:hover,
-.form-wrapper .form-btn:hover {
-    transform: scale(1.03);
-}
-
-button:active,
-.form-wrapper .form-btn:active {
-    transform: translate(10px, 10px);
-}
+/* Shared button base styles handled globally; keep only unique page styles */
 
 /* Ссылка под формой */
 .register-link {
@@ -169,62 +126,9 @@ button:active,
 }
 
 
-.back-button {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    width: 180px;
-    height: 80px;
-    background-color: #E9A82D;
-    color: #3B3B3B;
-    border: none;
-    border-radius: 10px;
-    font-family: 'Rubik', sans-serif;
-    font-weight: 700;
-    font-size: 25px;
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.back-button::after {
-    content: '';
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    width: calc(100% + 4px);
-    height: calc(100% + 4px);
-    background-color: #FFC75D;
-    border-radius: 10px;
-    z-index: -1;
-}
-
-.back-button span {
-    transform: translateY(-5px);
-}
-
-/* Анимации */
-.back-button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-}
-
-.back-button:active {
-    transform: translate(5px, 5px);
-    box-shadow: none;
-}
+.back-button { position: absolute; top: 20px; left: 20px; z-index: 10; }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .back-button {
-        top: 10px;
-        left: 10px;
-        width: 120px;
-        height: 55px;
-        font-size: 20px;
-    }
+    .back-button { top: 10px; left: 10px; width: 120px; height: 55px; font-size: 20px; }
 }
