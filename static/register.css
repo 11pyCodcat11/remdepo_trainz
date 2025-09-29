@@ -57,6 +57,8 @@ body {
 
 
 /* Shared button base styles handled globally; keep only unique page styles */
+/* Выравниваем размер шрифта кнопки Регистрации под login-btn */
+.form-wrapper .login-btn { font-size: 48px; }
 
 /* Ссылка под формой */
 .register-link {

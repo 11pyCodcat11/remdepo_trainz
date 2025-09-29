@@ -50,9 +50,6 @@
             <div class="product-info">
                 <!-- Заголовок и категория -->
                 <div class="product-header">
-                    {% if product.badge %}
-                        <span class="product-badge">{{ product.badge }}</span>
-                    {% endif %}
                     <h1 class="product-title">{{ product.title }}</h1>
                     {% if product.subtitle %}
                         <p class="product-subtitle">{{ product.subtitle }}</p>
@@ -76,21 +73,28 @@
                         <p>{{ product.blurb|linebreaks }}</p>
                     </div>
                 {% endif %}
-
                 <!-- Кнопки действий -->
                 <div class="product-actions">
                     <div class="main-actions">
-                        {% if product.is_free %}
-                            <button class="btn-primary btn-get" data-action="get" data-product-id="{{ product.id }}">Получить</button>
-                        {% else %}
-                            <button class="btn-primary btn-buy" data-action="buy" data-product-id="{{ product.id }}">Приобрести</button>
-                        {% endif %}
-                        
-                        {% if user %}
-                            <button class="btn-secondary btn-cart" data-action="cart" data-product-id="{{ product.id }}">В корзину</button>
-                        {% else %}
-                            <button class="btn-secondary btn-cart" data-action="login-required">В корзину</button>
-                        {% endif %}
+                    {% if product.is_free %}
+                        <button class="btn-primary btn-get" data-action="get" data-product-id="{{ product.id }}">
+                        <span>Получить</span>
+                        </button>
+                    {% else %}
+                        <button class="btn-primary btn-buy" data-action="buy" data-product-id="{{ product.id }}">
+                        <span>Приобрести</span>
+                        </button>
+                    {% endif %}
+                
+                    {% if user %}
+                        <button class="btn-secondary btn-cart" data-action="cart" data-product-id="{{ product.id }}">
+                        <span>В корзину</span>
+                        </button>
+                    {% else %}
+                        <button class="btn-secondary btn-cart" data-action="login-required">
+                        <span>В корзину</span>
+                        </button>
+                    {% endif %}
                     </div>
                 </div>
             </div>

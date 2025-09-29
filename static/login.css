@@ -15,7 +15,9 @@ body {
 }
 
 /* back-button base styles are in styles.css; only page-specific positioning below */
-.back-button { position: absolute; top: 20px; left: 20px; z-index: 10; }
+.back-button { position: absolute; top: 40px; left: 40px; z-index: 10; }
+/* Сместим текст внутри back-button как на продуктовой странице */
+.back-button > span { display: inline-block; transform: translate(-8px, -6px); }
 
 
 
@@ -187,16 +189,30 @@ body {
     border: none;
     border-radius: 20px;
     font-family: 'Rubik', sans-serif;
-    font-size: 44px;
+    font-size: 48px;
     cursor: pointer;
     z-index: 1;
     transition: transform 0.2s;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
     padding-top: 10px; /* Подняли текст выше */
     padding-bottom: 40px;
+    line-height: 1; /* стабилизируем метрики строки */
+}
+
+/* Смещение текста как у about-btn + стабилизация рендера при hover */
+.login-btn > span { 
+    display: inline-block; 
+    transform: translate(-7px, -6px) translateZ(0); 
+    transition: transform 0.2s ease; 
+    backface-visibility: hidden; 
+    will-change: transform; 
+    transform-origin: center center; 
 }
 
 .login-btn::after {
@@ -214,6 +230,9 @@ body {
 .login-btn:hover {
     transform: scale(1.03);
 }
+
+/* Фикс: сохраняем ровно те же translate-значения у текста при hover */
+.login-btn:hover > span { transform: translate(-7px, -6px) translateZ(0); }
 
 .login-btn:active {
     transform: translate(10px, 10px);

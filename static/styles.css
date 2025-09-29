@@ -188,10 +188,15 @@ footer a:hover {
     flex-wrap: nowrap;           /* не переносить */
     width: 100%;
 }
+
+
 /* --- Базовый стиль для кнопок --- */
 .about-btn,
 .get-btn,
-.garbej-btn {
+.garbej-btn,
+.btn-primary.btn-buy,
+.btn-primary.btn-get,
+.btn-secondary.btn-cart {
     position: relative;
     display: flex;
     align-items: center;
@@ -223,17 +228,33 @@ footer a:hover {
 /* Индивидуальные размеры */
 .about-btn { width: 390px; margin: 0 0 20px 10px; }
 .get-btn,
-.garbej-btn { width: 180px; margin-left: 13px; }
+.garbej-btn,
+.btn-primary.btn-buy,
+.btn-primary.btn-get,
+.btn-secondary.btn-cart { width: 180px; margin-left: 13px; }
+
+/* Увеличим шрифт карточных кнопок на 10% */
+.about-btn,
+.get-btn,
+.garbej-btn { font-size: 27.5px; }
 
 /* Смещение текста (декор) */
-.about-btn > span { position: relative; left: -7px; top: -6px; }
-.get-btn > span   { position: relative; left: -6px; top: -6px; }
-.garbej-btn > span{ position: relative; left: -7px; top: -4px; }
+/* Текст в кнопках — переносим смещение на span + стабилизируем рендер */
+.about-btn > span { display: inline-block; transform: translate(-7px, -5px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+.get-btn > span   { display: inline-block; transform: translate(-6px, -5px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+.garbej-btn > span{ display: inline-block; transform: translate(-7px, -3px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+/* Смещение текста для кнопки корзины и купить/получить в продукте */
+.btn-secondary.btn-cart > span{ display: inline-block; transform: translate(-7px, -3px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+.btn-primary.btn-buy > span,
+.btn-primary.btn-get > span{ display: inline-block; transform: translate(-6px, -5px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
 
 /* Тень */
 .about-btn::after,
 .get-btn::after,
-.garbej-btn::after {
+.garbej-btn::after,
+.btn-primary.btn-buy::after,
+.btn-primary.btn-get::after,
+.btn-secondary.btn-cart::after {
     content: '';
     position: absolute;
     top: -10px;
@@ -248,14 +269,34 @@ footer a:hover {
 /* Hover — пропорциональное увеличение */
 .about-btn:hover,
 .get-btn:hover,
-.garbej-btn:hover {
-    transform: scale(1.1); /* +10% */
+.garbej-btn:hover,
+.btn-primary.btn-buy:hover,
+.btn-primary.btn-get:hover,
+.btn-secondary.btn-cart:hover {
+    transform: scale(1.05);
+}
+
+/* Hover — масштабируется вся кнопка, смещения текста увеличиваются пропорционально за счёт наследования трансформации */
+
+/* Единое центрирование контента и стабильная линия текста для всех пяти кнопок */
+.about-btn,
+.get-btn,
+.garbej-btn,
+.btn-secondary.btn-cart,
+.btn-primary.btn-get {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;           /* исключаем влияние метрик шрифта */
 }
 
 /* Active — «проваливание» */
 .about-btn:active,
 .get-btn:active,
-.garbej-btn:active {
+.garbej-btn:active,
+.btn-primary.btn-buy:active,
+.btn-primary.btn-get:active,
+.btn-secondary.btn-cart:active {
     transform: translate(5px, 5px);
 }
 
@@ -471,31 +512,36 @@ footer a:hover {
 
 .back-button {
     position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     min-width: 200px;
     max-width: 500px;
     width: auto;
     height: 80px;
     padding: 0 30px;
+
     background-color: #E9A82D;
     color: #3B3B3B;
     border: none;
     border-radius: 10px;
-    font-family: 'Nunito', 'Arial', sans-serif;
-    font-weight: 1000 !important;
-    font-size: 30px;
+
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800; /* bold */
+    font-size: 32px; /* больше чем у основных кнопок */
+
     cursor: pointer;
     z-index: 1;
     box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     text-decoration: none;
     white-space: nowrap;
-    transition: transform 0.15s ease; /* для увеличения самой кнопки */
+
+    /* фикс против «дрожания» */
+    transition: transform 0.2s ease;
     transform-origin: center center;
     backface-visibility: hidden;
-    -webkit-font-smoothing: antialiased;
-    transform: translateZ(0);
+    will-change: transform;
 }
 
 
@@ -552,4 +598,27 @@ footer a:hover {
     font-weight: 500; /* medium */
     color: #394850;
     margin: 0;
+}
+
+/* Тень для back-button */
+.back-button::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-color: #FFC75D;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+/* Hover — пропорциональное увеличение */
+.back-button:hover {
+    transform: scale(1.05); /* +5% вместо 10% */
+}
+
+/* Active — «проваливание» */
+.back-button:active {
+    transform: translate(5px, 5px);
 }

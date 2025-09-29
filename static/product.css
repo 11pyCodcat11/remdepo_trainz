@@ -21,7 +21,7 @@ body {
 }
 
 /* Кнопка назад — базовые стили в styles.css; оставляем только позиционирование */
-.back-button { position: fixed; top: 20px; left: 20px; z-index: 100; }
+.back-button { position: fixed; top: 40px; left: 40px; z-index: 100; }
 
 /* Только на странице товара поднимаем текст "Назад к каталогу" на 3px */
 .back-button > span { transform: translate(-8px, -6px); }
@@ -205,7 +205,7 @@ body {
     border-radius: 13px;
     font-family: 'Nunito', sans-serif;
     font-weight: 700;
-    font-size: 29px;
+    font-size: 36px;
     cursor: pointer;
     transition: transform 0.2s ease;
     z-index: 1;
@@ -219,6 +219,11 @@ body {
     color: #3B3B3B;
     background-color: #E9A82D;
 }
+
+/* Уточняем селекторы, чтобы перекрыть styles.css (выше специфичность) */
+.btn-primary.btn-buy,
+.btn-primary.btn-get,
+.btn-secondary.btn-cart { font-size: 36px; }
 
 /* Тень для кнопок */
 .btn-primary::after,
@@ -481,10 +486,15 @@ body {
     
     .btn-primary,
     .btn-secondary {
-        font-size: 26px;
+        font-size: 30px;
         height: 91px;
         min-width: unset;
     }
+
+    /* Мобильные — повышенная специфичность для перекрытия styles.css */
+    .btn-primary.btn-buy,
+    .btn-primary.btn-get,
+    .btn-secondary.btn-cart { font-size: 30px; }
     
     .back-button { width: 156px; height: 58px; font-size: 18px; top: 10px; left: 10px; }
     

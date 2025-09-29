@@ -82,7 +82,7 @@
                             {% if product.is_free %}
                                 <button class="get-btn"><span>Получить</span></button>
                             {% else %}
-                            <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span class="btn-inner">Приобрести</span></button>
+                            <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span>Приобрести</span></button>
                             {% endif %}
                             <button class="garbej-btn"><span>В корзину</span></button>
                         </div>
@@ -174,7 +174,7 @@
                             {% if product.is_free %}
                                 <button class="get-btn"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span class="btn-inner">Приобрести</span></button>
+                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span>Приобрести</span></button>
                             {% endif %}
                             <button class="garbej-btn"><span>В корзину</span></button>
                         </div>
