@@ -1,0 +1,230 @@
+/* Mobile shop-first redesign: clean header, strong product cards, clear CTAs */
+
+/* Reset paddings/margins to tighten layout and prevent horizontal scroll */
+html, body { width: 100%; overflow-x: hidden; }
+body { padding: 0 0 80px 0; }
+
+/* Sticky footer for mobile */
+html, body { height: 100%; }
+body.mobile-variant { display: flex; flex-direction: column; min-height: 100%; }
+body.mobile-variant > main { flex: 1 0 auto; }
+body.mobile-variant > .mobile-footer { flex-shrink: 0; }
+
+/* Remove bottom padding on mobile to avoid space below footer */
+body.mobile-variant { padding: 0 !important; }
+
+/* Header: hide large hero, keep compact bar */
+.header-img-wrapper { display: block; height: 180px; margin-top: 0; overflow: hidden; }
+.header-img { width: 100%; height: 100%; object-fit: cover; }
+.header_menu { height: auto; background-color: #FFE1A8; }
+.menu-line { height: auto; padding: 10px 0; border-radius: 0; width: 100%; position: relative; display: flex; align-items: center; }
+.brand-mobile { position: absolute; left: 50%; transform: translateX(-50%); font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 18px; color: #5C3A00; letter-spacing: 0.5px; text-transform: none; }
+.menu { gap: 10px; align-items: center; }
+.menu-links { display: none; }
+.burger-btn { display: inline-block; margin-left: auto; }
+
+/* Mobile dropdown panel under the menu bar */
+.mobile-nav { display: block; position: absolute; left: 0; right: 0; top: 100%; z-index: 1000; }
+.mobile-menu {
+  background: #FFE1A8;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  border-radius: 0 0 14px 14px;
+  transform: translateY(-12px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+.mobile-nav.open .mobile-menu {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+.mobile-menu .mobile-actions {
+  display: flex;
+  gap: 10px;
+  padding: 12px 12px 6px 12px;
+}
+.mobile-menu .mobile-actions .vk-btn,
+.mobile-menu .mobile-actions .profile-btn {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 3px solid #3B3B3B;
+  border-radius: 12px;
+  background: #FFE1A8;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  color: #3B3B3B;
+  text-align: center;
+  display: inline-flex;
+  flex-direction: row;
+}
+.mobile-menu .mobile-actions .vk-btn img,
+.mobile-menu .mobile-actions .profile-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Ensure header container is positioned for absolute dropdown */
+.menu-line { position: relative; }
+.vk-btn, .profile-btn { padding: 6px 12px; border-width: 5px; border-radius: 16px; background: #FFC75D; font-family: 'Poppins', sans-serif; font-weight: 700; color: #3B3B3B; }
+.vk-btn img, .profile-btn img { width: 28px; height: 28px; display: block; }
+.vk-btn:hover, .profile-btn:hover { background: #FEF6DF; }
+.profile-text { font-size: 16px; }
+
+/* Hide topbar auth button on mobile to avoid duplicates */
+.topbar-auth { display: none; }
+
+/* Unified mobile card layout (applied to all sections) */
+.popular-title { font-size: 28px; margin: 14px 0; }
+.cards { gap: 14px; padding: 0 12px; }
+.card, .card-rolling_stock { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 10px !important; border-radius: 14px !important; height: auto !important; display: flex !important; flex-direction: column !important; border: none !important; box-shadow: none !important; }
+.card img, .card-rolling_stock img { width: 100% !important; height: 160px !important; object-fit: cover !important; border-radius: 12px !important; max-width: 100% !important; }
+.card-content { align-items: flex-start; flex: 1; }
+.card-title { font-size: 20px; font-weight: 600; margin: 10px 0 6px 0; width: 100%; white-space: normal; text-overflow: initial; }
+.pricec { font-size: 20px; color: #3B3B3B; margin: 6px 0 10px 0; width: 100%; text-align: center; }
+/* Force override of desktop fixed widths for rolling_stock/scenarios */
+.cards > .card,
+.cards > .card-rolling_stock {
+  width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  border-radius: 14px !important;
+  border: none !important;
+  box-shadow: none !important;
+  box-sizing: border-box !important;
+}
+
+/* Ensure all sections have consistent container padding */
+#popular, #rolling_stock, #scenarios {
+    padding: 20px 0 !important;
+}
+
+#popular .cards, #rolling_stock .cards, #scenarios .cards {
+    padding: 0 12px !important;
+    gap: 14px !important;
+}
+
+/* Уменьшаем ширину card-rolling_stock чтобы сделать его как card */
+.card-rolling_stock {
+    width: calc(100% - 40px) !important;
+    max-width: calc(100% - 40px) !important;
+}
+
+/* Стили кнопок для card-rolling_stock как у обычных card */
+.card-rolling_stock .card-buttons { 
+    width: 100%; 
+    gap: 14px; 
+    align-items: center; 
+    margin-top: 18px; 
+}
+
+.card-rolling_stock .about-btn { 
+    width: calc(280px + 15px + 9px - 10px); 
+    height: 50px; 
+    font-size: 18px; 
+    margin: 0 auto; 
+}
+
+.card-rolling_stock .btn-row { 
+    width: 100%; 
+    display: flex; 
+    justify-content: center; 
+    gap: 4px; 
+}
+
+.card-rolling_stock .get-btn, 
+.card-rolling_stock .garbej-btn { 
+    width: 140px; 
+    height: 50px; 
+    font-size: 16px; 
+    margin: 0; 
+}
+
+/* Принудительно задаем gap для btn-row в card-rolling_stock */
+.card-rolling_stock .btn-row {
+    gap: 10px !important;
+}
+
+/* Переопределяем все возможные десктопные стили для btn-row */
+.mobile-variant .card-rolling_stock .btn-row,
+.mobile-variant #rolling_stock .card-rolling_stock .btn-row,
+.mobile-variant #scenarios .card-rolling_stock .btn-row {
+    gap: 10px !important;
+    display: flex !important;
+    justify-content: center !important;
+}
+
+/* CTA buttons: primary full-width, secondary pair below */
+.card-buttons { width: 100%; gap: 14px; align-items: center; margin-top: 18px; }
+.about-btn { width: calc(280px + 15px + 9px - 10px); height: 50px; font-size: 18px; margin: 0 auto; }
+.btn-row { width: 100%; display: flex; justify-content: center; gap: 4px; }
+
+/* Mobile footer */
+.mobile-footer {
+    background-color: #3B3B3B;
+    padding: 20px 12px;
+    margin-top: 30px;
+    text-align: center;
+    border-top: 2px solid #3B3B3B;
+}
+
+.footer-text {
+    font-size: 14px;
+    color: #FEF6DF;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.footer-link {
+    color: #FEF6DF;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.footer-link:hover {
+    color: #FEF6DF;
+    text-decoration: underline;
+}
+/* Fallback spacing if buttons рендерятся без .btn-row */
+.about-btn + .get-btn { margin-left: 0; margin-top: 12px; }
+.get-btn + .garbej-btn { margin-left: 4px; }
+.get-btn, .garbej-btn,
+.btn-primary.btn-get, .btn-primary.btn-buy, .btn-secondary.btn-cart { width: 140px; height: 44px; font-size: 15px; margin: 0; }
+
+/* Rolling stock/scenarios inherit from unified rules above */
+
+/* Product */
+.product-wrapper { display: block; padding: 20px; }
+.main-image-container { height: 280px; }
+.product-title { font-size: 28px; }
+.product-description p { font-size: 18px; }
+.btn-primary, .btn-secondary { height: 85px; font-size: 30px; }
+
+/* Back button on pages that use fixed positioning */
+.back-button { top: 10px !important; left: 10px !important; }
+
+/* Login/Register */
+.login-card, .form-wrapper { width: calc(100% - 20px); padding: 20px; height: auto; }
+.login-title, .form-wrapper h1 { font-size: 42px; }
+.input-field { font-size: 20px; padding: 14px; }
+.login-btn { height: 85px; font-size: 32px; }
+
+/* Cart/Purchases */
+.page-container { margin: 70px auto 100px; padding: 0 10px; }
+.cart-summary { flex-direction: column; gap: 12px; padding: 15px; }
+
+/* Sections spacing */
+#rolling_stock, #scenarios, #popular, #maps, #useful_links { padding: 20px 0; }
+
+/* Useful links section text smaller and closer */
+.useful-text { font-size: 18px; margin-top: 8px; }
+
+/* Footer smaller */
+footer { padding: 12px 10px; font-size: 14px; }
+
+

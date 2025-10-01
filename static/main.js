@@ -196,6 +196,36 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(style);
     
+    // Burger menu toggle
+    const burgerBtn = document.querySelector('.burger-btn');
+    const mobileNav = document.getElementById('mobile-menu');
+    if (burgerBtn && mobileNav) {
+        burgerBtn.addEventListener('click', () => {
+            const isExpanded = burgerBtn.getAttribute('aria-expanded') === 'true';
+            burgerBtn.setAttribute('aria-expanded', String(!isExpanded));
+            mobileNav.classList.toggle('open');
+        });
+        // Close on ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && burgerBtn.getAttribute('aria-expanded') === 'true') {
+                burgerBtn.setAttribute('aria-expanded', 'false');
+                mobileNav.classList.remove('open');
+            }
+        });
+        // Toggle submenus
+        mobileNav.querySelectorAll('.submenu-toggle').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                btn.setAttribute('aria-expanded', String(!expanded));
+                const submenu = btn.nextElementSibling;
+                if (submenu) {
+                    const isHidden = submenu.hasAttribute('hidden');
+                    if (isHidden) submenu.removeAttribute('hidden'); else submenu.setAttribute('hidden', '');
+                }
+            });
+        });
+    }
+
     // Обработчики для кнопок "В корзину"
     document.querySelectorAll('.garbej-btn').forEach(button => {
         button.addEventListener('click', function() {

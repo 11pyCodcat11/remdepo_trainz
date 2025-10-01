@@ -107,13 +107,13 @@ body {
 .item-price .price-free {
     font-size: 18px;
     font-weight: 700;
-    color: #4CAF50;
+    color: #3B3B3B;
 }
 
 .item-price .price-paid {
     font-size: 18px;
     font-weight: 700;
-    color: #5C3A00;
+    color: #3B3B3B;
 }
 
 .purchase-date {

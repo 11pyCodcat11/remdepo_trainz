@@ -177,13 +177,13 @@ body {
 .price-free {
     font-size: 27px; /* 18px * 1.5 = 27px */
     font-weight: 700;
-    color: #4CAF50;
+    color: #3B3B3B;
 }
 
 .price-paid {
     font-size: 27px; /* 18px * 1.5 = 27px */
     font-weight: 700;
-    color: #5C3A00;
+    color: #3B3B3B;
 }
 
 /* Пустая корзина */

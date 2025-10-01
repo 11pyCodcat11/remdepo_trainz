@@ -20,7 +20,7 @@
                 <!-- Сообщения об ошибках от Django -->
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="global-error">{{ message }}</div>
+                        <div class="global-error" style="display:none;">{{ message }}</div>
                     {% endfor %}
                 {% endif %}
             
@@ -64,8 +64,19 @@
         </div>
     </div>
 
+    <script src="{% static 'main.js' %}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            {% if messages %}
+            // Показ сервисных сообщений в правом верхнем углу
+            {% for message in messages %}
+            try {
+                if (typeof showNotification === 'function') {
+                    showNotification('{{ message|escapejs }}', '{{ message.tags }}' === 'success' ? 'success' : 'error', 4000);
+                }
+            } catch (e) {}
+            {% endfor %}
+            {% endif %}
             const passwordInput = document.getElementById('password');
             const eyeToggle = document.getElementById('eyeToggle');
             const eyeIcon = eyeToggle.querySelector('svg');

@@ -157,13 +157,13 @@ body {
 .price-free {
     font-size: 42px;
     font-weight: 700;
-    color: #4CAF50;
+    color: #4CAF50; /* green for free price on product page */
 }
 
 .price-paid {
     font-size: 42px;
     font-weight: 700;
-    color: #5C3A00;
+    color: #3B3B3B;
 }
 
 /* Описание */
@@ -490,7 +490,7 @@ body {
         height: 91px;
         min-width: unset;
     }
-
+    
     /* Мобильные — повышенная специфичность для перекрытия styles.css */
     .btn-primary.btn-buy,
     .btn-primary.btn-get,

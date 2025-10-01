@@ -112,6 +112,67 @@ footer a:hover {
     gap: 70px;  /* расстояние между ссылками */
 }
 
+/* Burger button (visible on mobile via mobile.css) */
+.burger-btn {
+    display: none; /* hidden by default for desktop */
+    position: relative;
+    width: 44px;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    padding: 4px;
+    cursor: pointer;
+}
+.burger-btn .burger-line {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    height: 3px;
+    background: #3B3B3B;
+    border-radius: 3px;
+    transition: transform 200ms ease, opacity 200ms ease, top 200ms ease;
+}
+.burger-btn .burger-line:nth-child(1) { top: 8px; }
+.burger-btn .burger-line:nth-child(2) { top: 16px; }
+.burger-btn .burger-line:nth-child(3) { top: 24px; }
+.burger-btn[aria-expanded="true"] .burger-line:nth-child(1) {
+    top: 16px; transform: rotate(45deg);
+}
+.burger-btn[aria-expanded="true"] .burger-line:nth-child(2) {
+    opacity: 0;
+}
+.burger-btn[aria-expanded="true"] .burger-line:nth-child(3) {
+    top: 16px; transform: rotate(-45deg);
+}
+
+/* Mobile dropdown nav container (positioned below menu-line) */
+.mobile-nav {
+    display: none; /* desktop hidden */
+}
+.mobile-menu,
+.mobile-menu .submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.mobile-menu li { border-bottom: 1px solid rgba(0,0,0,0.06); }
+.mobile-menu a, .mobile-menu .submenu-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 14px 18px;
+    text-decoration: none;
+    color: #3B3B3B;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    background: transparent;
+}
+.mobile-menu a:hover { background: rgba(0,0,0,0.04); }
+.submenu-toggle { border: 0; cursor: pointer; }
+.submenu {
+    background: #FEF6DF;
+}
+
 
 .menu a {
     font-family: 'Poppins', sans-serif;
@@ -288,6 +349,39 @@ footer a:hover {
     align-items: center;
     justify-content: center;
     line-height: 1;           /* исключаем влияние метрик шрифта */
+}
+
+/* -------------------------
+   Адаптивность (iPad и мобильные)
+   ------------------------- */
+@media (max-width: 1024px) {
+    .popular-title { font-size: 42px; }
+    .cards { gap: 26px; }
+    .card { width: 360px; height: 560px; }
+    .card-title { font-size: 26px; }
+    .pricec { font-size: 26px; }
+
+    .about-btn { width: 330px; height: 72px; }
+    .get-btn, .garbej-btn { width: 170px; height: 72px; }
+    .about-btn, .get-btn, .garbej-btn { font-size: 26px; }
+
+    #rolling_stock, #scenarios, #popular, #maps, #useful_links { padding: 30px 0; }
+}
+
+@media (max-width: 768px) {
+    .menu { flex-wrap: wrap; }
+    .menu-links { gap: 24px; }
+    .popular-title { font-size: 32px; }
+    .cards { gap: 20px; }
+    .card { width: 320px; height: auto; }
+    .card-title { font-size: 23px; }
+    .pricec { font-size: 23px; }
+
+    .about-btn { width: 280px; height: 64px; }
+    .get-btn, .garbej-btn { width: 160px; height: 64px; }
+    .about-btn, .get-btn, .garbej-btn { font-size: 24px; }
+
+    #rolling_stock, #scenarios, #popular, #maps, #useful_links { padding: 24px 0; }
 }
 
 /* Active — «проваливание» */
@@ -490,6 +584,7 @@ footer a:hover {
     font-family: 'Rubik', sans-serif;
     font-size: 30px;
     font-weight: 400;
+    color: #3B3B3B;
 }
 
 #rolling_stock,
@@ -508,6 +603,15 @@ footer a:hover {
 #popular,
 #maps {
     padding: 40px 0;  
+}
+
+/* Увеличиваем «длину» секций снизу на ~20% */
+#popular,
+#maps,
+#rolling_stock,
+#scenarios,
+#useful_links {
+    padding-bottom: calc(40px + 10%);
 }
 
 .back-button {

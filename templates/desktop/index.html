@@ -5,7 +5,10 @@
    <meta charset="UTF-8">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>РемДепо Trainz</title>
-   <link rel="stylesheet" href="{% static 'styles.css' %}">
+   <link rel="stylesheet" href="{% static 'desktop/main.css' %}">
+   {% if variant == 'tablet' %}
+   <link rel="stylesheet" href="{% static 'tablet.css' %}">
+   {% endif %}
 </head>
 <body>
     <header>
@@ -19,7 +22,7 @@
                   <img src="{% static 'images/vk_ikon.png' %}" alt="ВК">
                   <span>ДЕПО</span>
               </a>
-          
+
               <div class="menu-links">
                   <a href="#popular">Популярное</a>
                   <a href="#rolling_stock">Подвижной состав</a>
@@ -39,7 +42,7 @@
                         <span class="profile-text">Войти</span>
                     </a>
                 {% endif %}
-                                
+
             </nav>
           </div>
         </div>

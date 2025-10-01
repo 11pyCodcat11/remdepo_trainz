@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ product.title }} - Каталог 3D моделей</title>
     <link rel="stylesheet" href="{% static 'styles.css' %}">
+    {% if variant == 'mobile' %}
+    <link rel="stylesheet" href="{% static 'mobile/main.css' %}">
+    {% elif variant == 'tablet' %}
+    <link rel="stylesheet" href="{% static 'tablet.css' %}">
+    {% endif %}
     <link rel="stylesheet" href="{% static 'product.css' %}">
     {% csrf_token %}
 </head>

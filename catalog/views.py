@@ -51,12 +51,29 @@ async def home(request: HttpRequest) -> HttpResponse:
             purchases = await repository.get_user_purchases(session, user_id)
             purchased_product_ids = {p.product.id for p in purchases if p.product}
 
-    return render(request, "index.html", {
+    # Определяем вариант отображения (desktop/tablet/mobile)
+    def _detect_variant(req: HttpRequest) -> str:
+        # Allow explicit override via query param for testing: ?variant=mobile|tablet|desktop
+        variant_override = (req.GET.get("variant") or "").lower()
+        if variant_override in {"mobile", "tablet", "desktop"}:
+            return variant_override
+        ua = (req.META.get("HTTP_USER_AGENT") or "").lower()
+        if any(k in ua for k in ["iphone", "android", "mobile", "windows phone"]):
+            return "mobile"
+        if any(k in ua for k in ["ipad", "tablet", "sm-t", "lenovo tab", "mi pad"]):
+            return "tablet"
+        return "desktop"
+
+    variant = _detect_variant(request)
+
+    template_name = "mobile/index.html" if variant == "mobile" else "desktop/index.html"
+    return render(request, template_name, {
         "products_popular": serialize(products_popular),
         "products_rolling": serialize(products_rolling),
         "products_maps": serialize(products_maps),
         "products_scenarios": serialize(products_scenarios),
         "user": user,
+        "variant": variant,
         "purchased_product_ids": list(purchased_product_ids),
     })
 
@@ -95,9 +112,24 @@ async def product_detail(request: HttpRequest, slug: str) -> HttpResponse:
         async with AsyncSessionLocal() as session:
             user = await repository.get_user_by_id(session, user_id)
     
+    # Детект варианта
+    def _detect_variant(req: HttpRequest) -> str:
+        variant_override = (req.GET.get("variant") or "").lower()
+        if variant_override in {"mobile", "tablet", "desktop"}:
+            return variant_override
+        ua = (req.META.get("HTTP_USER_AGENT") or "").lower()
+        if any(k in ua for k in ["iphone", "android", "mobile", "windows phone"]):
+            return "mobile"
+        if any(k in ua for k in ["ipad", "tablet", "sm-t", "lenovo tab", "mi pad"]):
+            return "tablet"
+        return "desktop"
+
+    variant = _detect_variant(request)
+
     return render(request, "product.html", {
         "product": product_data,
-        "user": user
+        "user": user,
+        "variant": variant
     })
 
 
@@ -121,7 +153,17 @@ async def register(request):
                 messages.success(request, "Аккаунт создан! Теперь войдите в систему.")
                 return redirect("login")
 
-    return render(request, "register.html")
+    # Детект варианта
+    def _detect_variant(req: HttpRequest) -> str:
+        ua = (req.META.get("HTTP_USER_AGENT") or "").lower()
+        if any(k in ua for k in ["iphone", "android", "mobile", "windows phone"]):
+            return "mobile"
+        if any(k in ua for k in ["ipad", "tablet", "sm-t", "lenovo tab", "mi pad"]):
+            return "tablet"
+        return "desktop"
+
+    variant = _detect_variant(request)
+    return render(request, "register.html", {"variant": variant})
 
 
 async def login_view(request):
@@ -139,7 +181,16 @@ async def login_view(request):
         else:
             messages.error(request, "Неверное имя пользователя или пароль")
 
-    return render(request, "login.html")
+    def _detect_variant(req: HttpRequest) -> str:
+        ua = (req.META.get("HTTP_USER_AGENT") or "").lower()
+        if any(k in ua for k in ["iphone", "android", "mobile", "windows phone"]):
+            return "mobile"
+        if any(k in ua for k in ["ipad", "tablet", "sm-t", "lenovo tab", "mi pad"]):
+            return "tablet"
+        return "desktop"
+
+    variant = _detect_variant(request)
+    return render(request, "login.html", {"variant": variant})
 
 
 def logout_view(request):
@@ -156,7 +207,16 @@ async def profile_view(request):
     async with AsyncSessionLocal() as session:
         user = await repository.get_user_by_id(session, user_id)
 
-    return render(request, "profile.html", {"user": user})
+    def _detect_variant(req: HttpRequest) -> str:
+        ua = (req.META.get("HTTP_USER_AGENT") or "").lower()
+        if any(k in ua for k in ["iphone", "android", "mobile", "windows phone"]):
+            return "mobile"
+        if any(k in ua for k in ["ipad", "tablet", "sm-t", "lenovo tab", "mi pad"]):
+            return "tablet"
+        return "desktop"
+
+    variant = _detect_variant(request)
+    return render(request, "profile.html", {"user": user, "variant": variant})
 
 
 async def authenticate_user(session, username, password):
