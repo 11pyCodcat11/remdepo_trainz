@@ -65,19 +65,30 @@
         </div>
     </div>
 
+    <!-- Передаем сообщения из Django в JSON, чтобы не ломать JS-синтаксис -->
+    <script type="application/json" id="messages-data">
+        [
+        {% for message in messages %}
+          {"text": "{{ message|escapejs }}", "tags": "{{ message.tags }}"}{% if not forloop.last %},{% endif %}
+        {% endfor %}
+        ]
+    </script>
     <script src="{% static 'main.js' %}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            {% if messages %}
-            // Показ сервисных сообщений в правом верхнем углу
-            {% for message in messages %}
+            // Показ сервисных сообщений в правом верхнем углу (через JSON-данные)
             try {
-                if (typeof showNotification === 'function') {
-                    showNotification('{{ message|escapejs }}', '{{ message.tags }}' === 'success' ? 'success' : 'error', 4000);
+                const el = document.getElementById('messages-data');
+                if (el && el.textContent) {
+                    const msgs = JSON.parse(el.textContent || '[]');
+                    msgs.forEach(function(m) {
+                        if (typeof showNotification === 'function') {
+                            const type = (m.tags === 'success') ? 'success' : 'error';
+                            showNotification(m.text, type, 4000);
+                        }
+                    });
                 }
             } catch (e) {}
-            {% endfor %}
-            {% endif %}
             const passwordInput = document.getElementById('password');
             const eyeToggle = document.getElementById('eyeToggle');
             const eyeIcon = eyeToggle.querySelector('svg');
