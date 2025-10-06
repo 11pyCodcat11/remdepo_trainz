@@ -17,6 +17,7 @@ body {
 
 /* Позиционирование кнопки назад — базовые стили в styles.css */
 .back-button { position: absolute; top: 27px; left: 27px; z-index: 10; }
+.back-button > span { display: inline-block; transform: translateY(-3px); }
 
 /* Основной контейнер страницы */
 .page-container {
