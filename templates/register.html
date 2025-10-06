@@ -18,11 +18,14 @@
             <form class="login-form" method="POST" id="registerForm">
                 {% csrf_token %}
                 
-                {% if messages %}
+                <!-- Сообщения выводим сервисным уведомлением через JS -->
+                <script type="application/json" id="messages-data">
+                    [
                     {% for message in messages %}
-                        <div class="global-error">{{ message }}</div>
+                      {"text": "{{ message|escapejs }}", "tags": "{{ message.tags }}"}{% if not forloop.last %},{% endif %}
                     {% endfor %}
-                {% endif %}
+                    ]
+                </script>
                 
                 <div class="form-fields">
                     <!-- Логин -->
@@ -73,6 +76,24 @@
         </div>
     </div>
 
+    <script src="{% static 'main.js' %}"></script>
+    <script>
+        // Показ сервисных сообщений (как на странице входа)
+        (function(){
+            try {
+                const el = document.getElementById('messages-data');
+                if (el && el.textContent) {
+                    const msgs = JSON.parse(el.textContent || '[]');
+                    msgs.forEach(function(m){
+                        if (typeof showNotification === 'function') {
+                            const type = (m.tags === 'success') ? 'success' : 'error';
+                            showNotification(m.text, type, 4000);
+                        }
+                    });
+                }
+            } catch(e) {}
+        })();
+    </script>
     <script src="{% static 'register.js' %}"></script>
 </body>
 </html>
