@@ -43,7 +43,7 @@ function showNotification(message, type = 'success', duration = 3000) {
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         animation: slideIn 0.3s ease forwards;
-        ${type === 'success' ? 'background-color: #3B873E; color: white;' : ''}
+        ${type === 'success' ? 'background-color: #4CAF50; color: white;' : ''}
         ${type === 'error' ? 'background-color: #f44336; color: white;' : ''}
         ${type === 'info' ? 'background-color: #2196F3; color: white;' : ''}
     `;
@@ -310,7 +310,7 @@ function showNotification(message, type = 'success', duration = 3000) {
     notification.className = `notification ${type}`;
     notification.textContent = message;
     notification.style.cssText = `
-        background: ${type === 'error' ? '#ff4444' : type === 'info' ? '#4488ff' : '#3B873E'};
+        background: ${type === 'error' ? '#ff4444' : type === 'info' ? '#4488ff' : '#4CAF50'};
         color: white;
         padding: 12px 20px;
         margin: 5px 0;
