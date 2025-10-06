@@ -256,6 +256,7 @@ body {
     display: flex;
     gap: 20px;
     align-items: center;
+    margin-left: auto; /* уводим блок действий вправо */
 }
 
 /* Вариант красной кнопки в стиле back-button */
