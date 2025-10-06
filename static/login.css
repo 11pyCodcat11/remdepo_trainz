@@ -312,7 +312,7 @@ body {
 }
 
 /* Отступ вниз только на странице регистрации */
-.register-page .login-card { margin-top: 5%; }
+.register-page .login-card { margin-top: 5%; min-height: 1200px; }
 
 
 .global-error {
