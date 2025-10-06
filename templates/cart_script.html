@@ -131,14 +131,37 @@ async function clearSelected() {
         showNotification('Нет выбранных товаров для удаления', 'error');
         return;
     }
-    if (!confirm('Удалить отмеченные товары из корзины?')) return;
 
-    for (const checkbox of checkboxes) {
-        const productId = parseInt(checkbox.dataset.productId);
-        if (!isNaN(productId)) {
-            await removeFromCart(productId);
+    // Показываем стилизованное подтверждение
+    const overlay = document.getElementById('confirmOverlay');
+    overlay.style.display = 'flex';
+
+    return new Promise(resolve => {
+        const yesBtn = document.getElementById('confirmYes');
+        const noBtn = document.getElementById('confirmNo');
+
+        function cleanup() {
+            overlay.style.display = 'none';
+            yesBtn.removeEventListener('click', onYes);
+            noBtn.removeEventListener('click', onNo);
         }
-    }
+
+        async function onYes() {
+            cleanup();
+            for (const checkbox of checkboxes) {
+                const productId = parseInt(checkbox.dataset.productId);
+                if (!isNaN(productId)) {
+                    await removeFromCart(productId);
+                }
+            }
+            resolve();
+        }
+
+        function onNo() { cleanup(); resolve(); }
+
+        yesBtn.addEventListener('click', onYes);
+        noBtn.addEventListener('click', onNo);
+    });
 }
 
 // Очистить всю корзину
