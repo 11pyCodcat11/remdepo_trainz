@@ -169,8 +169,8 @@ body {
 
 .checkbox-label input {
     margin-right: 16px;
-    width: 36px; /* крупнее */
-    height: 36px;
+    width: 44px; /* ещё крупнее */
+    height: 44px;
     accent-color: #3B3B3B; /* цвет галочки */
 }
 
@@ -290,7 +290,7 @@ body {
         padding-right: 50px;
     }
     .checkbox-label { font-size: 14px; margin-bottom: 20px; gap: 10px; }
-    .checkbox-label input { width: 24px; height: 24px; }
+    .checkbox-label input { width: 32px; height: 32px; }
     .checkbox-text { max-width: 100%; }
     .login-btn { 
         height: 65px; 
