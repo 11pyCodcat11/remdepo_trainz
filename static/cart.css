@@ -259,6 +259,9 @@ body > .back-button > span { display: inline-block; transform: translateY(-3px);
     margin-left: auto; /* уводим блок действий вправо */
 }
 
+/* Поднятие текста в кнопках панели на 3px */
+.summary-actions .back-button > span { display: inline-block; transform: translateY(-3px); }
+
 /* Вариант красной кнопки в стиле back-button */
 .back-button.danger { background-color: #FF6B6B; position: static; }
 .back-button.danger::after { background-color: #FF8A8A; }
