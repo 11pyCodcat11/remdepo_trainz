@@ -16,7 +16,9 @@ body {
 }
 
 /* Кнопка назад */
-/* back-button base styles are in common.css; only page-specific overrides below */
+/* back-button base styles are in styles.css; only page-specific overrides below */
+.back-button { position: fixed; top: 34px; left: 34px; z-index: 100; }
+.back-button > span { display: inline-block; transform: translateY(-3px); }
 
 /* Основной контейнер страницы */
 .page-container {
