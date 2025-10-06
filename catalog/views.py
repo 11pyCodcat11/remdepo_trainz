@@ -1401,3 +1401,13 @@ async def payment_success(request: HttpRequest, slug: str) -> HttpResponse:
         
         # Перенаправляем на страницу скачивания
         return redirect('download_page', slug=slug)
+
+
+async def privacy_policy(request: HttpRequest) -> HttpResponse:
+    """Страница политики конфиденциальности."""
+    return render(request, "privacy_policy.html")
+
+
+async def terms_of_service(request: HttpRequest) -> HttpResponse:
+    """Страница пользовательского соглашения."""
+    return render(request, "terms_of_service.html")
