@@ -65,8 +65,8 @@
                 <span class="total-price" id="totalPrice">0₽</span>
             </div>
             <div class="summary-actions">
-                <button class="back-button" id="checkoutBtn" onclick="proceedToCheckout()"><span>Перейти к оплате</span></button>
-                <button class="back-button danger" onclick="clearSelected()"><span>Удалить выбранное</span></button>
+                <button class="back-button" id="checkoutBtn" onclick="proceedToCheckout()" disabled style="opacity:0.5;"><span>Перейти к оплате</span></button>
+                <button class="back-button danger" id="clearSelectedBtn" onclick="clearSelected()" disabled style="opacity:0.5;"><span>Удалить выбранное</span></button>
             </div>
         </div>
         {% endif %}

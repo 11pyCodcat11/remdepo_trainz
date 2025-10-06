@@ -49,6 +49,7 @@ function updateSummary() {
     }
     
     const checkoutBtn = document.getElementById('checkoutBtn');
+    const clearSelectedBtn = document.getElementById('clearSelectedBtn');
     if (checkoutBtn) {
         if (checkboxes.length > 0) {
             checkoutBtn.disabled = false;
@@ -56,6 +57,15 @@ function updateSummary() {
         } else {
             checkoutBtn.disabled = true;
             checkoutBtn.style.opacity = '0.5';
+        }
+    }
+    if (clearSelectedBtn) {
+        if (checkboxes.length > 0) {
+            clearSelectedBtn.disabled = false;
+            clearSelectedBtn.style.opacity = '1';
+        } else {
+            clearSelectedBtn.disabled = true;
+            clearSelectedBtn.style.opacity = '0.5';
         }
     }
 }
