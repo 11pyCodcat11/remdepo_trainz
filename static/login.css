@@ -159,17 +159,29 @@ body {
 .checkbox-label {
     font-size: 28px;
     color: #3B3B3B;
-    display: flex;
+    display: inline-flex;
     align-items: center;
+    flex-wrap: wrap; /* переносим текст на 2 строки равномерно */
+    gap: 8px 10px; /* промежуток между чекбоксом и текстом/ссылкой */
     margin-bottom: 30px;
     text-align: center;
     justify-content: center;
+    line-height: 1.35;
+    max-width: 900px; /* ограничиваем ширину, чтобы было ровно 2 строки на десктопе */
 }
 
 .checkbox-label input {
     margin-right: 16px;
-    width: 28px;
-    height: 28px;
+    width: 36px; /* делаем чекбокс визуально крупнее */
+    height: 36px;
+    accent-color: #3B3B3B; /* цвет галочки */
+}
+
+/* Ссылка внутри подписи: не переносим по словам, чтобы не рвало фразу */
+.checkbox-label a {
+    color: #3B3B3B;
+    text-decoration: underline;
+    white-space: nowrap; /* не разделять "пользовательское соглашение" на две строки */
 }
 
 /* Кнопка внизу */
@@ -278,7 +290,13 @@ body {
         padding-left: 15px;
         padding-right: 50px;
     }
-    .checkbox-label { font-size: 14px; margin-bottom: 20px; }
+    .checkbox-label { 
+        font-size: 14px; 
+        margin-bottom: 20px; 
+        max-width: 100%; /* на мобильных даём занять ширину контейнера */
+        gap: 6px 8px;
+    }
+    .checkbox-label input { width: 24px; height: 24px; }
     .login-btn { 
         height: 65px; 
         font-size: 22px; 
