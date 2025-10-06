@@ -147,8 +147,8 @@ async def register(request):
         async with AsyncSessionLocal() as session:
             existing_user = await repository.get_user_by_username(session, username)
             if existing_user:
-                # Используем то же сервисное сообщение, что и при неверном входе
-                messages.error(request, "Неверное имя пользователя или пароль")
+                # Сообщение то же, но выводится тем же сервисным способом (через JS)
+                messages.error(request, "Пользователь с таким именем уже существует!")
             else:
                 await repository.create_user(session, username, email, password)
                 messages.success(request, "Аккаунт создан! Теперь войдите в систему.")
