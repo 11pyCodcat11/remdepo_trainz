@@ -27,4 +27,5 @@ urlpatterns = [
     path('api/remove-from-cart/', cart_views.remove_from_cart_api, name='remove_from_cart_api'),
     path('api/clear-cart/', cart_views.clear_cart_api, name='clear_cart_api'),
     path('api/checkout-cart/', cart_views.checkout_cart_api, name='checkout_cart_api'),
+    path('payment/success/<slug:slug>/', views.payment_success, name='payment_success'),
 ]

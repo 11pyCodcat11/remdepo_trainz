@@ -83,11 +83,11 @@
                         <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn"><span>Получить</span></button>
+                                <button class="get-btn" onclick="handleGetProduct({{ product.id }})"><span>Получить</span></button>
                             {% else %}
-                            <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span>Приобрести</span></button>
+                            <button class="get-btn" onclick="handleBuyProduct({{ product.id }})"><span>Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn"><span>В корзину</span></button>
+                            <button class="garbej-btn" onclick="addToCart({{ product.id }})"><span>В корзину</span></button>
                         </div>
                     {% endif %}
                 </div>
@@ -133,11 +133,11 @@
                         <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn"><span>Получить</span></button>
+                                <button class="get-btn" onclick="handleGetProduct({{ product.id }})"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span>Приобрести</span></button>
+                                <button class="get-btn" onclick="handleBuyProduct({{ product.id }})"><span>Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn"><span>В корзину</span></button>
+                            <button class="garbej-btn" onclick="addToCart({{ product.id }})"><span>В корзину</span></button>
                         </div>
                     {% endif %}
                 </div>
@@ -175,11 +175,11 @@
                         <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn"><span>Получить</span></button>
+                                <button class="get-btn" onclick="handleGetProduct({{ product.id }})"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span>Приобрести</span></button>
+                                <button class="get-btn" onclick="handleBuyProduct({{ product.id }})"><span>Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn"><span>В корзину</span></button>
+                            <button class="garbej-btn" onclick="addToCart({{ product.id }})"><span>В корзину</span></button>
                         </div>
                     </div>
                 </div>
@@ -223,11 +223,11 @@
                         <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
                         <div class="btn-row">
                             {% if product.is_free %}
-                                <button class="get-btn"><span>Получить</span></button>
+                                <button class="get-btn" onclick="handleGetProduct({{ product.id }})"><span>Получить</span></button>
                             {% else %}
-                                <button class="get-btn" onclick="window.location.href='/buy/{{ product.slug }}/'"><span class="btn-inner">Приобрести</span></button>
+                                <button class="get-btn" onclick="handleBuyProduct({{ product.id }})"><span class="btn-inner">Приобрести</span></button>
                             {% endif %}
-                            <button class="garbej-btn"><span>В корзину</span></button>
+                            <button class="garbej-btn" onclick="addToCart({{ product.id }})"><span>В корзину</span></button>
                         </div>
                     {% endif %}
                 </div>
@@ -266,6 +266,24 @@
         </div>
     </footer>
     
+    <script type="application/json" id="user-data">
+        {
+            "isAuthenticated": {{ user|yesno:"true,false" }}{% if user %},
+            "id": {{ user.id }},
+            "username": "{{ user.username|escapejs }}"{% endif %}
+        }
+    </script>
+    <script>
+        (function(){
+            try {
+                const ud = document.getElementById('user-data');
+                window.userData = JSON.parse(ud.textContent);
+            } catch(e) { 
+                console.warn('Failed to parse user data', e);
+                window.userData = { isAuthenticated: false };
+            }
+        })();
+    </script>
     <script src="{% static 'main.js' %}"></script>
 </body>
 </html>

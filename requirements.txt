@@ -1,4 +1,0 @@
-django>=4.2
-sqlalchemy[asyncio]>=2.0
-aiosqlite>=0.19
-asgiref>=3.8

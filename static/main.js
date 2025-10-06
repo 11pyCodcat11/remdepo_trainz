@@ -39,6 +39,7 @@ function showNotification(message, type = 'success', duration = 3000) {
         border-radius: 10px;
         font-family: 'Rubik', sans-serif;
         font-weight: 500;
+        font-size: 18px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         animation: slideIn 0.3s ease forwards;
@@ -273,3 +274,152 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Функции для покупки товаров (копия из product.js)
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+function showNotification(message, type = 'success', duration = 3000) {
+    // Создаем контейнер для уведомлений, если его нет
+    let container = document.getElementById('notification-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'notification-container';
+        container.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+        `;
+        document.body.appendChild(container);
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    notification.style.cssText = `
+        background: ${type === 'error' ? '#ff4444' : type === 'info' ? '#4488ff' : '#44ff44'};
+        color: white;
+        padding: 12px 20px;
+        margin: 5px 0;
+        border-radius: 5px;
+        font-size: 18px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        transition: all 0.3s ease;
+    `;
+    
+    container.appendChild(notification);
+    
+    // Автоматическое скрытие
+    setTimeout(() => {
+        notification.style.opacity = '0';
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (container.contains(notification)) {
+                container.removeChild(notification);
+            }
+        }, 300);
+    }, duration);
+}
+
+function showLoginRequired() {
+    // Просто перенаправляем на страницу входа без уведомлений
+    window.location.href = '/login/';
+}
+
+// Обработчик для получения бесплатного товара
+async function handleGetProduct(productId) {
+    try {
+        const response = await fetch('/api/get-product/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product_id: productId
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showNotification('Товар успешно добавлен в вашу библиотеку!', 'success', 3000);
+            // Перенаправляем на страницу скачивания
+            setTimeout(() => {
+                window.location.href = `/download/${window.productData.slug}/`;
+            }, 1500);
+        } else {
+            if (response.status === 401) {
+                showNotification('Необходимо войти в систему', 'error');
+                setTimeout(() => {
+                    window.location.href = '/login/';
+                }, 2000);
+            } else {
+                showNotification(data.error || 'Ошибка при получении товара', 'error');
+            }
+        }
+    } catch (error) {
+        console.error('Ошибка при получении товара:', error);
+        showNotification('Произошла ошибка. Попробуйте позже.', 'error');
+    }
+}
+
+// Обработчик для покупки товара
+async function handleBuyProduct(productId) {
+    try {
+        const response = await fetch('/api/buy-product/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                product_id: productId
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            if (data.success && data.payment_url) {
+                if (data.demo_mode) {
+                    showNotification('Демо-режим: Переходим к имитации оплаты', 'info', 3000);
+                } else {
+                    showNotification('Переходим к оплате через ЮKassa...', 'info', 3000);
+                }
+                
+                // Перенаправляем на страницу оплаты
+                setTimeout(() => {
+                    window.location.href = data.payment_url;
+                }, 1500);
+            } else {
+                showNotification('Товар успешно приобретен!', 'success', 5000);
+            }
+        } else {
+            if (response.status === 401) {
+                showNotification('Необходимо войти в систему', 'error');
+                setTimeout(() => {
+                    window.location.href = '/login/';
+                }, 2000);
+            } else {
+                showNotification(data.error || 'Ошибка при покупке товара', 'error');
+            }
+        }
+    } catch (error) {
+        console.error('Ошибка при покупке товара:', error);
+        showNotification('Произошла ошибка. Попробуйте позже.', 'error');
+    }
+}

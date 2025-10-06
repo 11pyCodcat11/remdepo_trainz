@@ -112,11 +112,6 @@ function showNotification(message, type = 'success', duration = 3000) {
 
 // Обработчик для получения бесплатного товара
 async function handleGetProduct(productId) {
-    if (!window.userData.isAuthenticated) {
-        showLoginRequired();
-        return;
-    }
-    
     try {
         const response = await fetch('/api/get-product/', {
             method: 'POST',
@@ -138,7 +133,14 @@ async function handleGetProduct(productId) {
                 window.location.href = `/download/${window.productData.slug}/`;
             }, 1500);
         } else {
-            showNotification(data.error || 'Ошибка при получении товара', 'error');
+            if (response.status === 401) {
+                showNotification('Необходимо войти в систему', 'error');
+                setTimeout(() => {
+                    window.location.href = '/login/';
+                }, 2000);
+            } else {
+                showNotification(data.error || 'Ошибка при получении товара', 'error');
+            }
         }
     } catch (error) {
         console.error('Ошибка при получении товара:', error);
@@ -148,11 +150,6 @@ async function handleGetProduct(productId) {
 
 // Обработчик для покупки товара
 async function handleBuyProduct(productId) {
-    if (!window.userData.isAuthenticated) {
-        showLoginRequired();
-        return;
-    }
-    
     try {
         const response = await fetch('/api/buy-product/', {
             method: 'POST',
@@ -183,7 +180,14 @@ async function handleBuyProduct(productId) {
                 showNotification(`${window.productData.title} успешно приобретен за ${window.productData.price}₽!`, 'success', 5000);
             }
         } else {
-            showNotification(data.error || 'Ошибка при покупке товара', 'error');
+            if (response.status === 401) {
+                showNotification('Необходимо войти в систему', 'error');
+                setTimeout(() => {
+                    window.location.href = '/login/';
+                }, 2000);
+            } else {
+                showNotification(data.error || 'Ошибка при покупке товара', 'error');
+            }
         }
     } catch (error) {
         console.error('Ошибка при покупке товара:', error);
@@ -225,15 +229,8 @@ async function handleAddToCart(productId) {
 
 // Показать сообщение о необходимости авторизации
 function showLoginRequired() {
-    showNotification('Для выполнения этого действия необходимо войти в систему', 'info', 4000);
-    
-    // Через небольшую задержку предложим перейти на страницу входа
-    setTimeout(() => {
-        const shouldLogin = confirm('Перейти на страницу входа?');
-        if (shouldLogin) {
-            window.location.href = '/login/';
-        }
-    }, 1000);
+    // Просто перенаправляем на страницу входа без уведомлений
+    window.location.href = '/login/';
 }
 
 // Инициализация при загрузке страницы

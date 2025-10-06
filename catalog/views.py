@@ -269,14 +269,25 @@ async def change_password(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -307,13 +318,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -406,14 +427,25 @@ async def change_login(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -444,13 +476,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -530,14 +572,25 @@ async def verify_password(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -568,13 +621,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -655,14 +718,25 @@ async def get_real_password(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -693,13 +767,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -797,14 +881,25 @@ async def add_to_cart(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -835,13 +930,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -931,14 +1036,25 @@ async def get_product_api(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -969,13 +1085,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -1134,14 +1260,25 @@ async def buy_product_api(request):
 
 
 async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
-    """Страница скачивания для бесплатных товаров"""
+    """Страница скачивания для товаров"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return render(request, "404.html", status=404)
     
-    if not p.is_free:
-        # Для платных товаров перенаправляем на оплату
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - перенаправляем на страницу товара
+    if not p.is_free and not is_purchased:
+        messages.error(request, "Сначала необходимо приобрести этот товар")
         return redirect('product_detail', slug=slug)
     
     # Сериализуем продукт с фотографиями
@@ -1172,13 +1309,23 @@ async def download_page(request: HttpRequest, slug: str) -> HttpResponse:
 
 async def download_file(request: HttpRequest, slug: str) -> HttpResponse:
     """API для скачивания файла"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        return JsonResponse({"error": "Необходимо войти в систему"}, status=401)
+    
     await repository.init_db()
     p = await repository.get_product(slug)
     if not p:
         return JsonResponse({"error": "Товар не найден"}, status=404)
     
-    if not p.is_free:
-        return JsonResponse({"error": "Товар не является бесплатным"}, status=403)
+    # Проверяем, куплен ли товар пользователем
+    async with AsyncSessionLocal() as session:
+        purchases = await repository.get_user_purchases(session, user_id)
+        is_purchased = any(purchase.product.id == p.id for purchase in purchases if purchase.product)
+    
+    # Если товар платный и не куплен - возвращаем ошибку
+    if not p.is_free and not is_purchased:
+        return JsonResponse({"error": "Сначала необходимо приобрести этот товар"}, status=403)
     
     # Здесь должна быть логика для реального скачивания файла
     # Пока возвращаем заглушку
@@ -1225,3 +1372,32 @@ async def payment_demo(request: HttpRequest, slug: str) -> HttpResponse:
     return render(request, "payment_demo.html", {
         "product": product_data
     })
+
+async def payment_success(request: HttpRequest, slug: str) -> HttpResponse:
+    """Обработка успешной оплаты"""
+    user_id = request.session.get("user_id")
+    if not user_id:
+        messages.error(request, "Необходимо войти в систему")
+        return redirect('login')
+    
+    await repository.init_db()
+    
+    async with AsyncSessionLocal() as session:
+        # Получаем товар
+        product = await repository.get_product(slug)
+        if not product:
+            return render(request, "404.html", status=404)
+        
+        # Проверяем, не куплен ли уже товар
+        purchases = await repository.get_user_purchases(session, user_id)
+        already_purchased = any(p.product.id == product.id for p in purchases if p.product)
+        
+        if not already_purchased:
+            # Создаем запись о покупке
+            await repository.create_purchase(session, user_id, product.id, product.price_rub)
+            messages.success(request, f"Товар '{product.title}' успешно приобретен!")
+        else:
+            messages.info(request, f"Товар '{product.title}' уже был приобретен ранее")
+        
+        # Перенаправляем на страницу скачивания
+        return redirect('download_page', slug=slug)
