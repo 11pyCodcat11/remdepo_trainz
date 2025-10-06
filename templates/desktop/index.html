@@ -172,15 +172,22 @@
         
                     <!-- Кнопки -->
                     <div class="card-buttons">
-                        <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
-                        <div class="btn-row">
-                            {% if product.is_free %}
-                                <button class="get-btn" onclick="handleGetProduct({{ product.id }})"><span>Получить</span></button>
-                            {% else %}
-                                <button class="get-btn" onclick="handleBuyProduct({{ product.id }})"><span>Приобрести</span></button>
-                            {% endif %}
-                            <button class="garbej-btn" onclick="addToCart({{ product.id }})"><span>В корзину</span></button>
-                        </div>
+                        {% if product.id in purchased_product_ids %}
+                            <div class="purchased-status">
+                                <span class="purchased-label">✓ Приобретен</span>
+                                <button class="download-btn" onclick="window.location.href='/download/{{ product.slug }}/'">Скачать</button>
+                            </div>
+                        {% else %}
+                            <button class="about-btn" onclick="window.location.href='/p/{{ product.slug }}/'"><span>О товаре</span></button>
+                            <div class="btn-row">
+                                {% if product.is_free %}
+                                    <button class="get-btn" onclick="handleGetProduct({{ product.id }})"><span>Получить</span></button>
+                                {% else %}
+                                    <button class="get-btn" onclick="handleBuyProduct({{ product.id }})"><span>Приобрести</span></button>
+                                {% endif %}
+                                <button class="garbej-btn" onclick="addToCart({{ product.id }})"><span>В корзину</span></button>
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
                 {% endfor %}
