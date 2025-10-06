@@ -64,9 +64,10 @@
                 <span class="summary-text">К оплате:</span>
                 <span class="total-price" id="totalPrice">0₽</span>
             </div>
-            <button class="checkout-btn" id="checkoutBtn" onclick="proceedToCheckout()">
-                <span>Перейти к оплате</span>
-            </button>
+            <div class="summary-actions">
+                <button class="back-button danger" onclick="clearSelected()"><span>Удалить выбранное</span></button>
+                <button class="back-button" id="checkoutBtn" onclick="proceedToCheckout()"><span>Перейти к оплате</span></button>
+            </div>
         </div>
         {% endif %}
     </div>

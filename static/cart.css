@@ -252,6 +252,17 @@ body {
     min-height: 120px;  /* Увеличиваем минимальную высоту */
 }
 
+.summary-actions {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+/* Вариант красной кнопки в стиле back-button */
+.back-button.danger { background-color: #FF6B6B; }
+.back-button.danger::after { background-color: #FF8A8A; }
+.back-button.danger:hover { transform: scale(1.05); }
+
 .summary-left {
     display: flex;
     align-items: center;

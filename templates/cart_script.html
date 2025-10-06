@@ -114,6 +114,23 @@ async function removeFromCart(productId) {
     }
 }
 
+// Удалить только выбранные позиции
+async function clearSelected() {
+    const checkboxes = document.querySelectorAll('.checkbox-input:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Нет выбранных товаров для удаления', 'error');
+        return;
+    }
+    if (!confirm('Удалить отмеченные товары из корзины?')) return;
+
+    for (const checkbox of checkboxes) {
+        const productId = parseInt(checkbox.dataset.productId);
+        if (!isNaN(productId)) {
+            await removeFromCart(productId);
+        }
+    }
+}
+
 // Очистить всю корзину
 async function clearCart() {
     if (!confirm('Вы уверены, что хотите очистить всю корзину?')) {
