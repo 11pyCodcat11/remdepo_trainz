@@ -86,8 +86,8 @@
         </div>
     </div>
 
-    <!-- Уведомления -->
-    <div id="notification-container"></div>
+    <!-- Уведомления в правом верхнем углу -->
+    <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
 
     <script>
         // Функция для показа уведомлений
@@ -112,11 +112,11 @@
         // Имитация оплаты
         function simulatePayment(success) {
             if (success) {
-                showNotification('Оплата прошла успешно!', 'success', 1200);
-                // Небольшая пауза и сразу редирект на страницу скачивания
+                showNotification('Оплата прошла успешно!', 'success', 1000);
+                // Быстрый редирект на страницу скачивания (замена истории)
                 setTimeout(() => {
-                    window.location.href = `/download/{{ product.slug }}/`;
-                }, 1200);
+                    window.location.replace(`/download/{{ product.slug }}/`);
+                }, 1000);
             } else {
                 showNotification('Ошибка оплаты. Попробуйте еще раз.', 'error', 4000);
                 setTimeout(() => {
