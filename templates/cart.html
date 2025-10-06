@@ -15,6 +15,9 @@
         <span>Назад в профиль</span>
     </a>
 
+    <!-- Контейнер уведомлений в правом верхнем углу -->
+    <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
+
     <div class="page-container">
         <h1 class="page-title">Корзина</h1>
         
@@ -84,12 +87,6 @@
         </div>
     </div>
 
-    <script>
-        // Передаем данные в JavaScript
-        window.cartData = {{ cart_items_json|safe }};
-        
-        // Функции для работы с корзиной
-        {% include "cart_script.html" %}
-    </script>
+    {% include 'cart_script.html' %}
 </body>
 </html>
