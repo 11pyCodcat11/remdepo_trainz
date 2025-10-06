@@ -115,7 +115,8 @@
                 showNotification('Оплата прошла успешно!', 'success', 1000);
                 // Быстрый редирект на страницу скачивания (замена истории)
                 setTimeout(() => {
-                    window.location.replace(`/download/{{ product.slug }}/`);
+                    // Оформляем покупку через серверный обработчик и уже оттуда перенаправляем на скачивание
+                    window.location.replace(`/payment/success/{{ product.slug }}/`);
                 }, 1000);
             } else {
                 showNotification('Ошибка оплаты. Попробуйте еще раз.', 'error', 4000);
