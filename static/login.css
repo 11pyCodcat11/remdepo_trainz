@@ -182,7 +182,7 @@ body {
 }
 .checkbox-text a { 
     color: inherit; 
-    text-decoration: none; /* убрать синий и подчёркивание */
+    text-decoration: underline; /* по требованию: подчеркнуть ссылку */
 }
 
 /* Кнопка внизу */
@@ -310,6 +310,9 @@ body {
     .eye-toggle svg { width: 20px; height: 20px; fill: #9F9E9D; }
     .error-message { font-size: 14px; margin: -10px 0 10px 0; }
 }
+
+/* Отступ вниз только на странице регистрации */
+.register-page .login-card { margin-top: 5%; }
 
 
 .global-error {
