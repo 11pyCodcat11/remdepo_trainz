@@ -112,13 +112,11 @@
         // Имитация оплаты
         function simulatePayment(success) {
             if (success) {
-                showNotification('Оплата прошла успешно!', 'success', 3000);
+                showNotification('Оплата прошла успешно!', 'success', 1200);
+                // Небольшая пауза и сразу редирект на страницу скачивания
                 setTimeout(() => {
-                    showNotification('Перенаправляем на страницу скачивания...', 'info', 2000);
-                    setTimeout(() => {
-                        window.location.href = `/download/{{ product.slug }}/`;
-                    }, 2000);
-                }, 1500);
+                    window.location.href = `/download/{{ product.slug }}/`;
+                }, 1200);
             } else {
                 showNotification('Ошибка оплаты. Попробуйте еще раз.', 'error', 4000);
                 setTimeout(() => {
