@@ -15,10 +15,10 @@ body {
     padding: 20px;
 }
 
-/* Кнопка назад */
-/* back-button base styles are in styles.css; only page-specific overrides below */
-.back-button { position: fixed; top: 34px; left: 34px; z-index: 100; }
-.back-button > span { display: inline-block; transform: translateY(-3px); }
+/* Кнопка назад (только верхняя, глобальная) */
+/* базовые стили в styles.css; здесь позиционируем ТОЛЬКО ссылку сверху */
+body > .back-button { position: fixed; top: 34px; left: 34px; z-index: 100; }
+body > .back-button > span { display: inline-block; transform: translateY(-3px); }
 
 /* Основной контейнер страницы */
 .page-container {
@@ -260,7 +260,7 @@ body {
 }
 
 /* Вариант красной кнопки в стиле back-button */
-.back-button.danger { background-color: #FF6B6B; }
+.back-button.danger { background-color: #FF6B6B; position: static; }
 .back-button.danger::after { background-color: #FF8A8A; }
 .back-button.danger:hover { transform: scale(1.05); }
 
