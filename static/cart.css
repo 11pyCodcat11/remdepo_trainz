@@ -414,6 +414,7 @@ body > .back-button > span { display: inline-block; transform: translateY(-3px);
 .confirm-title { color: #5C3A00; font-size: 28px; font-weight: 700; margin-bottom: 10px; }
 .confirm-message { color: #3B3B3B; font-size: 20px; margin-bottom: 20px; }
 .confirm-actions { display: flex; gap: 16px; justify-content: center; }
+.confirm-actions .back-button > span { display:inline-block; transform: translate(-3px, -3px); }
 
 @media (max-width: 480px) {
     .page-title {

@@ -227,7 +227,12 @@ async function proceedToCheckout() {
         });
         
         const data = await response.json();
-        
+        if (!response.ok) {
+            console.error('Checkout error response:', data);
+            showNotification(data.error || 'Ошибка при оформлении заказа', 'error');
+            return;
+        }
+
         if (response.ok) {
             if (data.success) {
                 if (data.free_products && data.free_products.length > 0) {
@@ -237,15 +242,14 @@ async function proceedToCheckout() {
                         window.location.href = `/download/${data.free_products[0]}/`;
                     }, 1500);
                 } else if (data.payment_url) {
-                    // Есть платные товары - перенаправляем на оплату
-                    showNotification('Переходим к оплате...', 'info', 2000);
-                    setTimeout(() => {
-                        window.location.href = data.payment_url;
-                    }, 1000);
+                    // Есть платные товары - перенаправляем на оплату (демо)
+                    showNotification('Переходим к оплате...', 'info', 1000);
+                    window.location.href = data.payment_url;
+                } else {
+                    // Фоллбэк на демо-страницу оплаты корзины
+                    window.location.href = '/payment/demo/cart-checkout/';
                 }
             }
-        } else {
-            showNotification(data.error || 'Ошибка при оформлении заказа', 'error');
         }
     } catch (error) {
         console.error('Ошибка при оформлении заказа:', error);
