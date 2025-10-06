@@ -358,6 +358,17 @@ body {
     margin-right: auto;
 }
 
+/* Кнопка выхода — красная, стилем как остальные */
+.change-btns.logout {
+    grid-column: 1 / span 2; /* занять ширину двух кнопок */
+    background-color: #FF6B6B;
+    max-width: 720px; /* чуть шире, визуально как две кнопки */
+}
+
+.change-btns.logout::after { background-color: #FF8A8A; }
+.change-btns.logout:hover { background-color: #ff7f7f; box-shadow: 0 8px 25px rgba(255, 107, 107, 0.35); }
+.change-btns.logout:active { box-shadow: 0 2px 10px rgba(255, 107, 107, 0.25); }
+
 /* Стили для модальных окон */
 .modal-overlay {
     position: fixed;
