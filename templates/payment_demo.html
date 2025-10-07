@@ -111,12 +111,18 @@
 
         // Имитация оплаты
         function simulatePayment(success) {
+            const isCartCheckout = '{{ product.slug }}' === 'cart-items';
             if (success) {
                 showNotification('Оплата прошла успешно!', 'success', 1000);
                 // Быстрый редирект на страницу скачивания (замена истории)
                 setTimeout(() => {
-                    // Оформляем покупку через серверный обработчик и уже оттуда перенаправляем на скачивание
-                    window.location.replace(`/payment/success/{{ product.slug }}/`);
+                    if (isCartCheckout) {
+                        // Для корзины нет конкретного товара; ведём в историю покупок
+                        window.location.replace('/purchases/');
+                    } else {
+                        // Для одиночного товара оформляем покупку и редиректим на скачивание
+                        window.location.replace(`/payment/success/{{ product.slug }}/`);
+                    }
                 }, 1000);
             } else {
                 showNotification('Ошибка оплаты. Попробуйте еще раз.', 'error', 4000);
