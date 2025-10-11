@@ -1,0 +1,759 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import url('/static/common.css');
+body {
+    font-family: Arial, sans-serif;
+    background-color: #FEF6DF;
+    margin: 0;
+}
+
+header {
+    background-color: #FFE1A8;
+    color: white;
+    padding: 0; /* убираем отступы */}
+
+nav a {
+    color: lightblue;
+    text-decoration: none;
+}
+
+main {
+    padding: 20px;
+}
+
+
+/* Стили для footer */
+footer {
+    background-color: #3B3B3B;
+    padding: 30px 20px;
+    text-align: left; /* Выравнивание по левому краю */
+    font-family: 'Rubik', sans-serif;
+    font-size: 20px;
+    line-height: 1.6;
+    color: #FFFFFF;
+    margin-top: auto;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: left; /* Выравнивание содержимого по левому краю */
+}
+
+footer p {
+    margin: 10px 0;
+    text-align: left; /* Выравнивание параграфов по левому краю */
+}
+
+.footer-links {
+    margin: 15px 0;
+    text-align: left; /* Выравнивание ссылок по левому краю */
+}
+
+footer a {
+    color: #FFFFFF;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.footer-credits {
+    margin-top: 20px;
+    font-size: 18px;
+    text-align: left; /* Выравнивание credits по левому краю */
+}
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 768px) {
+    footer {
+        font-size: 18px;
+        padding: 20px 15px;
+        text-align: center; /* На мобильных центрируем */
+    }
+    
+    .footer-content,
+    footer p,
+    .footer-links,
+    .footer-credits {
+        text-align: center; /* На мобильных центрируем */
+    }
+    
+    .footer-credits {
+        font-size: 16px;
+    }
+    
+    .footer-links {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .footer-links a:not(:last-child)::after {
+        content: "|";
+        margin: 0 10px;
+    }
+}
+
+.menu {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* ДЕПО слева, профиль справа */
+    width: 100%; /* <-- важно */
+}
+
+/* Для группы центральных ссылок можно создать отдельный контейнер */
+.menu-links {
+    display: flex;
+    gap: 70px;  /* расстояние между ссылками */
+}
+
+/* Burger button (visible on mobile via mobile.css) */
+.burger-btn {
+    display: none; /* hidden by default for desktop */
+    position: relative;
+    width: 44px;
+    height: 36px;
+    border: 0;
+    background: transparent;
+    padding: 4px;
+    cursor: pointer;
+}
+.burger-btn .burger-line {
+    position: absolute;
+    left: 6px;
+    right: 6px;
+    height: 3px;
+    background: #3B3B3B;
+    border-radius: 3px;
+    transition: transform 200ms ease, opacity 200ms ease, top 200ms ease;
+}
+.burger-btn .burger-line:nth-child(1) { top: 8px; }
+.burger-btn .burger-line:nth-child(2) { top: 16px; }
+.burger-btn .burger-line:nth-child(3) { top: 24px; }
+.burger-btn[aria-expanded="true"] .burger-line:nth-child(1) {
+    top: 16px; transform: rotate(45deg);
+}
+.burger-btn[aria-expanded="true"] .burger-line:nth-child(2) {
+    opacity: 0;
+}
+.burger-btn[aria-expanded="true"] .burger-line:nth-child(3) {
+    top: 16px; transform: rotate(-45deg);
+}
+
+/* Mobile dropdown nav container (positioned below menu-line) */
+.mobile-nav {
+    display: none; /* desktop hidden */
+}
+.mobile-menu,
+.mobile-menu .submenu {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.mobile-menu li { border-bottom: 1px solid rgba(0,0,0,0.06); }
+.mobile-menu a, .mobile-menu .submenu-toggle {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 14px 18px;
+    text-decoration: none;
+    color: #3B3B3B;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    background: transparent;
+}
+.mobile-menu a:hover { background: rgba(0,0,0,0.04); }
+.submenu-toggle { border: 0; cursor: pointer; }
+.submenu {
+    background: #FEF6DF;
+}
+
+
+.menu a {
+    font-family: 'Poppins', sans-serif;
+    font-size: clamp(20px, 4vw, 30px); /* адаптивный размер шрифта */
+    font-weight: 700;
+    color: #5C3A00;
+    text-decoration: none;
+    white-space: nowrap; /* предотвращаем перенос текста */
+}
+
+.menu a:hover {
+    color: #8B5A00; /* темнее при наведении */
+    text-decoration: underline; /* подчеркивание */
+    text-decoration-thickness: 2px; /* толщина подчеркивания */
+    text-underline-offset: 5px; /* расстояние от текста */
+}
+
+.popular-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 58px;
+    color: #5C3A00;
+    text-align: center;
+    text-decoration: none !important;
+    font-weight: 400; /* вот сюда добавляем */
+}
+
+
+.card {
+    width: 400px;
+    height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FFE1A8;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;              /* включаем flex */
+    flex-direction: column;     /* вертикальная компоновка */
+    justify-content: space-between; /* растягиваем: контент сверху, кнопки внизу */
+}
+
+
+.card-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.card-buttons {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Специальный стиль для карточек с купленными товарами */
+.card-buttons:has(.purchased-status) {
+    margin-top: auto; /* Синхронизируем с translateY(0px) - возвращаем к обычному положению */
+}
+
+.card .btn-row {
+    display: flex;    
+    justify-content: center;     /* кнопки в одну линию */
+    gap: 10px;             /* расстояние между ними */
+}
+
+.btn-row{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: nowrap;           /* не переносить */
+    width: 100%;
+}
+
+
+/* --- Базовый стиль для кнопок --- */
+.about-btn,
+.get-btn,
+.garbej-btn,
+.btn-primary.btn-buy,
+.btn-primary.btn-get,
+.btn-secondary.btn-cart {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+    height: 80px;
+
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 25px;
+
+    cursor: pointer;
+    z-index: 1;
+    box-sizing: border-box;
+
+    /* фикс против «дрожания» */
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+/* Индивидуальные размеры */
+.about-btn { width: 390px; margin: 0 0 20px 10px; }
+.get-btn,
+.garbej-btn,
+.btn-primary.btn-buy,
+.btn-primary.btn-get,
+.btn-secondary.btn-cart { width: 180px; margin-left: 13px; }
+
+/* Увеличим шрифт карточных кнопок на 10% */
+.about-btn,
+.get-btn,
+.garbej-btn { font-size: 27.5px; }
+
+/* Смещение текста (декор) */
+/* Текст в кнопках — переносим смещение на span + стабилизируем рендер */
+.about-btn > span { display: inline-block; transform: translate(-7px, -5px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+.get-btn > span   { display: inline-block; transform: translate(-6px, -5px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+.garbej-btn > span{ display: inline-block; transform: translate(-7px, -3px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+/* Смещение текста для кнопки корзины и купить/получить в продукте */
+.btn-secondary.btn-cart > span{ display: inline-block; transform: translate(-7px, -3px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+.btn-primary.btn-buy > span,
+.btn-primary.btn-get > span{ display: inline-block; transform: translate(-6px, -5px) translateZ(0); transition: transform 0.2s ease; backface-visibility: hidden; will-change: transform; transform-origin: center center; }
+
+/* Тень */
+.about-btn::after,
+.get-btn::after,
+.garbej-btn::after,
+.btn-primary.btn-buy::after,
+.btn-primary.btn-get::after,
+.btn-secondary.btn-cart::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-color: #FFC75D;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+/* Hover — пропорциональное увеличение */
+.about-btn:hover,
+.get-btn:hover,
+.garbej-btn:hover,
+.btn-primary.btn-buy:hover,
+.btn-primary.btn-get:hover,
+.btn-secondary.btn-cart:hover {
+    transform: scale(1.05);
+}
+
+/* Hover — масштабируется вся кнопка, смещения текста увеличиваются пропорционально за счёт наследования трансформации */
+
+/* Единое центрирование контента и стабильная линия текста для всех пяти кнопок */
+.about-btn,
+.get-btn,
+.garbej-btn,
+.btn-secondary.btn-cart,
+.btn-primary.btn-get {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;           /* исключаем влияние метрик шрифта */
+}
+
+/* -------------------------
+   Адаптивность (iPad и мобильные)
+   ------------------------- */
+@media (max-width: 1024px) {
+    .popular-title { font-size: 42px; }
+    .cards { gap: 26px; }
+    .card { width: 360px; height: 560px; }
+    .card-title { font-size: 26px; }
+    .pricec { font-size: 26px; }
+
+    .about-btn { width: 330px; height: 72px; }
+    .get-btn, .garbej-btn { width: 170px; height: 72px; }
+    .about-btn, .get-btn, .garbej-btn { font-size: 26px; }
+
+    #rolling_stock, #scenarios, #popular, #maps, #useful_links { padding: 30px 0; }
+}
+
+@media (max-width: 768px) {
+    .menu { flex-wrap: wrap; }
+    .menu-links { gap: 24px; }
+    .popular-title { font-size: 32px; }
+    .cards { gap: 20px; }
+    .card { width: 320px; height: auto; }
+    .card-title { font-size: 23px; }
+    .pricec { font-size: 23px; }
+
+    .about-btn { width: 280px; height: 64px; }
+    .get-btn, .garbej-btn { width: 160px; height: 64px; }
+    .about-btn, .get-btn, .garbej-btn { font-size: 24px; }
+
+    #rolling_stock, #scenarios, #popular, #maps, #useful_links { padding: 24px 0; }
+}
+
+/* Active — «проваливание» */
+.about-btn:active,
+.get-btn:active,
+.garbej-btn:active,
+.btn-primary.btn-buy:active,
+.btn-primary.btn-get:active,
+.btn-secondary.btn-cart:active {
+    transform: translate(5px, 5px);
+}
+
+
+/* Статус приобретенного товара */
+.purchased-status {
+    display: flex;
+    flex-direction: column;
+    gap: 12px; /* Уменьшаем расстояние между элементами */
+    align-items: center;
+    width: 100%; /* Для полного выравнивания */
+    position: relative;
+    transform: translateY(0px); /* Опускаем кнопку еще на 20px: -20px + 20px = 0px */
+}
+
+.purchased-label {
+    color: #2E7D32; /* Более насыщенный зеленый */
+    font-weight: 800; /* Делаем текст жирнее */
+    font-size: 30px; /* Немного уменьшаем: 36px -> 30px */
+    font-family: 'Rubik', sans-serif; /* Единый шрифт сайта */
+    text-align: center;
+    background-color: transparent; /* Убираем фон */
+    padding: 0; /* Убираем отступы */
+    border-radius: 0; /* Убираем скругление */
+    border: none; /* Убираем обводку */
+    box-shadow: none; /* Убираем тень */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 390px; /* Та же ширина, что у кнопки 'О товаре' */
+    height: 70px; /* Немного уменьшаем высоту */
+    margin: 0;
+    position: relative;
+    transform: translateY(-50px); /* Поднимаем только текст "✓ Приобретен" на 50px */
+}
+
+.download-btn {
+    width: 320px; /* Уменьшаем ширину */
+    height: 75px; /* Увеличиваем высоту на 10px: 65px + 10px = 75px */
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 10px; /* Такое же скругление, как у других кнопок */
+    font-family: 'Rubik', sans-serif; /* Единый шрифт сайта */
+    font-weight: 700;
+    font-size: 22px; /* Немного уменьшаем размер шрифта */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 0 5px 0; /* Поднимаем текст на 5px выше с помощью padding-bottom */
+    line-height: 1;
+}
+
+.download-btn::after {
+    content: '';
+    position: absolute;
+    top: -8px; /* Немного меньшее смещение для меньшей кнопки */
+    left: -8px;
+    width: calc(100% + 4px); /* Такой же размер тени, как у других кнопок */
+    height: calc(100% + 4px);
+    background-color: #81C784; /* Светло-зеленый для тени */
+    border-radius: 10px; /* Соответствует основному элементу */
+    z-index: -1;
+}
+
+.download-btn:hover {
+    transform: scale(1.03);
+}
+
+.download-btn:active {
+    transform: translate(5px, 5px); /* Такое же смещение, как у других кнопок */
+}
+
+.about-btn,
+.get-btn,
+.garbej-btn {
+    display: flex;
+    align-items: center;        /* по центру по вертикали */
+    justify-content: center;    /* по центру по горизонтали */
+    line-height: 1;
+    padding-top: 0;             /* без смещения */
+    padding-left: 0;            /* без смещения */
+}
+    
+.card img {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+.card-title {
+    font-family: 'Rubik', sans-serif;
+    font-size: 30px;
+    font-weight: 500;
+    margin: 10px 0;
+    color: #3B3B3B;
+    text-align: center;
+
+    width: 100%;             /* ограничение ширины внутри карточки */
+    white-space: nowrap;     /* запрет переноса */
+    overflow: hidden;        /* скрыть лишнее */
+    text-overflow: ellipsis; /* троеточие */
+    box-sizing: border-box;  /* чтобы учитывались паддинги */
+}
+
+
+.cards{
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.header-img {
+    width: 100%;
+    border: none;
+}
+
+.header-img-wrapper {
+    width: 100%;
+    height: 850px;       /* оставляем только верхние 325px */
+    overflow: hidden;    /* всё что ниже — скрывается */
+    margin-top: -200px;
+  
+}
+
+.header_menu {
+    width: 100%;
+    height: 150px;
+    background-color: #FFE1A8; /* чтобы меню не сливалось */
+    display: flex;
+    align-items: center; /* выравнивание по вертикали */
+    justify-content: center; /* выравнивание по горизонтали */
+}
+
+.menu-line {
+    width: 90%;
+    height: 100px;
+    border-radius: 20px;
+    background-color: #FFC75D;
+    display: flex;
+    align-items: center;
+    /* убираем justify-content здесь */
+    padding: 0 20px;
+}
+
+
+.vk-btn, .profile-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 15px;
+    border: 5px solid #3B3B3B;
+    border-radius: 16px;
+    background: #FFC75D;
+    cursor: pointer;
+    font-size: clamp(20px, 4vw, 30px); /* адаптивный размер */
+    font-family: 'Poppins', sans-serif;
+    transition: 0.3s;
+    font-weight: 700;
+    text-decoration: none !important;
+    color: inherit;
+    white-space: nowrap;
+}
+
+
+.vk-btn img, .profile-btn img {
+    width: clamp(40px, 8vw, 50px); /* адаптивный размер иконки */
+    height: clamp(40px, 8vw, 50px);
+    object-fit: contain;
+}
+
+
+.vk-btn span, .profile-btn span {
+    color: #3B3B3B;
+}
+
+.vk-btn:hover, .profile-btn:hover {
+    background: #FEF6DF; /* подсветка при наведении */
+    text-decoration: none !important;
+    color: inherit; /* сохраняем цвет текста */
+
+}
+
+
+.pricec {
+    font-family: 'Rubik', sans-serif;
+    font-size: 30px;
+    font-weight: 400;
+    color: #3B3B3B;
+}
+
+#rolling_stock,
+#scenarios {
+    position: relative;             /* нужно для left/right работать корректно */
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;             /* сдвигаем влево на половину viewport */
+    margin-right: -50vw;            /* сдвигаем вправо на половину viewport */
+    width: 100vw;                   /* растягиваем по ширине viewport */
+    box-sizing: border-box;
+    background-color: #FFE1A8;      /* нужный фон */
+    padding: 40px 0;                /* вертикальные отступы сверху/снизу */
+}
+
+#popular,
+#maps {
+    padding: 40px 0;  
+}
+
+/* Увеличиваем «длину» секций снизу на ~20% */
+#popular,
+#maps,
+#rolling_stock,
+#scenarios,
+#useful_links {
+    padding-bottom: calc(40px + 10%);
+}
+
+.back-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 200px;
+    max-width: 500px;
+    width: auto;
+    height: 80px;
+    padding: 0 30px;
+
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 10px;
+
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800; /* bold */
+    font-size: 32px; /* больше чем у основных кнопок */
+
+    cursor: pointer;
+    z-index: 1;
+    box-sizing: border-box;
+    text-decoration: none;
+    white-space: nowrap;
+
+    /* фикс против «дрожания» */
+    transition: transform 0.2s ease;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
+}
+
+
+
+
+
+
+.card-rolling_stock {
+    width: 400px;
+    height: 600px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+    background-color: #FEF6DF; /* фон карточки */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    display: flex;                  /* flex для выравнивания */
+    flex-direction: column;         /* вертикальная компоновка */
+    justify-content: space-between; /* контент сверху, кнопки внизу */
+}
+
+
+
+.card-rolling_stock img {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    border-radius: 20px;
+}
+
+#useful_links {
+    background-color: #FEF6DF;   /* фон секции */
+    padding: 40px 0;
+    text-align: center;
+}
+
+.useful-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.useful-container img {
+    max-width: 600px;   /* увеличенное изображение */
+    border-radius: 0;   /* убрали скругление */
+    margin-bottom: 30px;
+    box-shadow: none;   /* убрали обводку/тень */
+}
+
+.useful-text {
+    font-family: 'Rubik', sans-serif;
+    font-size: 45px;
+    font-weight: 500; /* medium */
+    color: #394850;
+    margin: 0;
+}
+
+/* Тень для back-button */
+.back-button::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: calc(100% + 4px);
+    height: calc(100% + 4px);
+    background-color: #FFC75D;
+    border-radius: 10px;
+    z-index: -1;
+}
+
+/* Hover — пропорциональное увеличение */
+.back-button:hover {
+    transform: scale(1.05); /* +5% вместо 10% */
+}
+
+/* Active — «проваливание» */
+.back-button:active {
+    transform: translate(5px, 5px);
+}
+
+/* Стили для уведомлений */
+.notification {
+    font-size: 18px !important;
+    font-weight: 500;
+    padding: 15px 25px;
+    margin: 10px 0;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.notification.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.notification.error {
+    background-color: #f44336;
+    color: white;
+}
+
+.notification.info {
+    background-color: #2196F3;
+    color: white;
+}
+
+.notification.hiding {
+    opacity: 0;
+    transform: translateX(100%);
+}

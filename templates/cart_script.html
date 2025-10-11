@@ -1,0 +1,272 @@
+// Получение CSRF токена
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Показ уведомлений
+function showNotification(message, type = 'success', duration = 3000) {
+    const container = document.getElementById('notification-container');
+    const notification = document.createElement('div');
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
+    
+    container.appendChild(notification);
+    
+    setTimeout(() => {
+        notification.classList.add('hiding');
+        setTimeout(() => {
+            if (container.contains(notification)) {
+                container.removeChild(notification);
+            }
+        }, 300);
+    }, duration);
+}
+
+// Обновление итоговой информации
+function updateSummary() {
+    const checkboxes = document.querySelectorAll('.checkbox-input:checked');
+    let totalPrice = 0;
+    
+    checkboxes.forEach(checkbox => {
+        const price = parseFloat(checkbox.dataset.price) || 0;
+        totalPrice += price;
+    });
+    
+    const totalPriceElement = document.getElementById('totalPrice');
+    if (totalPriceElement) {
+        totalPriceElement.textContent = totalPrice + '₽';
+    }
+    
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    const clearSelectedBtn = document.getElementById('clearSelectedBtn');
+    if (checkoutBtn) {
+        if (checkboxes.length > 0) {
+            checkoutBtn.disabled = false;
+            checkoutBtn.style.opacity = '1';
+        } else {
+            checkoutBtn.disabled = true;
+            checkoutBtn.style.opacity = '0.5';
+        }
+    }
+    if (clearSelectedBtn) {
+        if (checkboxes.length > 0) {
+            clearSelectedBtn.disabled = false;
+            clearSelectedBtn.style.opacity = '1';
+        } else {
+            clearSelectedBtn.disabled = true;
+            clearSelectedBtn.style.opacity = '0.5';
+        }
+    }
+}
+
+// Выбрать все товары
+function toggleSelectAll() {
+    const selectAllCheckbox = document.getElementById('selectAll');
+    const itemCheckboxes = document.querySelectorAll('.item-checkbox');
+    
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.checked = selectAllCheckbox.checked;
+    });
+    
+    updateSummary();
+}
+
+// Удалить товар из корзины
+async function removeFromCart(productId) {
+    try {
+        const response = await fetch('/api/remove-from-cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                product_id: productId
+            })
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            // Удаляем элемент из DOM
+            const cartItem = document.querySelector(`.cart-item-card[data-product-id="${productId}"]`);
+            if (cartItem) {
+                cartItem.remove();
+            }
+            
+            // Обновляем итоги
+            updateSummary();
+            
+            // Проверяем, остались ли товары
+            const remainingItems = document.querySelectorAll('.cart-item-card');
+            if (remainingItems.length === 0) {
+                location.reload(); // Перезагружаем страницу для показа пустой корзины
+            }
+            
+            showNotification('Товар удален из корзины', 'success');
+        } else {
+            showNotification(data.error || 'Ошибка при удалении товара', 'error');
+        }
+    } catch (error) {
+        console.error('Ошибка при удалении товара:', error);
+        showNotification('Произошла ошибка. Попробуйте позже.', 'error');
+    }
+}
+
+// Удалить только выбранные позиции
+async function clearSelected() {
+    const checkboxes = document.querySelectorAll('.checkbox-input:checked');
+    if (checkboxes.length === 0) {
+        showNotification('Нет выбранных товаров для удаления', 'error');
+        return;
+    }
+
+    // Показываем стилизованное подтверждение
+    const overlay = document.getElementById('confirmOverlay');
+    overlay.style.display = 'flex';
+
+    return new Promise(resolve => {
+        const yesBtn = document.getElementById('confirmYes');
+        const noBtn = document.getElementById('confirmNo');
+
+        function cleanup() {
+            overlay.style.display = 'none';
+            yesBtn.removeEventListener('click', onYes);
+            noBtn.removeEventListener('click', onNo);
+        }
+
+        async function onYes() {
+            cleanup();
+            for (const checkbox of checkboxes) {
+                const productId = parseInt(checkbox.dataset.productId);
+                if (!isNaN(productId)) {
+                    await removeFromCart(productId);
+                }
+            }
+            resolve();
+        }
+
+        function onNo() { cleanup(); resolve(); }
+
+        yesBtn.addEventListener('click', onYes);
+        noBtn.addEventListener('click', onNo);
+    });
+}
+
+// Очистить всю корзину
+async function clearCart() {
+    if (!confirm('Вы уверены, что хотите очистить всю корзину?')) {
+        return;
+    }
+    
+    try {
+        const response = await fetch('/api/clear-cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            showNotification('Корзина очищена', 'success');
+            setTimeout(() => {
+                location.reload();
+            }, 1000);
+        } else {
+            showNotification(data.error || 'Ошибка при очистке корзины', 'error');
+        }
+    } catch (error) {
+        console.error('Ошибка при очистке корзины:', error);
+        showNotification('Произошла ошибка. Попробуйте позже.', 'error');
+    }
+}
+
+// Посмотреть товар
+function viewProduct(slug) {
+    window.open(`/p/${slug}/`, '_blank');
+}
+
+// Перейти к оплате
+async function proceedToCheckout() {
+    const checkboxes = document.querySelectorAll('.checkbox-input:checked');
+    
+    if (checkboxes.length === 0) {
+        showNotification('Выберите товары для покупки', 'error');
+        return;
+    }
+    
+    const selectedProducts = Array.from(checkboxes).map(checkbox => ({
+        product_id: parseInt(checkbox.dataset.productId),
+        price: parseFloat(checkbox.dataset.price) || 0
+    }));
+    
+    try {
+        const response = await fetch('/api/checkout-cart/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken')
+            },
+            body: JSON.stringify({
+                selected_products: selectedProducts
+            })
+        });
+        
+        const data = await response.json();
+        if (!response.ok) {
+            console.error('Checkout error response:', data);
+            showNotification(data.error || 'Ошибка при оформлении заказа', 'error');
+            return;
+        }
+
+        if (response.ok) {
+            if (data.success) {
+                if (data.free_products && data.free_products.length > 0) {
+                    // Есть бесплатные товары - перенаправляем на страницу скачивания первого
+                    showNotification('Бесплатные товары добавлены в библиотеку!', 'success', 3000);
+                    setTimeout(() => {
+                        window.location.href = `/download/${data.free_products[0]}/`;
+                    }, 1500);
+                } else if (data.payment_url) {
+                    // Есть платные товары - перенаправляем на оплату (демо)
+                    showNotification('Переходим к оплате...', 'info', 1000);
+                    window.location.href = data.payment_url;
+                } else {
+                    // Фоллбэк на демо-страницу оплаты корзины
+                    window.location.href = '/payment/demo/cart-checkout/';
+                }
+            }
+        }
+    } catch (error) {
+        console.error('Ошибка при оформлении заказа:', error);
+        showNotification('Произошла ошибка. Попробуйте позже.', 'error');
+    }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    // Обработчики для индивидуальных чекбоксов
+    const itemCheckboxes = document.querySelectorAll('.checkbox-input');
+    itemCheckboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateSummary();
+        });
+    });
+    
+    // Начальное обновление итогов
+    updateSummary();
+});

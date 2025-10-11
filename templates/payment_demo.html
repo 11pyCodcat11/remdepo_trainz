@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Демо оплата - {{ product.title }}</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="{% static 'download.css' %}">
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <a href="{% url 'home' %}" class="back-button">
+        <span>Вернуться к каталогу</span>
+    </a>
+
+    <div class="download-container">
+        <div class="download-card">
+            <!-- Иконка оплаты -->
+            <div class="success-icon" style="background: #2196F3;">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20,8H4V6C4,4.89 4.89,4 6,4H18A2,2 0 0,1 20,6V8M20,8V18A2,2 0 0,1 18,20H6C4.89,20 4,19.1 4,18V8H20M16,1V3H8V1H16M10,14V12H14V14H10Z"/>
+                </svg>
+            </div>
+
+            <h1 class="download-title">Демо оплата</h1>
+            
+            <!-- Информация о товаре -->
+            <div class="product-info">
+                {% if product.photos %}
+                    <img src="{{ product.photos.0.file_path }}" alt="{{ product.title }}" class="product-image">
+                {% endif %}
+                <div class="product-details">
+                    <h2>{{ product.title }}</h2>
+                    {% if product.subtitle %}
+                        <p class="subtitle">{{ product.subtitle }}</p>
+                    {% endif %}
+                    <p class="category">{{ product.category }}</p>
+                    <p style="font-size: 24px; font-weight: 700; color: #5C3A00; margin-top: 10px;">
+                        Цена: {{ product.price_rub }} ₽
+                    </p>
+                </div>
+            </div>
+
+            <!-- Описание демо -->
+            <div class="product-description">
+                <h3>Демо-режим оплаты</h3>
+                <p>Это демонстрационная страница оплаты. В реальной интеграции здесь будет форма ЮKassa для оплаты товара.</p>
+                <p>Для настройки реальной оплаты необходимо:</p>
+                <ul style="text-align: left; margin-top: 10px;">
+                    <li>Получить ID магазина и секретный ключ в личном кабинете ЮKassa</li>
+                    <li>Обновить настройки YOOKASSA_SHOP_ID и YOOKASSA_SECRET_KEY</li>
+                    <li>Настроить webhook для обработки уведомлений о платежах</li>
+                </ul>
+            </div>
+
+            <!-- Кнопки демо-оплаты -->
+            <div class="download-actions">
+                <button class="download-btn primary" onclick="simulatePayment(true)">
+                    <svg viewBox="0 0 24 24" class="download-icon">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                    Имитировать успешную оплату
+                </button>
+                
+                <button class="download-btn secondary" onclick="simulatePayment(false)" style="background-color: #f44336;">
+                    <svg viewBox="0 0 24 24" class="copy-icon">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                    Имитировать ошибку оплаты
+                </button>
+            </div>
+
+            <!-- Дополнительная информация -->
+            <div class="download-info">
+                <div class="info-item">
+                    <strong>Статус:</strong> Демо-режим
+                </div>
+                <div class="info-item">
+                    <strong>Метод оплаты:</strong> ЮKassa (не настроена)
+                </div>
+                <div class="info-item">
+                    <strong>Сумма к оплате:</strong> {{ product.price_rub }} ₽
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления в правом верхнем углу -->
+    <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
+
+    <script>
+        // Функция для показа уведомлений
+        function showNotification(message, type = 'success', duration = 3000) {
+            const container = document.getElementById('notification-container');
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            container.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.add('hiding');
+                setTimeout(() => {
+                    if (container.contains(notification)) {
+                        container.removeChild(notification);
+                    }
+                }, 300);
+            }, duration);
+        }
+
+        // Имитация оплаты
+        function simulatePayment(success) {
+            const isCartCheckout = '{{ product.slug }}' === 'cart-items';
+            if (success) {
+                showNotification('Оплата прошла успешно!', 'success', 1000);
+                // Быстрый редирект на страницу скачивания (замена истории)
+                setTimeout(() => {
+                    if (isCartCheckout) {
+                        // Для корзины нет конкретного товара; ведём в историю покупок
+                        window.location.replace('/purchases/');
+                    } else {
+                        // Для одиночного товара оформляем покупку и редиректим на скачивание
+                        window.location.replace(`/payment/success/{{ product.slug }}/`);
+                    }
+                }, 1000);
+            } else {
+                showNotification('Ошибка оплаты. Попробуйте еще раз.', 'error', 4000);
+                setTimeout(() => {
+                    window.location.href = `/p/{{ product.slug }}/`;
+                }, 3000);
+            }
+        }
+    </script>
+</body>
+</html>

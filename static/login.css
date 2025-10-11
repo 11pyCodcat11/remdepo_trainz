@@ -1,0 +1,323 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import url('/static/common.css');
+@import url('/static/styles.css');
+
+body {
+    background-color: #FEF6DF;
+    font-family: 'Rubik', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    position: relative;
+}
+
+/* back-button base styles are in styles.css; only page-specific positioning below */
+.back-button { position: absolute; top: 40px; left: 40px; z-index: 10; }
+/* Сместим текст внутри back-button как на продуктовой странице */
+.back-button > span { display: inline-block; transform: translate(-8px, -6px); }
+
+
+
+@media (max-width: 768px) {
+    .back-button {
+        top: 20px;
+        left: 20px;
+        padding: 15px 20px;
+        font-size: 22px;
+        height: 55px;
+        min-width: 120px;
+        max-width: 200px;
+    }
+}
+
+.login-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.login-card {
+    background-color: #FFE1A8;
+    padding: 40px 60px;
+    border-radius: 25px;
+    width: 900px;
+    height: 1100px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* Заголовок ПОДНЯТ ВВЕРХ */
+.login-title {
+    font-size: 100px;
+    color: #5C3A00;
+    font-weight: 400;
+    margin-bottom: 50px;
+    text-align: center;
+    margin-top: 0;
+    padding-top: 20px;
+    font-family: 'Rubik', sans-serif;
+}
+
+.login-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-grow: 1;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Контейнер для полей ввода по центру */
+.form-fields {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.input-field {
+    width: 100%;
+    padding: 30px;
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 20px;
+    background-color: #FFFAEB;
+    font-size: 28px;
+    line-height: 1.5;
+    font-family: 'Rubik', sans-serif;
+    color: #9F9E9D;
+    outline: none;
+    box-sizing: border-box;
+    text-align: left;
+}
+
+/* Стили для ошибок */
+.error-message {
+    color: #ff4444;
+    font-size: 20px;
+    margin: -20px 0 20px 0;
+    text-align: left;
+    width: 100%;
+    padding: 0 10px;
+}
+
+.input-field.error {
+    border: 2px solid #ff4444;
+}
+
+/* Плейсхолдеры */
+.input-field::placeholder {
+    color: #9F9E9D;
+    opacity: 1;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.password-container .input-field {
+    padding-right: 70px;
+    margin-bottom: 0;
+    text-align: left;
+    padding-left: 30px;
+}
+
+.eye-toggle {
+    position: absolute;
+    top: 50%;
+    right: 25px;
+    transform: translateY(-50%);
+    width: 56px;
+    height: 56px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    z-index: 2;
+}
+
+.eye-toggle svg {
+    width: 36px;
+    height: 36px;
+    fill: #9F9E9D;
+}
+
+.checkbox-label {
+    font-size: 28px;
+    color: #3B3B3B;
+    display: flex; /* чекбокс и текст в одну линию */
+    align-items: flex-start; /* выравниваем по верхней строке текста */
+    gap: 14px; /* расстояние между чекбоксом и текстом */
+    margin-bottom: 30px;
+    text-align: left;
+    justify-content: center; /* по центру блока */
+    width: 100%; /* позволяем центровать по всей ширине */
+}
+
+.checkbox-label input {
+    margin-right: 16px;
+    width: 44px; /* ещё крупнее */
+    height: 44px;
+    accent-color: #3B3B3B; /* цвет галочки */
+    margin-top: 2px; /* подводим к верхней строке текста */
+}
+
+.checkbox-text { 
+    max-width: 740px; 
+    line-height: 1.35; 
+}
+.checkbox-text a { 
+    color: inherit; 
+    text-decoration: underline; /* по требованию: подчеркнуть ссылку */
+}
+
+/* Кнопка внизу */
+.login-btn-container {
+    width: 100%;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    
+}
+.login-btn {
+    position: relative;
+    width: 100%;
+    height: 130px;
+    background-color: #E9A82D;
+    color: #3B3B3B;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Rubik', sans-serif;
+    font-size: 48px;
+    cursor: pointer;
+    z-index: 1;
+    transition: transform 0.2s;
+    transform-origin: center center;
+    backface-visibility: hidden;
+    will-change: transform;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding-top: 10px; /* Подняли текст выше */
+    padding-bottom: 40px;
+    line-height: 1; /* стабилизируем метрики строки */
+}
+
+/* Смещение текста как у about-btn + стабилизация рендера при hover */
+.login-btn > span { 
+    display: inline-block; 
+    transform: translate(-7px, -6px) translateZ(0); 
+    transition: transform 0.2s ease; 
+    backface-visibility: hidden; 
+    will-change: transform; 
+    transform-origin: center center; 
+}
+
+.login-btn::after {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: calc(100% + 8px);
+    height: calc(100% + 8px);
+    background-color: #FFC75D;
+    border-radius: 20px;
+    z-index: -1;
+}
+
+.login-btn:hover {
+    transform: scale(1.03);
+}
+
+/* Фикс: сохраняем ровно те же translate-значения у текста при hover */
+.login-btn:hover > span { transform: translate(-7px, -6px) translateZ(0); }
+
+.login-btn:active {
+    transform: translate(10px, 10px);
+}
+
+/* Ссылка на регистрацию */
+.register-link {
+    font-size: 32px;
+    font-weight: 400;
+    color: #3B3B3B;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.register-link a {
+    color: #3B3B3B;
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 1500px) {
+    .back-button {
+        top: 10px;
+        left: 10px;
+        padding: 10px 15px;
+        font-size: 16px;
+    }
+    
+    .login-card {
+        width: calc(100% - 80px);
+        height: auto;
+        padding: 40px 50px;
+        min-height: 500px;
+    }
+    .login-title { font-size: 48px; margin-bottom: 30px; }
+    .input-field { 
+        font-size: 16px; 
+        padding: 15px; 
+        margin-bottom: 15px; 
+        padding-left: 15px;
+        padding-right: 50px;
+    }
+    .password-container .input-field {
+        padding-left: 15px;
+        padding-right: 50px;
+    }
+    .checkbox-label { font-size: 14px; margin-bottom: 20px; gap: 10px; align-items: flex-start; }
+    .checkbox-label input { width: 32px; height: 32px; }
+    .checkbox-text { max-width: 100%; }
+    .login-btn { 
+        height: 65px; 
+        font-size: 22px; 
+        border-radius: 10px; 
+        padding-top: 5px;
+    }
+    .login-btn::after { top: -10px; left: -10px; border-radius: 10px; }
+    .register-link { font-size: 16px; margin-top: 15px; }
+    .eye-toggle { 
+        right: 12px; 
+        width: 36px; 
+        height: 36px; 
+    }
+    .eye-toggle svg { width: 20px; height: 20px; fill: #9F9E9D; }
+    .error-message { font-size: 14px; margin: -10px 0 10px 0; }
+}
+
+/* Отступ вниз только на странице регистрации */
+.register-page .login-card { margin-top: 5%; min-height: 1200px; }
+
+
+.global-error {
+    color: #ff4444;
+    font-size: 40px; /* в 2 раза больше стандартного */
+    text-align: center; /* по центру */
+    margin: 20px 0;
+}

@@ -1,0 +1,298 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>РемДепо Trainz — Mobile</title>
+   <link rel="stylesheet" href="{% static 'mobile/main.css' %}?v=20251016">
+</head>
+<body class="mobile-variant">
+    <header>
+        <div class="header-img-wrapper">
+            <img class="header-img" src="{% static 'images/oblojka.jpg' %}" alt="Фото вокзал-Москва2">
+        </div>
+        <div class="header_menu">
+          <div class="menu-line">
+            <div class="brand-mobile">Remdepo Trainz</div>
+            <nav class="menu">
+              <div class="menu-links"></div>
+              <button class="burger-btn" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+                <span class="burger-line"></span>
+              </button>
+            </nav>
+            <nav id="mobile-menu" class="mobile-nav" aria-label="Мобильное меню">
+              <ul class="mobile-menu">
+                <li class="mobile-actions">
+                  <a href="https://vk.com/club229761384" class="vk-btn">
+                    <img src="{% static 'images/vk_ikon.png' %}" alt="ВК">
+                    <span>ДЕПО</span>
+                  </a>
+                  {% if user %}
+                    <a href="{% url 'profile' %}" class="profile-btn">
+                      <img src="{% static 'images/profile_icon.png' %}" alt="Профиль">
+                      <span class="profile-text">Профиль</span>
+                    </a>
+                  {% else %}
+                    <a href="{% url 'login' %}" class="profile-btn">
+                      <img src="{% static 'images/profile_icon.png' %}" alt="Профиль">
+                      <span class="profile-text">Войти</span>
+                    </a>
+                  {% endif %}
+                </li>
+                <li><a href="#popular">Популярное</a></li>
+                <li><a href="#rolling_stock">Подвижной состав</a></li>
+                <li><a href="#maps">Карты</a></li>
+                <li><a href="#scenarios">Сценарии</a></li>
+                <li><a href="#useful_links">Полезные ссылки</a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+    </header>
+
+    <main>
+        <section id="popular">
+            <h2 class="popular-title">Популярное</h2>
+            <div class="cards">
+                {% for product in products_popular %}
+                <div class="card" data-product-id="{{ product.id }}">
+                    <!-- Верхний контент -->
+                    <div class="card-content">
+                        {% with main_photo=product.photos|dictsort:"order"|first %}
+                            {% if main_photo %}
+                                <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                            {% endif %}
+                        {% endwith %}
+                
+                        <h3 class="card-title">{{ product.title }}</h3>        
+                        {% if product.is_free %}
+                            <p class="pricec">Бесплатно</p>
+                        {% else %}
+                            <p class="pricec">{{ product.price_rub }} ₽</p>
+                        {% endif %}
+                    </div>
+                
+                <!-- Кнопки в отдельном блоке -->
+                <div class="card-buttons">
+                    {% if product.id in purchased_product_ids %}
+                        <div class="purchased-status">
+                            <span class="purchased-label">✓ Приобретен</span>
+                            <a class="download-btn" href="/download/{{ product.slug }}/">Скачать</a>
+                        </div>
+                    {% else %}
+                        <a class="about-btn" href="/p/{{ product.slug }}/"><span>О товаре</span></a>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn" data-action="get" data-product-id="{{ product.id }}"><span>Получить</span></button>
+                            {% else %}
+                            <button class="get-btn" data-action="buy" data-product-id="{{ product.id }}"><span>Приобрести</span></button>
+                            {% endif %}
+                            <button class="garbej-btn" data-action="cart" data-product-id="{{ product.id }}"><span>В корзину</span></button>
+                        </div>
+                    {% endif %}
+                </div>
+                </div>                
+                {% endfor %}
+            </div>                
+        </section>
+        
+        <section id="rolling_stock">
+            <h2 class="popular-title">Подвижной состав</h2>
+          
+            <div class="cards">
+              {% for product in products_rolling %}
+              <div class="card-rolling_stock" data-product-id="{{ product.id }}">
+                <!-- Верхний контент -->
+                <div class="card-content">
+                  {% with main_photo=product.photos|dictsort:"order"|first %}
+                    {% if main_photo %}
+                      <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                    {% else %}
+                      <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                    {% endif %}
+                  {% endwith %}
+          
+                  <h3 class="card-title">{{ product.title }}</h3>        
+                  {% if product.is_free %}
+                    <p class="pricec">Бесплатно</p>
+                  {% else %}
+                    <p class="pricec">{{ product.price_rub }} ₽</p>
+                  {% endif %}
+                </div>
+          
+                <!-- Кнопки в отдельном блоке -->
+                <div class="card-buttons">
+                    {% if product.id in purchased_product_ids %}
+                        <div class="purchased-status">
+                            <span class="purchased-label">✓ Приобретен</span>
+                            <a class="download-btn" href="/download/{{ product.slug }}/">Скачать</a>
+                        </div>
+                    {% else %}
+                        <a class="about-btn" href="/p/{{ product.slug }}/"><span>О товаре</span></a>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn" data-action="get" data-product-id="{{ product.id }}"><span>Получить</span></button>
+                            {% else %}
+                                <button class="get-btn" data-action="buy" data-product-id="{{ product.id }}"><span>Приобрести</span></button>
+                            {% endif %}
+                            <button class="garbej-btn" data-action="cart" data-product-id="{{ product.id }}"><span>В корзину</span></button>
+                        </div>
+                    {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </section>
+
+          <section id="maps">
+            <h2 class="popular-title">Карты</h2>
+            <div class="cards">
+                {% for product in products_maps %}
+                <div class="card" data-product-id="{{ product.id }}">
+                    <!-- Верхний контент -->
+                    <div class="card-content">
+                        {% with main_photo=product.photos|dictsort:"order"|first %}
+                            {% if main_photo %}
+                                <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                            {% endif %}
+                        {% endwith %}
+                        
+                        <h3 class="card-title">{{ product.title }}</h3>
+                        {% if product.is_free %}
+                            <p class="pricec">Бесплатно</p>
+                        {% else %}
+                            <p class="pricec">{{ product.price_rub }} ₽</p>
+                        {% endif %}
+                    </div>
+        
+                    <!-- Кнопки -->
+                    <div class="card-buttons">
+                        {% if product.id in purchased_product_ids %}
+                            <div class="purchased-status">
+                                <span class="purchased-label">✓ Приобретен</span>
+                                <a class="download-btn" href="/download/{{ product.slug }}/">Скачать</a>
+                            </div>
+                        {% else %}
+                            <a class="about-btn" href="/p/{{ product.slug }}/"><span>О товаре</span></a>
+                            <div class="btn-row">
+                                {% if product.is_free %}
+                                    <button class="get-btn" data-action="get" data-product-id="{{ product.id }}"><span>Получить</span></button>
+                                {% else %}
+                                    <button class="get-btn" data-action="buy" data-product-id="{{ product.id }}"><span>Приобрести</span></button>
+                                {% endif %}
+                                <button class="garbej-btn" data-action="cart" data-product-id="{{ product.id }}"><span>В корзину</span></button>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="scenarios">
+            <h2 class="popular-title">Сценарии</h2>
+        
+            <div class="cards">
+                {% for product in products_scenarios %}
+                <div class="card-rolling_stock" data-product-id="{{ product.id }}">
+                    <!-- Верхний контент -->
+                    <div class="card-content">
+                        {% with main_photo=product.photos|dictsort:"order"|first %}
+                            {% if main_photo %}
+                                <img src="{{ main_photo.file_path }}" alt="{{ product.title }}">
+                            {% else %}
+                                <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото">
+                            {% endif %}
+                        {% endwith %}
+        
+                        <h3 class="card-title">{{ product.title }}</h3>
+                        {% if product.is_free %}
+                            <p class="pricec">Бесплатно</p>
+                        {% else %}
+                            <p class="pricec">{{ product.price_rub }} ₽</p>
+                        {% endif %}
+                    </div>
+        
+                <!-- Кнопки в отдельном блоке -->
+                <div class="card-buttons">
+                    {% if product.id in purchased_product_ids %}
+                        <div class="purchased-status">
+                            <span class="purchased-label">✓ Приобретен</span>
+                            <a class="download-btn" href="/download/{{ product.slug }}/">Скачать</a>
+                        </div>
+                    {% else %}
+                        <a class="about-btn" href="/p/{{ product.slug }}/"><span>О товаре</span></a>
+                        <div class="btn-row">
+                            {% if product.is_free %}
+                                <button class="get-btn" data-action="get" data-product-id="{{ product.id }}"><span>Получить</span></button>
+                            {% else %}
+                                <button class="get-btn" data-action="buy" data-product-id="{{ product.id }}"><span class="btn-inner">Приобрести</span></button>
+                            {% endif %}
+                            <button class="garbej-btn" data-action="cart" data-product-id="{{ product.id }}"><span>В корзину</span></button>
+                        </div>
+                    {% endif %}
+                </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        <section id="useful_links">
+            <h2 class="popular-title">Полезные ссылки</h2>
+        
+            <div class="useful-container">
+                <img src="{% static 'images/zaglushka.png' %}" alt="Полезные ссылки">
+                <p class="useful-text">Раздел находится в разработке</p>
+            </div>
+        </section>
+        
+    </main>
+
+    <footer class="mobile-footer">
+        <div class="footer-content">
+            <p class="footer-copy">©2025 - РемДепо Trainz</p>
+            <p class="footer-note">Все 3D-модели предназначены для использования в Trainz Railroad Simulator 2022</p>
+            <p class="footer-note">Мы не связаны с официальными разработчиками игры</p>
+            <p class="footer-text">Пользуясь сайтом вы принимаете условия 
+                <a href="{% static 'images/User_agrinement.pdf' %}" target="_blank" class="footer-link"><u>пользовательского соглашения</u></a>
+            </p>
+            <nav class="footer-links">
+                Пользуясь данным сайтом вы принимаете 
+                <a href="{% static 'images/User_agrinement.pdf' %}" target="_blank">пользовательское соглашение</a>
+            </nav>
+            <p class="footer-credits">Дизайн — Rin | Разработка — PyCodCat | Владелец — 
+                <a href="mailto:olegovstanislaw@yandex.ru">olegovstanislaw@yandex.ru</a>
+            </p>
+        </div>
+    </footer>
+
+    <script type="application/json" id="user-data">
+        {
+            "isAuthenticated": {{ user|yesno:"true,false" }}{% if user %},
+            "id": {{ user.id }},
+            "username": "{{ user.username|escapejs }}"{% endif %}
+        }
+    </script>
+    <script>
+        (function(){
+            try {
+                const ud = document.getElementById('user-data');
+                window.userData = JSON.parse(ud.textContent);
+            } catch(e) { 
+                console.warn('Failed to parse user data', e);
+                window.userData = { isAuthenticated: false };
+            }
+        })();
+    </script>
+    <script src="{% static 'main.js' %}"></script>
+</body>
+</html>
+
+

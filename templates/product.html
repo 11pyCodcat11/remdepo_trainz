@@ -1,0 +1,180 @@
+{% load static %}
+<!-- eslint-disable -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title }} - Каталог 3D моделей</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    {% if variant == 'mobile' %}
+    <link rel="stylesheet" href="{% static 'mobile/main.css' %}">
+    {% elif variant == 'tablet' %}
+    <link rel="stylesheet" href="{% static 'tablet.css' %}">
+    {% endif %}
+    <link rel="stylesheet" href="{% static 'product.css' %}">
+    {% csrf_token %}
+</head>
+<body>
+    <!-- Кнопка назад -->
+    <a href="{% url 'home' %}" class="back-button">
+        <span>Назад к каталогу</span>
+    </a>
+
+    <div class="product-container">
+        <div class="product-wrapper">
+            <!-- Галерея изображений -->
+            <div class="product-gallery">
+                {% if product.photos %}
+                    <!-- Основное изображение -->
+                    <div class="main-image-container">
+                        <img id="mainImage" src="{{ product.photos.0.file_path }}" alt="{{ product.title }}" class="main-image" onclick="openImageViewer(0)">
+                    </div>
+                    
+                    <!-- Миниатюры (если больше одного фото) -->
+                    {% if product.photos|length > 1 %}
+                        <div class="thumbnails-container">
+                            {% for photo in product.photos %}
+                                <img src="{{ photo.file_path }}" 
+                                     alt="{{ product.title }}" 
+                                     class="thumbnail {% if forloop.first %}active{% endif %}"
+                                     data-index="{{ forloop.counter0 }}"
+                                     data-src="{{ photo.file_path }}">
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <!-- Заглушка если нет фото -->
+                    <div class="main-image-container">
+                        <img src="{% static 'images/placeholder.jpg' %}" alt="Нет фото" class="main-image">
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Информация о товаре -->
+            <div class="product-info">
+                <!-- Заголовок и категория -->
+                <div class="product-header">
+                    <h1 class="product-title">{{ product.title }}</h1>
+                    {% if product.subtitle %}
+                        <p class="product-subtitle">{{ product.subtitle }}</p>
+                    {% endif %}
+                    <p class="product-category">{{ product.category }}</p>
+                </div>
+
+                <!-- Цена -->
+                <div class="product-price">
+                    {% if product.is_free %}
+                        <span class="price-free">Бесплатно</span>
+                    {% else %}
+                        <span class="price-paid">{{ product.price_rub }} ₽</span>
+                    {% endif %}
+                </div>
+
+                <!-- Описание -->
+                {% if product.blurb %}
+                    <div class="product-description">
+                        <h3>Описание</h3>
+                        <p>{{ product.blurb|linebreaks }}</p>
+                    </div>
+                {% endif %}
+                <!-- Кнопки действий -->
+                <div class="product-actions">
+                    <div class="main-actions">
+                    {% if product.is_free %}
+                        <button class="btn-primary btn-get" data-action="get" data-product-id="{{ product.id }}">
+                        <span>Получить</span>
+                        </button>
+                    {% else %}
+                        <button class="btn-primary btn-buy" data-action="buy" data-product-id="{{ product.id }}">
+                        <span>Приобрести</span>
+                        </button>
+                    {% endif %}
+                
+                    {% if user %}
+                        <button class="btn-secondary btn-cart" data-action="cart" data-product-id="{{ product.id }}">
+                        <span>В корзину</span>
+                        </button>
+                    {% else %}
+                        <button class="btn-secondary btn-cart" data-action="login-required">
+                        <span>В корзину</span>
+                        </button>
+                    {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div id="notification-container" style="position: fixed; top: 20px; right: 20px; z-index: 10000;"></div>
+
+    <!-- Полноэкранный просмотрщик изображений -->
+    <div id="imageViewer" class="image-viewer">
+        <div class="image-viewer-content">
+            <img id="viewerImage" src="" alt="" class="image-viewer-image">
+            <button class="image-nav-button image-nav-prev" onclick="previousImage()">‹</button>
+            <button class="image-nav-button image-nav-next" onclick="nextImage()">›</button>
+        </div>
+        <button class="image-viewer-close" onclick="closeImageViewer()">×</button>
+        <div id="imageCounter" class="image-counter">1 / 1</div>
+    </div>
+
+    <!-- Передаем данные в JavaScript безопасно для линтера -->
+    <script type="application/json" id="product-data">
+        {
+            "id": {{ product.id }},
+            "title": "{{ product.title|escapejs }}",
+            "slug": "{{ product.slug }}",
+            "price": {{ product.price_rub }},
+            "is_free": {{ product.is_free|yesno:"true,false" }},
+            "photos": [{% for photo in product.photos %}{"file_path": "{{ photo.file_path }}"}{% if not forloop.last %},{% endif %}{% endfor %}]
+        }
+    </script>
+    <script type="application/json" id="user-data">
+        {
+            "isAuthenticated": {{ user|yesno:"true,false" }}{% if user %},
+            "id": {{ user.id }},
+            "username": "{{ user.username|escapejs }}"{% endif %}
+        }
+    </script>
+    <script>
+        (function(){
+            try {
+                const pd = document.getElementById('product-data');
+                const ud = document.getElementById('user-data');
+                window.productData = JSON.parse(pd.textContent);
+                window.productData.photos = (window.productData.photos || []).map(p => p.file_path);
+                window.userData = JSON.parse(ud.textContent);
+            } catch(e) { console.warn('Failed to parse embedded data', e); }
+            // Навешиваем обработчики на миниатюры без inline JS
+            document.querySelectorAll('.thumbnail').forEach(function(thumb){
+                thumb.addEventListener('click', function(){
+                    const src = this.dataset.src;
+                    const idx = parseInt(this.dataset.index, 10) || 0;
+                    changeMainImage(src, idx);
+                });
+                thumb.addEventListener('dblclick', function(){
+                    const idx = parseInt(this.dataset.index, 10) || 0;
+                    openImageViewer(idx);
+                });
+            });
+            // Кнопки действий
+            document.querySelectorAll('[data-action][data-product-id]').forEach(function(btn){
+                btn.addEventListener('click', function(){
+                    const id = parseInt(this.dataset.productId, 10);
+                    if (this.dataset.action === 'get') return handleGetProduct(id);
+                    if (this.dataset.action === 'buy') return handleBuyProduct(id);
+                    if (this.dataset.action === 'cart') return handleAddToCart(id);
+                });
+            });
+            document.querySelectorAll('[data-action="login-required"]').forEach(function(btn){
+                btn.addEventListener('click', showLoginRequired);
+            });
+        })();
+    </script>
+    
+    <script src="{% static 'product.js' %}"></script>
+</body>
+</html>
+<!-- eslint-enable -->

@@ -1,0 +1,21 @@
+/* Tablet overrides: 2-col comfortable grid, larger controls */
+
+.cards { gap: 24px; }
+.card { width: 45%; min-width: 340px; max-width: 480px; margin: 12px auto; }
+.card-title { font-size: 24px; }
+.pricec { font-size: 24px; color: #3B3B3B; }
+
+.about-btn { width: 320px; height: 68px; font-size: 24px; }
+.get-btn, .garbej-btn { width: 170px; height: 68px; font-size: 24px; }
+
+/* Product */
+.product-wrapper { grid-template-columns: 1fr; gap: 32px; padding: 28px; }
+.main-image-container { height: 420px; }
+.product-title { font-size: 34px; }
+.product-description p { font-size: 22px; }
+.btn-primary, .btn-secondary { height: 96px; font-size: 34px; }
+
+/* Back button */
+.back-button { top: 20px !important; left: 20px !important; }
+
+

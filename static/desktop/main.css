@@ -1,0 +1,8 @@
+@import url('../styles.css');
+/* Desktop-only overrides can go below */
+
+
+.about-btn { text-decoration: none; }
+.about-btn:hover { text-decoration: none; }
+.download-btn { text-decoration: none; }
+.download-btn:hover { text-decoration: none; }

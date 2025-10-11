@@ -1,0 +1,329 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;500;600;700;800&display=swap');
+@import url('/static/common.css');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #FEF6DF;
+    font-family: 'Rubik', sans-serif;
+    min-height: 100vh;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Кнопка назад — базовые стили в styles.css; оставляем только позиционирование */
+.back-button { position: fixed; top: 34px; left: 34px; z-index: 100; }
+.back-button > span { display: inline-block; transform: translateY(-3px); }
+
+/* Основной контейнер */
+.download-container {
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.download-card {
+    background: #FFE1A8;
+    border-radius: 35px;  /* 25px * 1.4 = 35px */
+    padding: 56px;  /* 40px * 1.4 = 56px */
+    box-shadow: 0 11px 42px rgba(92, 58, 0, 0.15);  /* 8px * 1.4 = 11.2px, 30px * 1.4 = 42px */
+    text-align: center;
+}
+
+/* Иконка успеха */
+.success-icon {
+    width: 112px;  /* 80px * 1.4 = 112px */
+    height: 112px;  /* 80px * 1.4 = 112px */
+    background: #4CAF50;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 42px auto;  /* 30px * 1.4 = 42px */
+    box-shadow: 0 5.6px 21px rgba(76, 175, 80, 0.3);  /* 4px * 1.4 = 5.6px, 15px * 1.4 = 21px */
+}
+
+.success-icon svg {
+    width: 70px;  /* 50px * 1.4 = 70px */
+    height: 70px;  /* 50px * 1.4 = 70px */
+    fill: white;
+}
+
+/* Заголовок */
+.download-title {
+    font-size: 59px;  /* 42px * 1.4 = 58.8px ≈ 59px */
+    font-weight: 700;
+    color: #5C3A00;
+    margin-bottom: 42px;  /* 30px * 1.4 = 42px */
+    font-family: 'Rubik', sans-serif;
+}
+
+/* Информация о товаре */
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 35px;  /* 25px * 1.4 = 35px */
+    background: rgba(255, 255, 255, 0.3);
+    padding: 35px;  /* 25px * 1.4 = 35px */
+    border-radius: 21px;  /* 15px * 1.4 = 21px */
+    margin-bottom: 42px;  /* 30px * 1.4 = 42px */
+    text-align: left;
+}
+
+.product-image {
+    width: 280px;  /* Делаем фото прямоугольным и побольше */
+    height: 200px;  /* Прямоугольная форма */
+    object-fit: cover;
+    border-radius: 20px;  /* Увеличиваем скругление */
+    flex-shrink: 0;
+}
+
+.product-details h2 {
+    font-size: 39px;  /* 28px * 1.4 = 39.2px ≈ 39px */
+    font-weight: 700;
+    color: #5C3A00;
+    margin-bottom: 11px;  /* 8px * 1.4 = 11.2px ≈ 11px */
+}
+
+.product-details .subtitle {
+    font-size: 25px;  /* 18px * 1.4 = 25.2px ≈ 25px */
+    color: #8B6914;
+    margin-bottom: 7px;  /* 5px * 1.4 = 7px */
+}
+
+.product-details .category {
+    font-size: 22px;  /* 16px * 1.4 = 22.4px ≈ 22px */
+    color: #B8860B;
+    font-weight: 500;
+}
+
+/* Описание */
+.product-description {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 30px;  /* Увеличиваем отступы */
+    border-radius: 20px;  /* Увеличиваем скругление */
+    margin-bottom: 35px;  /* Увеличиваем отступ */
+    text-align: left;
+}
+
+.product-description h3 {
+    font-size: 32px;  /* Увеличиваем заголовок 'О товаре:' */
+    font-weight: 800;  /* Делаем жирнее */
+    color: #5C3A00;
+    margin-bottom: 20px;  /* Увеличиваем отступ */
+}
+
+.product-description p {
+    font-size: 26px;  /* Увеличиваем описание товара */
+    color: #5C3A00;
+    line-height: 1.5;  /* Увеличиваем межстрочный интервал */
+    font-weight: 500;  /* Немного утолщаем текст */
+}
+
+/* Кнопки скачивания */
+.download-actions {
+    display: flex;
+    gap: 28px;  /* 20px * 1.4 = 28px */
+    justify-content: center;
+    margin-bottom: 42px;  /* 30px * 1.4 = 42px */
+    flex-wrap: wrap;
+}
+
+.download-btn {
+    position: relative;
+    border: none;
+    border-radius: 14px;  /* 10px * 1.4 = 14px */
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 25px;  /* 18px * 1.4 = 25.2px ≈ 25px */
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    z-index: 1;
+    box-sizing: border-box;
+    height: 84px;  /* 60px * 1.4 = 84px */
+    padding: 0 35px 10px 35px;  /* Поднимаем текст еще на 5px (итого 10px) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;  /* 10px * 1.4 = 14px */
+    min-width: 280px;  /* 200px * 1.4 = 280px */
+}
+
+.download-btn.primary {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.download-btn.primary::after {
+    content: '';
+    position: absolute;
+    top: -14px;  /* -10px * 1.4 = -14px */
+    left: -14px;  /* -10px * 1.4 = -14px */
+    width: calc(100% + 5.6px);  /* 4px * 1.4 = 5.6px */
+    height: calc(100% + 5.6px);  /* 4px * 1.4 = 5.6px */
+    background-color: #66BB6A;
+    border-radius: 14px;  /* 10px * 1.4 = 14px */
+    z-index: -1;
+}
+
+.download-btn.secondary {
+    background-color: #E9A82D;
+    color: #3B3B3B;
+}
+
+.download-btn.secondary::after {
+    content: '';
+    position: absolute;
+    top: -14px;  /* -10px * 1.4 = -14px */
+    left: -14px;  /* -10px * 1.4 = -14px */
+    width: calc(100% + 5.6px);  /* 4px * 1.4 = 5.6px */
+    height: calc(100% + 5.6px);  /* 4px * 1.4 = 5.6px */
+    background-color: #FFC75D;
+    border-radius: 14px;  /* 10px * 1.4 = 14px */
+    z-index: -1;
+}
+
+.download-btn:hover {
+    transform: scale(1.03);
+}
+
+.download-btn:active {
+    transform: translate(5px, 5px);
+}
+
+.download-btn svg {
+    width: 28px;  /* 20px * 1.4 = 28px */
+    height: 28px;  /* 20px * 1.4 = 28px */
+    fill: currentColor;
+}
+
+/* Дополнительная информация */
+.download-info {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 24px;  /* Увеличиваем на 20%: 20px * 1.2 = 24px */
+    border-radius: 14px;  /* Увеличиваем на 20%: 12px * 1.2 = 14.4px ≈ 14px */
+    margin-bottom: 30px;  /* Увеличиваем на 20%: 25px * 1.2 = 30px */
+    text-align: left;
+}
+
+.info-item {
+    margin-bottom: 12px;  /* Увеличиваем на 20%: 10px * 1.2 = 12px */
+    font-size: 22px;  /* Увеличиваем на 20%: 18px * 1.2 = 21.6px ≈ 22px */
+    color: #5C3A00;
+    line-height: 1.4;  /* Добавляем межстрочный интервал */
+}
+
+.info-item:last-child {
+    margin-bottom: 0;
+}
+
+.info-item strong {
+    font-weight: 700;  /* Оставляем обычную жирность */
+    font-size: 22px;  /* Увеличиваем на 20%: 18px * 1.2 = 21.6px ≈ 22px */
+}
+
+/* Инструкция по установке */
+.installation-guide {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 12px;
+    text-align: left;
+}
+
+.installation-guide h3 {
+    font-size: 28px;  /* Увеличиваем размер заголовка */
+    font-weight: 800;  /* Делаем жирнее */
+    color: #5C3A00;
+    margin-bottom: 20px;  /* Увеличиваем отступ */
+}
+
+.installation-guide ol {
+    padding-left: 20px;
+}
+
+.installation-guide li {
+    margin-bottom: 12px;  /* Увеличиваем отступы */
+    font-size: 20px;  /* Увеличиваем размер текста */
+    color: #5C3A00;
+    line-height: 1.5;  /* Увеличиваем межстрочный интервал */
+}
+
+.installation-guide li:last-child {
+    margin-bottom: 0;
+}
+
+/* Уведомления */
+/* notification base styles are in common.css */
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+        align-items: flex-start;
+        padding-top: 100px;
+    }
+    
+    .download-card {
+        padding: 25px;
+    }
+    
+    .download-title {
+        font-size: 32px;
+    }
+    
+    .product-info {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .product-details h2 {
+        font-size: 24px;
+    }
+    
+    .download-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .download-btn {
+        min-width: unset;
+        width: 100%;
+    }
+    
+    .back-button { width: 150px; height: 50px; font-size: 16px; top: 10px; left: 10px; }
+}
+
+@media (max-width: 480px) {
+    .success-icon {
+        width: 60px;
+        height: 60px;
+    }
+    
+    .success-icon svg {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .download-title {
+        font-size: 28px;
+    }
+    
+    .product-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .product-details h2 {
+        font-size: 20px;
+    }
+}
