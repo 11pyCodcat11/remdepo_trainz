@@ -39,7 +39,7 @@ jobs:
         port: ${{ secrets.SERVER_PORT }}
         script: |
           # Navigate to project directory
-          cd /path/to/your/remdepo_bot
+          cd /root/remdepo_bot
           
           echo "🛡️ SAFE DEPLOYMENT - Protecting existing database"
           
