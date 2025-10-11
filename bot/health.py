@@ -1,5 +1,6 @@
 """
 Health check endpoint для мониторинга состояния бота
+CI/CD Test - Bot is ready for deployment
 """
 import asyncio
 import logging
