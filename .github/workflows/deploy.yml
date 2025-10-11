@@ -48,6 +48,10 @@ jobs:
           sudo systemctl stop remdepo-bot || true
           sleep 3
           
+          # Force kill any remaining processes (safety measure)
+          pkill -f "python.*bot.main" || true
+          sleep 2
+          
           # CRITICAL: Backup existing database with timestamp
           echo "💾 Creating database backup..."
           BACKUP_FILE="bot.db.backup.$(date +%Y%m%d_%H%M%S)"
@@ -106,6 +110,15 @@ jobs:
           if sudo systemctl is-active --quiet remdepo-bot; then
             echo "✅ Bot started successfully!"
             sudo systemctl status remdepo-bot --no-pager
+            
+            # Additional verification - check if bot is actually responding
+            echo "🔍 Verifying bot is responding..."
+            sleep 3
+            if pgrep -f "python.*bot.main" > /dev/null; then
+              echo "✅ Bot process is running!"
+            else
+              echo "⚠️ Bot process not found, but service reports active"
+            fi
           else
             echo "❌ Bot failed to start! Restoring database and stopping..."
             cp "$BACKUP_FILE" bot.db
