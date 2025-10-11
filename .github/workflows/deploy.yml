@@ -1,0 +1,114 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run tests (optional)
+      run: |
+        python -m py_compile bot/main.py
+        python -m py_compile bot/handlers/catalog/products.py
+        python -m py_compile bot/handlers/payments/yookassa.py
+        python -m py_compile bot/handlers/profile/auth.py
+        
+    - name: Deploy to server
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT }}
+        script: |
+          # Navigate to project directory
+          cd /path/to/your/remdepo_bot
+          
+          echo "🛡️ SAFE DEPLOYMENT - Protecting existing database"
+          
+          # Stop the bot gracefully
+          echo "⏹️ Stopping bot..."
+          sudo systemctl stop remdepo-bot || true
+          sleep 3
+          
+          # CRITICAL: Backup existing database with timestamp
+          echo "💾 Creating database backup..."
+          BACKUP_FILE="bot.db.backup.$(date +%Y%m%d_%H%M%S)"
+          cp bot.db "$BACKUP_FILE" || {
+            echo "❌ CRITICAL: Failed to backup database! Aborting deployment."
+            exit 1
+          }
+          echo "✅ Database backed up as: $BACKUP_FILE"
+          
+          # Store current database in safe location
+          mkdir -p /tmp/remdepo_backups
+          cp bot.db "/tmp/remdepo_backups/$BACKUP_FILE"
+          
+          # Pull latest changes (but DON'T overwrite database yet)
+          echo "📥 Pulling latest code..."
+          git stash push -m "Auto-stash before deployment $(date)"
+          git pull origin main
+          
+          # Check if database file exists and is valid
+          if [ ! -f "bot.db" ] || [ ! -s "bot.db" ]; then
+            echo "⚠️ Database file missing or empty, restoring from backup..."
+            cp "$BACKUP_FILE" bot.db
+          fi
+          
+          # Install/update dependencies
+          echo "📦 Installing dependencies..."
+          source venv/bin/activate
+          pip install -r requirements.txt
+          
+          # Test database integrity
+          echo "🔍 Testing database integrity..."
+          python3 -c "
+          import sqlite3
+          try:
+              conn = sqlite3.connect('bot.db')
+              cursor = conn.cursor()
+              cursor.execute('SELECT COUNT(*) FROM users')
+              user_count = cursor.fetchone()[0]
+              print(f'✅ Database OK: {user_count} users found')
+              conn.close()
+          except Exception as e:
+              print(f'❌ Database error: {e}')
+              exit(1)
+          " || {
+            echo "❌ Database integrity check failed! Restoring backup..."
+            cp "$BACKUP_FILE" bot.db
+            echo "✅ Database restored from backup"
+          }
+          
+          # Start the bot
+          echo "▶️ Starting bot..."
+          sudo systemctl start remdepo-bot
+          
+          # Wait and verify bot is running
+          sleep 5
+          if sudo systemctl is-active --quiet remdepo-bot; then
+            echo "✅ Bot started successfully!"
+            sudo systemctl status remdepo-bot --no-pager
+          else
+            echo "❌ Bot failed to start! Restoring database and stopping..."
+            cp "$BACKUP_FILE" bot.db
+            sudo systemctl stop remdepo-bot
+            exit 1
+          fi

@@ -1,0 +1,81 @@
+name: Manual Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+        - production
+        - staging
+      skip_tests:
+        description: 'Skip tests'
+        required: false
+        default: false
+        type: boolean
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        
+    - name: Run tests
+      if: ${{ !inputs.skip_tests }}
+      run: |
+        echo "🧪 Running tests..."
+        python -m py_compile bot/main.py
+        python -m py_compile bot/handlers/catalog/products.py
+        python -m py_compile bot/handlers/payments/yookassa.py
+        python -m py_compile bot/handlers/profile/auth.py
+        python -m py_compile bot/services/payment_service.py
+        python -m py_compile bot/services/payment_checker.py
+        echo "✅ All tests passed!"
+        
+    - name: Deploy to ${{ inputs.environment }}
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.SERVER_HOST }}
+        username: ${{ secrets.SERVER_USER }}
+        key: ${{ secrets.SERVER_SSH_KEY }}
+        port: ${{ secrets.SERVER_PORT }}
+        script: |
+          echo "🚀 Deploying to ${{ inputs.environment }}..."
+          cd /path/to/your/remdepo_bot
+          
+          # Stop the bot
+          sudo systemctl stop remdepo-bot || true
+          
+          # Backup database
+          cp bot.db bot.db.backup.$(date +%Y%m%d_%H%M%S) || true
+          
+          # Pull latest changes
+          git pull origin main
+          
+          # Install/update dependencies
+          source venv/bin/activate
+          pip install -r requirements.txt
+          
+          # Start the bot
+          sudo systemctl start remdepo-bot
+          
+          # Check status
+          sleep 5
+          sudo systemctl status remdepo-bot --no-pager
+          
+          echo "✅ Deployment to ${{ inputs.environment }} completed!"
